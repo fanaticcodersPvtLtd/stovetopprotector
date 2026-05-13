@@ -1,0 +1,27 @@
+{
+  "name": "stoveguard",
+  "version": "0.0.1",
+  "private": true,
+  "description": "StoveGuard.us.com — independent stove top protector reviews",
+  "scripts": {
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "cms:dev": "pnpm --filter cms dev",
+    "cms:build": "pnpm --filter cms build",
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build",
+    "dev": "pnpm db:up && pnpm cms:dev"
+  },
+  "packageManager": "pnpm@10.11.1",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
+  }
+}

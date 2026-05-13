@@ -35,7 +35,7 @@ An independent, unbiased consumer review and comparison site for stove top prote
 
 ### Visitor (Contributor)
 
-**Access:** Self-registration with email. No social login. Account creation is open to anyone.
+**Access:** Self-registration with email or social login (Google, Facebook). Social login accounts skip email verification since the provider already verified the email. Email-only accounts require email verification. Account creation is open to anyone.
 
 **What they see (logged out):** The full public site — homepage, all articles, comparison tables, pricing data, brand pages, interactive comparison tool. A "Log in to leave a review" prompt at the bottom of content pages. A "Log in" link in the top nav.
 
@@ -47,7 +47,7 @@ An independent, unbiased consumer review and comparison site for stove top prote
 
 **What they can do:**
 
-- Create an account with a display name (no real name required)
+- Create an account via Google, Facebook, or email with a display name (no real name required)
 - Submit reviews and comments on any article or brand page
 - View their submission history and statuses
 - Receive email notifications when submissions are approved

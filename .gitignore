@@ -1,0 +1,35 @@
+# env
+.env
+.env.local
+.env.production
+.env.*.local
+
+# deps + build
+node_modules/
+dist/
+build/
+.astro/
+.next/
+.turbo/
+.cache/
+.payload/
+.pnpm-store/
+
+# runtime + data
+media/
+postgres-data/
+*.log
+
+# OS
+.DS_Store
+
+# MCP config (contains secrets — use .mcp.json.example as template)
+.mcp.json
+
+# tooling caches (not source)
+.agents/
+.firecrawl/
+.factory/
+.claude/
+.stitch/designs/
+graphify-out/wiki/cache/

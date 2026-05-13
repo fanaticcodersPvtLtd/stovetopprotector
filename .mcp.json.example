@@ -1,0 +1,43 @@
+{
+    "mcpServers": {
+        "stitch": {
+            "type": "http",
+            "url": "https://stitch.googleapis.com/mcp",
+            "headers": {
+                "X-Goog-Api-Key": "REPLACE_WITH_STITCH_API_KEY"
+            }
+        },
+        "dataforseo": {
+            "command": "npx",
+            "args": ["-y", "dataforseo-mcp-server"],
+            "env": {
+                "DATAFORSEO_USERNAME": "REPLACE_WITH_DATAFORSEO_USERNAME",
+                "DATAFORSEO_PASSWORD": "REPLACE_WITH_DATAFORSEO_PASSWORD"
+            },
+            "transportType": "stdio"
+        },
+        "exa": {
+            "command": "npx",
+            "args": ["-y", "exa-mcp-server"],
+            "env": {
+                "EXA_API_KEY": "REPLACE_WITH_EXA_API_KEY"
+            },
+            "transportType": "stdio"
+        },
+        "firecrawl-mcp": {
+            "command": "npx",
+            "args": ["-y", "firecrawl-mcp"],
+            "env": {
+                "FIRECRAWL_API_KEY": "REPLACE_WITH_FIRECRAWL_API_KEY"
+            }
+        },
+        "serpapi": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "mcp-remote",
+                "https://mcp.serpapi.com/REPLACE_WITH_SERPAPI_TOKEN/mcp"
+            ]
+        }
+    }
+}

@@ -1,0 +1,46 @@
+{
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/PRD.md": {
+    "mtime": 1775430257.1920888,
+    "hash": "5408ee0f1a277376826d496f88f80baf"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/workflow.md": {
+    "mtime": 1773150291.0,
+    "hash": "c134d2bdcf59257bf01733a12ceba09b"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/DESIGN.md": {
+    "mtime": 1775475864.0575132,
+    "hash": "14db6cdbc5fa4ed8393d00014541770c"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/stoveguard-us-com-blueprint.md": {
+    "mtime": 1776376633.5505698,
+    "hash": "60640205d393df289fc1ad222ebb278b"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/CLAUDE.md": {
+    "mtime": 1776735467.5350273,
+    "hash": "e8548adb56c7b7053301f723a82a7895"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/plans/stoveguard-site.md": {
+    "mtime": 1775426868.7393916,
+    "hash": "636ca927c0baafb85e24c36da11dd4ed"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/HARNESS.md": {
+    "mtime": 1776378327.2576516,
+    "hash": "b7a1de2a68cd883abe16ca804a093e06"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/agents/orchestrator.md": {
+    "mtime": 1776378309.6099794,
+    "hash": "c6afde4f4cf80b1eb6ae8fa623db368f"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/agents/designer.md": {
+    "mtime": 1776378031.6736233,
+    "hash": "f0f7d24f47482935bd1773f3a05ec56a"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/agents/generator.md": {
+    "mtime": 1776378058.6304457,
+    "hash": "163a5dee48503b0a6e06a0525037dc31"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/agents/evaluator.md": {
+    "mtime": 1776378317.89299,
+    "hash": "02bec1a5e6c975a12f9ff116005846dd"
+  }
+}

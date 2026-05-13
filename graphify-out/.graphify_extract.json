@@ -1,0 +1,283 @@
+{
+  "nodes": [
+    {
+      "id": "prd_stoveguard",
+      "label": "StoveGuard.us.com",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "prd_super_admin",
+      "label": "Super Admin",
+      "file_type": "concept",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "prd_editor",
+      "label": "Editor",
+      "file_type": "concept",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "prd_visitor",
+      "label": "Visitor (Contributor)",
+      "file_type": "concept",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "prd_payload_cms",
+      "label": "Payload CMS",
+      "file_type": "code",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "prd_astro",
+      "label": "Astro",
+      "file_type": "code",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "prd_pricing_data",
+      "label": "Pricing Data Collection",
+      "file_type": "concept",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "design_lemkus",
+      "label": "Lemkus Design System",
+      "file_type": "document",
+      "source_file": "DESIGN.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "workflow_harness",
+      "label": "Autonomous Build Harness",
+      "file_type": "document",
+      "source_file": "harness/HARNESS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "harness_orchestrator",
+      "label": "Orchestrator Agent",
+      "file_type": "code",
+      "source_file": "harness/agents/orchestrator.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "harness_designer",
+      "label": "Designer Agent",
+      "file_type": "code",
+      "source_file": "harness/agents/designer.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "harness_generator",
+      "label": "Generator Agent",
+      "file_type": "code",
+      "source_file": "harness/agents/generator.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "harness_evaluator",
+      "label": "Evaluator Agent",
+      "file_type": "code",
+      "source_file": "harness/agents/evaluator.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "blueprint_silo_architecture",
+      "label": "Silo Architecture",
+      "file_type": "concept",
+      "source_file": "stoveguard-us-com-blueprint.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "prd_stoveguard",
+      "target": "prd_payload_cms",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "prd_stoveguard",
+      "target": "prd_astro",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "prd_super_admin",
+      "target": "prd_payload_cms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "prd_editor",
+      "target": "prd_payload_cms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "prd_editor",
+      "target": "prd_pricing_data",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "prd_stoveguard",
+      "target": "design_lemkus",
+      "relation": "semantically_similar_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "DESIGN.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_harness",
+      "target": "harness_orchestrator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "harness/HARNESS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_harness",
+      "target": "harness_designer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "harness/HARNESS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_harness",
+      "target": "harness_generator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "harness/HARNESS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_harness",
+      "target": "harness_evaluator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "harness/HARNESS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "harness_designer",
+      "target": "design_lemkus",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "harness/agents/designer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "prd_stoveguard",
+      "target": "blueprint_silo_architecture",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "stoveguard-us-com-blueprint.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 24919,
+  "output_tokens": 1498
+}

@@ -1,0 +1,49 @@
+{
+  "project": "StoveGuard.us.com",
+  "harness_version": "2.0",
+  "model": "claude-opus-4-6",
+  "current": {
+    "phase": "idle",
+    "active_issue": null,
+    "round": 0,
+    "max_rounds": 3
+  },
+  "grading_thresholds": {
+    "functionality": 8,
+    "design_fidelity": 7,
+    "data_integrity": 9,
+    "code_quality": 7
+  },
+  "issue_queue": {
+    "execution_order": [1, 2, 8, 6, 3, 4, 5, 7, 12, 9, 13, 10, 11, 14, 15, 16, 17, 18, 19],
+    "dependency_graph": {
+      "1":  { "blocked_by": [], "blocks": [2, 6, 8, 12], "has_ui": false },
+      "2":  { "blocked_by": [1], "blocks": [3, 4, 5, 7, 16], "has_ui": false },
+      "3":  { "blocked_by": [2], "blocks": [9, 13], "has_ui": true },
+      "4":  { "blocked_by": [2], "blocks": [9], "has_ui": true },
+      "5":  { "blocked_by": [2], "blocks": [9], "has_ui": true },
+      "6":  { "blocked_by": [1], "blocks": [9], "has_ui": true },
+      "7":  { "blocked_by": [2], "blocks": [9], "has_ui": true },
+      "8":  { "blocked_by": [1], "blocks": [], "has_ui": false },
+      "9":  { "blocked_by": [3, 4, 5, 6, 7], "blocks": [10, 11, 16, 18, 19], "has_ui": true },
+      "10": { "blocked_by": [9], "blocks": [], "has_ui": false },
+      "11": { "blocked_by": [9], "blocks": [], "has_ui": false },
+      "12": { "blocked_by": [1], "blocks": [13], "has_ui": true },
+      "13": { "blocked_by": [12, 3], "blocks": [14, 15], "has_ui": true },
+      "14": { "blocked_by": [13], "blocks": [], "has_ui": true },
+      "15": { "blocked_by": [13], "blocks": [17], "has_ui": false },
+      "16": { "blocked_by": [2, 9], "blocks": [], "has_ui": true },
+      "17": { "blocked_by": [15], "blocks": [], "has_ui": true },
+      "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
+      "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
+    },
+    "completed": [],
+    "failed": []
+  },
+  "history": [],
+  "history_schema": {
+    "fields": ["issue", "event", "round", "timestamp", "duration_seconds", "cost_usd", "tokens_input", "tokens_output", "testing_mode"],
+    "testing_modes": ["playwright", "manual_degraded"],
+    "note": "cost_usd and token counts populated from API response metadata. testing_mode tracks whether evaluator ran in full Playwright mode or degraded manual mode."
+  }
+}

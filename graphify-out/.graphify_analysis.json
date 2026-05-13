@@ -1,0 +1,166 @@
+{
+  "communities": {
+    "0": [
+      "prd_editor",
+      "prd_payload_cms",
+      "prd_pricing_data",
+      "prd_super_admin"
+    ],
+    "1": [
+      "harness_evaluator",
+      "harness_generator",
+      "harness_orchestrator",
+      "workflow_harness"
+    ],
+    "2": [
+      "blueprint_silo_architecture",
+      "prd_astro",
+      "prd_stoveguard"
+    ],
+    "3": [
+      "design_lemkus",
+      "harness_designer"
+    ],
+    "4": [
+      "prd_visitor"
+    ]
+  },
+  "cohesion": {
+    "0": 0.5,
+    "1": 0.5,
+    "2": 0.67,
+    "3": 1.0,
+    "4": 1.0
+  },
+  "gods": [
+    {
+      "id": "prd_stoveguard",
+      "label": "StoveGuard.us.com",
+      "degree": 4
+    },
+    {
+      "id": "workflow_harness",
+      "label": "Autonomous Build Harness",
+      "degree": 4
+    },
+    {
+      "id": "prd_payload_cms",
+      "label": "Payload CMS",
+      "degree": 3
+    },
+    {
+      "id": "prd_editor",
+      "label": "Editor",
+      "degree": 2
+    },
+    {
+      "id": "design_lemkus",
+      "label": "Lemkus Design System",
+      "degree": 2
+    },
+    {
+      "id": "harness_designer",
+      "label": "Designer Agent",
+      "degree": 2
+    },
+    {
+      "id": "prd_super_admin",
+      "label": "Super Admin",
+      "degree": 1
+    },
+    {
+      "id": "prd_astro",
+      "label": "Astro",
+      "degree": 1
+    },
+    {
+      "id": "prd_pricing_data",
+      "label": "Pricing Data Collection",
+      "degree": 1
+    },
+    {
+      "id": "harness_orchestrator",
+      "label": "Orchestrator Agent",
+      "degree": 1
+    }
+  ],
+  "surprises": [
+    {
+      "source": "StoveGuard.us.com",
+      "target": "Lemkus Design System",
+      "source_files": [
+        "PRD.md",
+        "DESIGN.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "semantically_similar_to",
+      "why": "connects across different repos/directories; bridges separate communities; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "StoveGuard.us.com",
+      "target": "Silo Architecture",
+      "source_files": [
+        "PRD.md",
+        "stoveguard-us-com-blueprint.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "StoveGuard.us.com",
+      "target": "Astro",
+      "source_files": [
+        "PRD.md",
+        "CLAUDE.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "implements",
+      "why": "connects across different repos/directories"
+    },
+    {
+      "source": "Designer Agent",
+      "target": "Lemkus Design System",
+      "source_files": [
+        "harness/agents/designer.md",
+        "DESIGN.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories"
+    },
+    {
+      "source": "Autonomous Build Harness",
+      "target": "Designer Agent",
+      "source_files": [
+        "harness/HARNESS.md",
+        "harness/agents/designer.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `StoveGuard.us.com` connect `Community 2` to `Community 0`, `Community 3`?",
+      "why": "High betweenness centrality (0.577) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Lemkus Design System` connect `Community 3` to `Community 2`?",
+      "why": "High betweenness centrality (0.449) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Designer Agent` connect `Community 3` to `Community 1`?",
+      "why": "High betweenness centrality (0.410) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Super Admin`, `Visitor (Contributor)`, `Astro` to the rest of the system?",
+      "why": "8 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}
