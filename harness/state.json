@@ -37,7 +37,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2],
+    "completed": [1, 2, 8],
     "failed": []
   },
   "history": [
@@ -78,6 +78,36 @@
       "round": 1,
       "timestamp": "2026-05-14T11:52:00Z",
       "note": "Issue #2 closed. Unblocks #3, #4, #5, #7, #16. Next in execution_order: #8 (Media Collection)."
+    },
+    {
+      "issue": 8,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T12:05:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-8.md from PRD+plan+blueprint §6.3. Media collection: WebP image sizes, focal point, caption/credit fields."
+    },
+    {
+      "issue": 8,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T12:32:00Z",
+      "note": "Media.ts expanded: 4 WebP imageSizes (thumbnail/card/feature/og), focalPoint, image/* mime restriction, caption+credit fields, staticDir at repo-root media/. Self-test: upload produces 4 WebP sizes all <150KB, URLs resolve, mime+access enforced.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 8,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T12:36:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design 10 (auto/no-UI), Data Integrity 10, Code Quality 9. Report: harness/evaluations/issue-8-round-1.md.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 8,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T12:36:00Z",
+      "note": "Issue #8 closed. No downstream blocks. Next in execution_order: #6 (Educational Guides — has_ui: true, Designer phase required)."
     }
   ],
   "history_schema": {

@@ -33,3 +33,5 @@ postgres-data/
 .claude/
 .stitch/designs/
 graphify-out/wiki/cache/
+graphify-out/cache/
+graphify-out/.rebuild.lock

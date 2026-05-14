@@ -1,4 +1,76 @@
 {
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/next-env.d.ts": {
+    "mtime": 1778689643.7948964,
+    "hash": "d0f8375ae1199dc7acd3977fc33b78b8"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/eslint.config.mjs": {
+    "mtime": 1778679993.0,
+    "hash": "d040c05e27fc83716d396dec64738111"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/next.config.ts": {
+    "mtime": 1778689638.5727184,
+    "hash": "d534b4f819972fbf3ad273160e77a873"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/payload.config.ts": {
+    "mtime": 1778757231.6607614,
+    "hash": "d2e20e727c6d37d1bde31793dc517f8a"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/payload-types.ts": {
+    "mtime": 1778757233.6398118,
+    "hash": "f2269bb49e73ea494aba4ee98acfde1c"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/my-route/route.ts": {
+    "mtime": 1778679993.0,
+    "hash": "00614d716b056c251a58f979ea74dbd2"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(frontend)/layout.tsx": {
+    "mtime": 1778679993.0,
+    "hash": "a9db84cb37c8d60b0ff5beaa46f494cb"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(frontend)/page.tsx": {
+    "mtime": 1778679993.0,
+    "hash": "3bb0b7af5290b3236847415b2c34f804"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/layout.tsx": {
+    "mtime": 1778679993.0,
+    "hash": "aee34dd7bddfa25ec61bed93d2e3de3a"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/admin/importMap.js": {
+    "mtime": 1778757232.158965,
+    "hash": "c206a19b27161e259f6c15fa58894367"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/admin/[[...segments]]/page.tsx": {
+    "mtime": 1778679993.0,
+    "hash": "b19e762fb229abe0f339a95cbd9d8569"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/admin/[[...segments]]/not-found.tsx": {
+    "mtime": 1778679993.0,
+    "hash": "e57e11a3ad298c8db2f875a3ef18bbbd"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/api/graphql-playground/route.ts": {
+    "mtime": 1778679993.0,
+    "hash": "65862beb6110cc10dc01e27e7c69d87f"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/api/[...slug]/route.ts": {
+    "mtime": 1778679993.0,
+    "hash": "292c1e500eea8ad403ac79f028679a97"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/app/(payload)/api/graphql/route.ts": {
+    "mtime": 1778679993.0,
+    "hash": "c1a09545f17238cfb3995486dc257a10"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/collections/Users.ts": {
+    "mtime": 1778679993.0,
+    "hash": "8832755ead6aad7c482e5230da63d05b"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/collections/PricingData.ts": {
+    "mtime": 1778759690.6790326,
+    "hash": "101425faa97738bfe304dfb1bf7c4566"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/cms/src/collections/Media.ts": {
+    "mtime": 1778679993.0,
+    "hash": "da9af1a6c01844d000e47e1be9202a64"
+  },
   "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/PRD.md": {
     "mtime": 1775430257.1920888,
     "hash": "5408ee0f1a277376826d496f88f80baf"
@@ -6,6 +78,10 @@
   "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/workflow.md": {
     "mtime": 1773150291.0,
     "hash": "c134d2bdcf59257bf01733a12ceba09b"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/docker-compose.yml": {
+    "mtime": 1778689206.8238802,
+    "hash": "ea12b4361a652adc5f99afb6df9fa0a9"
   },
   "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/DESIGN.md": {
     "mtime": 1775475864.0575132,
@@ -19,6 +95,10 @@
     "mtime": 1776735467.5350273,
     "hash": "e8548adb56c7b7053301f723a82a7895"
   },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/pnpm-workspace.yaml": {
+    "mtime": 1778689208.3530357,
+    "hash": "b4a2aeca469b3904b0b5f663db6521b6"
+  },
   "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/plans/stoveguard-site.md": {
     "mtime": 1775426868.7393916,
     "hash": "636ca927c0baafb85e24c36da11dd4ed"
@@ -26,6 +106,14 @@
   "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/HARNESS.md": {
     "mtime": 1776378327.2576516,
     "hash": "b7a1de2a68cd883abe16ca804a093e06"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/evaluations/issue-2-round-1.md": {
+    "mtime": 1778759682.7046797,
+    "hash": "55d7da1a6148ff8bb2a71cb5bf08ccb7"
+  },
+  "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/contracts/issue-2.md": {
+    "mtime": 1778694635.3735254,
+    "hash": "26e853468b42b87c6f829e8beb8ffe46"
   },
   "/Users/codefanatics/Documents/claude-code-projects/stove-shield-project/harness/agents/orchestrator.md": {
     "mtime": 1776378309.6099794,
