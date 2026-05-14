@@ -4,7 +4,7 @@
   "model": "claude-opus-4-7",
   "current": {
     "phase": "build",
-    "active_issue": 15,
+    "active_issue": 17,
     "round": 1,
     "max_rounds": 3
   },
@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12, 13, 14],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12, 13, 14, 15],
     "failed": [],
     "scope_changes": {
       "12": "OAuth (Google/Facebook) dropped per project-owner direction 2026-05-14 — email-only signup/login + verification. Removed the external-credential blocker; #12 fully delivered."
@@ -488,6 +488,13 @@
       "round": 1,
       "timestamp": "2026-05-14T19:45:00Z",
       "note": "Profile Page. /profile.astro client-rendered shell + profile.ts: auth-gated (logged-out shows login prompt, no flash), shows displayName/email + submission history with pending/approved/rejected status badges + rejection reasons. Playwright-verified all 3 statuses render. Round 1 PASS 10/9/9/9. Report: harness/evaluations/issue-14-round-1.md. Visitor account loop (#12->#13->#14) complete."
+    },
+    {
+      "issue": 15,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T20:00:00Z",
+      "note": "Email Notifications. cms/src/lib/notify.ts (sendReviewApprovedEmail/sendReviewRejectedEmail, fire-and-forget, never throw, author email resolved server-side). Wired into VisitorReviews afterChange on status transitions. Verified via console transport: signup-verify + approval + rejection emails all attempt-send correctly, no crash without RESEND_API_KEY. Round 1 PASS 10/10/9/9. Report: harness/evaluations/issue-15-round-1.md. Real delivery activates by setting RESEND_API_KEY. Unblocks #17."
     }
   ],
   "history_schema": {

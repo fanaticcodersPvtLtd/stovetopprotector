@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { triggerDeploy } from '../lib/triggerDeploy'
 import { isCmsAdmin } from '../lib/access'
+import { sendReviewApprovedEmail, sendReviewRejectedEmail } from '../lib/notify'
 
 const REVIEW_TARGETS = [
   'comparison-articles',
@@ -61,11 +62,16 @@ export const VisitorReviews: CollectionConfig = {
     ],
     afterChange: [
       ({ doc, previousDoc, req }) => {
-        // When a review is approved, rebuild so it appears on the page.
-        if (doc?.status === 'approved' && previousDoc?.status !== 'approved') {
+        const statusChanged = doc?.status !== previousDoc?.status
+        if (!statusChanged) return doc
+
+        if (doc?.status === 'approved') {
+          // Rebuild so the approved review appears on the page, and notify the author.
           triggerDeploy(req.payload, `visitor-reviews/${doc.id}`)
-          // TODO(issue-15): send the "your review was approved" email to doc.author
-          //   via the Resend adapter once #15 wires notification emails.
+          // Fire-and-forget — never block the CMS write on email.
+          void sendReviewApprovedEmail(req.payload, doc)
+        } else if (doc?.status === 'rejected') {
+          void sendReviewRejectedEmail(req.payload, doc)
         }
         return doc
       },
