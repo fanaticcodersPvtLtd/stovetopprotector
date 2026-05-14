@@ -10,7 +10,7 @@ Stitch project `6849064886324327137` has the full site visually designed (~30 sc
 | `/` | Homepage | #9 | homepage (2 variants) | no |
 | `/guides/[slug]` | Educational guide | #6 | educational-guide ✅ downloaded | in progress |
 | `/best/[slug]` | Buyer guide | #5 | buyer-guide | no |
-| `/reviews/[slug]` | Review article | #4 | review-article | no |
+| `/reviews/[slug]` | Review article | #4 | review-article ✅ downloaded | in progress |
 | `/brands/[slug]` | Appliance brand page | #7 | brand-page-ge (3 variants) | no |
 | `/brands` | Brand hub | #9 | brand-hub | no |
 | `/compare` | Comparison index | #9 | comparisons-index | no |

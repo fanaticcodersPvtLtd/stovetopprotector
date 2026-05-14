@@ -72,6 +72,29 @@ export type EducationalGuide = {
   sources?: Source[]
 }
 
+export type ProsCon = { point: string }
+
+export type ReviewArticle = {
+  id: number
+  title: string
+  slug: string
+  status: 'draft' | 'published'
+  publishedAt?: string
+  readTimeMinutes?: number
+  ratingOutOf5: number
+  brand: string
+  metaDescription: string
+  verdict: string
+  body: LexicalRichText
+  pros?: ProsCon[]
+  cons?: ProsCon[]
+  // `depth=2` resolves these from numeric IDs to full docs.
+  productLineup?: PricingData[]
+  faqs?: Faq[]
+  relatedReviews?: ReviewArticle[]
+  sources?: Source[]
+}
+
 type PaginatedResponse<T> = {
   docs: T[]
   totalDocs: number
@@ -136,6 +159,32 @@ export async function getEducationalGuideBySlug(
     '&depth=1' +
     '&limit=1'
   const data = await fetchJson<PaginatedResponse<EducationalGuide>>(query)
+  return data.docs[0] ?? null
+}
+
+/** All published review articles, with product-lineup relationships resolved. */
+export async function getPublishedReviewArticles(): Promise<ReviewArticle[]> {
+  const query =
+    '/review-articles' +
+    '?where[status][equals]=published' +
+    '&depth=2' +
+    '&limit=200' +
+    '&sort=-publishedAt'
+  const data = await fetchJson<PaginatedResponse<ReviewArticle>>(query)
+  return data.docs
+}
+
+/** A single published review article by slug, or null if not found. */
+export async function getReviewArticleBySlug(
+  slug: string,
+): Promise<ReviewArticle | null> {
+  const query =
+    '/review-articles' +
+    `?where[slug][equals]=${encodeURIComponent(slug)}` +
+    '&where[status][equals]=published' +
+    '&depth=2' +
+    '&limit=1'
+  const data = await fetchJson<PaginatedResponse<ReviewArticle>>(query)
   return data.docs[0] ?? null
 }
 

@@ -31,6 +31,18 @@
       "dimensions": { "width": 2560, "height": 9032 },
       "downloadedAt": "2026-05-14T14:05:00Z",
       "variantNote": "Chosen 'Standard Layout' of 3. Most complete: hero, sectioned body, heat-resistance table, FAQ accordion, dark CTA, TOC sidebar. Alternates: e932402... ('Data Heavy' — has the orange Key Takeaway callout box, borrowed for the keyTakeaway field styling), 83387bc... ('Visual Focus')."
+    },
+    "review-article": {
+      "screenId": "0a0e364a1b204b8d9e47857f5a56a764",
+      "title": "StoveGuard Review: Real User Verdict",
+      "issue": 4,
+      "files": {
+        "html": ".stitch/designs/review-article.html",
+        "png": ".stitch/designs/review-article.png"
+      },
+      "dimensions": { "width": 2560, "height": 8692 },
+      "downloadedAt": "2026-05-14T15:05:00Z",
+      "variantNote": "Single screen for review-articles. Quick-verdict box with rating, product-overview lineup table, 'What users love' (pros) + 'Common complaints' (cons) callouts, Trustpilot/BBB/Reddit body sections, FAQ, 'Our take', TOC + Quick Facts sidebar. Matches blueprint §5.1."
     }
   },
   "availableScreensNotDownloaded": {

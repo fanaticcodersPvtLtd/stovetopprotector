@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { PricingData } from './collections/PricingData'
 import { ComparisonArticles } from './collections/ComparisonArticles'
 import { EducationalGuides } from './collections/EducationalGuides'
+import { ReviewArticles } from './collections/ReviewArticles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PricingData, ComparisonArticles, EducationalGuides],
+  collections: [Users, Media, PricingData, ComparisonArticles, EducationalGuides, ReviewArticles],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

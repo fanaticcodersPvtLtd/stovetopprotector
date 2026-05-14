@@ -1,0 +1,420 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import {
+  getPublishedReviewArticles,
+  getReviewArticleBySlug,
+  formatUsd,
+} from '../../lib/payload'
+import { lexicalToHtml } from '../../lib/lexical'
+
+export async function getStaticPaths() {
+  const reviews = await getPublishedReviewArticles()
+  return reviews.map((review) => ({ params: { slug: review.slug } }))
+}
+
+const { slug } = Astro.params
+const review = await getReviewArticleBySlug(slug!)
+
+// getStaticPaths only emits published slugs — safety net, not an expected branch.
+if (!review) {
+  return Astro.redirect('/404')
+}
+
+const bodyHtml = lexicalToHtml(review.body)
+const publishedDate = review.publishedAt
+  ? new Date(review.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : null
+
+const lineup = review.productLineup ?? []
+// Round to nearest half for star display.
+const fullStars = Math.floor(review.ratingOutOf5)
+const hasHalf = review.ratingOutOf5 - fullStars >= 0.5
+---
+
+<BaseLayout title={review.title} description={review.metaDescription} activeNav="reviews">
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <!-- Breadcrumbs -->
+    <nav
+      class="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted"
+    >
+      <a href="/" class="hover:text-ink">Home</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/reviews" class="hover:text-ink">Reviews</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-primary-bright">{review.brand}</span>
+    </nav>
+
+    <div
+      class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
+    >
+      <span class="material-symbols-outlined text-sm">rate_review</span>
+      Brand Review
+    </div>
+
+    <h1
+      class="mb-8 max-w-4xl font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl lg:text-6xl"
+    >
+      {review.title}
+    </h1>
+
+    <div
+      class="mb-10 flex flex-wrap items-center gap-6 border-b border-border-faint pb-8 text-[13px] font-medium text-muted"
+    >
+      {
+        publishedDate && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">schedule</span>
+            Updated {publishedDate}
+          </div>
+        )
+      }
+      {
+        review.readTimeMinutes && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">menu_book</span>
+            {review.readTimeMinutes} min read
+          </div>
+        )
+      }
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg text-primary-bright">verified_user</span>
+        Independently Reviewed
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <!-- Main content -->
+      <article class="article-body max-w-[760px] flex-1">
+        <!-- Verdict box with rating -->
+        <h2 id="verdict">Quick Verdict</h2>
+        <div
+          class="mb-10 flex flex-col gap-4 rounded-r-lg border-l-4 border-primary bg-surface-warm p-6 sm:flex-row sm:items-center"
+        >
+          <div class="flex flex-shrink-0 flex-col items-center sm:w-28">
+            <span class="font-headline text-4xl font-bold text-primary">
+              {review.ratingOutOf5.toFixed(1)}
+            </span>
+            <span class="flex text-primary" aria-label={`${review.ratingOutOf5} out of 5`}>
+              {
+                Array.from({ length: 5 }).map((_, i) => (
+                  <span
+                    class="material-symbols-outlined text-base"
+                    style={
+                      i < fullStars
+                        ? "font-variation-settings: 'FILL' 1;"
+                        : i === fullStars && hasHalf
+                          ? "font-variation-settings: 'FILL' 1;"
+                          : ''
+                    }
+                  >
+                    {i === fullStars && hasHalf ? 'star_half' : 'star'}
+                  </span>
+                ))
+              }
+            </span>
+            <span class="mt-1 text-[10px] uppercase tracking-widest text-muted-soft">
+              out of 5
+            </span>
+          </div>
+          <p class="m-0 font-headline text-lg italic text-ink">{review.verdict}</p>
+        </div>
+
+        <!-- Review body (rich text) -->
+        <div set:html={bodyHtml} />
+
+        <!-- Product lineup — live from pricing-data -->
+        {
+          lineup.length > 0 && (
+            <>
+              <h2 id="lineup">Product Lineup</h2>
+              <div class="mb-10 overflow-x-auto rounded-lg border border-border-subtle">
+                <table class="w-full bg-white text-left text-sm">
+                  <thead class="bg-surface-container">
+                    <tr>
+                      <th class="border-b border-border-subtle p-4 font-bold">Product</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Line</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Price</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Status</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Official Site</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-border-faint">
+                    {lineup.map((product) => (
+                      <tr>
+                        <td class="p-4 font-bold">{product.productName}</td>
+                        <td class="p-4 capitalize text-muted">
+                          {product.productLine ?? '—'}
+                        </td>
+                        <td class="p-4 font-bold">{formatUsd(product.priceUsd)}</td>
+                        <td class="p-4 text-muted">
+                          {product.inStock ? 'In Stock' : 'Out of Stock'}
+                        </td>
+                        <td class="p-4">
+                          <a
+                            href={product.productUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-semibold text-primary hover:underline"
+                          >
+                            Visit site
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )
+        }
+
+        <!-- Pros / Cons -->
+        {
+          ((review.pros && review.pros.length > 0) ||
+            (review.cons && review.cons.length > 0)) && (
+            <>
+              <h2 id="pros-cons">Pros &amp; Cons</h2>
+              <div class="mb-10 grid gap-6 md:grid-cols-2">
+                {review.pros && review.pros.length > 0 && (
+                  <div class="rounded-lg border border-border-subtle bg-white p-6">
+                    <h4 class="mb-4 flex items-center gap-2 font-bold text-green-700">
+                      <span class="material-symbols-outlined">check_circle</span>
+                      What Users Love
+                    </h4>
+                    <ul class="space-y-3 text-sm text-ink-soft">
+                      {review.pros.map((pro) => (
+                        <li class="flex gap-2">
+                          <span class="material-symbols-outlined text-base text-green-600">
+                            add
+                          </span>
+                          {pro.point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {review.cons && review.cons.length > 0 && (
+                  <div class="rounded-lg border border-border-subtle bg-white p-6">
+                    <h4 class="mb-4 flex items-center gap-2 font-bold text-muted">
+                      <span class="material-symbols-outlined">report_problem</span>
+                      Common Complaints
+                    </h4>
+                    <ul class="space-y-3 text-sm text-ink-soft">
+                      {review.cons.map((con) => (
+                        <li class="flex gap-2">
+                          <span class="material-symbols-outlined text-base text-muted-soft">
+                            remove
+                          </span>
+                          {con.point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </>
+          )
+        }
+
+        <!-- FAQ -->
+        {
+          review.faqs && review.faqs.length > 0 && (
+            <>
+              <h2 id="faq">Frequently Asked Questions</h2>
+              <div class="mb-12 space-y-4">
+                {review.faqs.map((faq) => (
+                  <details class="group rounded-lg border border-border-subtle bg-white">
+                    <summary
+                      class="flex cursor-pointer list-none items-center justify-between p-5 font-bold"
+                    >
+                      {faq.question}
+                      <span
+                        class="material-symbols-outlined transition-transform group-open:rotate-180"
+                      >
+                        expand_more
+                      </span>
+                    </summary>
+                    <div class="p-5 pt-0 font-headline text-base text-ink-soft">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </>
+          )
+        }
+
+        <!-- CTA -->
+        <div class="mb-10 rounded-xl bg-ink-dark p-10 text-center">
+          <h2 class="mb-4 mt-0 font-headline text-3xl text-white">
+            See how {review.brand} compares
+          </h2>
+          <p class="mb-8 font-body text-base text-stone-400">
+            A single review only tells half the story. See {review.brand} head-to-head
+            against other brands.
+          </p>
+          <a
+            href="/compare"
+            class="group inline-flex items-center gap-2 rounded-lg bg-primary-bright px-8 py-4 font-bold text-white transition-all hover:bg-primary-hover"
+          >
+            See all comparisons
+            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">
+              arrow_forward
+            </span>
+          </a>
+        </div>
+
+        <!-- Disclosure -->
+        <div
+          class="mb-10 rounded-lg border border-border-subtle bg-surface-container p-5 text-[13px] italic text-muted"
+        >
+          Disclosure: stoveguard.us.com is not affiliated with {review.brand} or any
+          brand mentioned. We have no affiliate links and earn no commissions — this
+          site is supported by display advertising. Products are evaluated
+          independently.
+        </div>
+
+        <!-- Sources -->
+        {
+          review.sources && review.sources.length > 0 && (
+            <div id="sources" class="mb-10 border-t border-border-faint pt-8">
+              <h5 class="mb-6 text-xs font-bold uppercase tracking-widest text-muted">
+                Article Sources &amp; Research
+              </h5>
+              <ol class="space-y-3 text-[13px] text-muted">
+                {review.sources.map((source, i) => (
+                  <li>
+                    <span class="mr-2 font-bold text-primary">{i + 1}.</span>
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="italic hover:text-primary"
+                      >
+                        {source.label}
+                      </a>
+                    ) : (
+                      <i>{source.label}</i>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="w-full space-y-8 lg:w-[280px]">
+        <!-- TOC -->
+        <div class="sticky top-24 rounded-lg border border-border-subtle bg-white p-6">
+          <h5
+            class="mb-4 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-muted-soft"
+          >
+            <span class="material-symbols-outlined text-sm">toc</span> On This Page
+          </h5>
+          <nav class="flex flex-col gap-1 text-[13px] font-medium text-muted">
+            <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#verdict">Quick Verdict</a>
+            {
+              lineup.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#lineup">
+                  Product Lineup
+                </a>
+              )
+            }
+            {
+              ((review.pros && review.pros.length > 0) ||
+                (review.cons && review.cons.length > 0)) && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#pros-cons">
+                  Pros &amp; Cons
+                </a>
+              )
+            }
+            {
+              review.faqs && review.faqs.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#faq">
+                  FAQ
+                </a>
+              )
+            }
+            {
+              review.sources && review.sources.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#sources">
+                  Sources
+                </a>
+              )
+            }
+          </nav>
+        </div>
+
+        <!-- Quick facts -->
+        <div class="rounded-lg border border-border-subtle bg-surface-container p-6">
+          <h5 class="mb-5 text-[11px] font-extrabold uppercase tracking-widest text-ink">
+            Quick Facts
+          </h5>
+          <div class="space-y-4">
+            <div>
+              <span class="mb-1 block text-[10px] font-bold uppercase text-muted-soft">
+                Brand
+              </span>
+              <span class="text-sm font-bold text-ink">{review.brand}</span>
+            </div>
+            <div>
+              <span class="mb-1 block text-[10px] font-bold uppercase text-muted-soft">
+                Our Rating
+              </span>
+              <span class="text-sm font-bold text-ink">
+                {review.ratingOutOf5.toFixed(1)} / 5.0
+              </span>
+            </div>
+            {
+              lineup.length > 0 && (
+                <div>
+                  <span class="mb-1 block text-[10px] font-bold uppercase text-muted-soft">
+                    Price Range
+                  </span>
+                  <span class="text-sm font-bold text-ink">
+                    {formatUsd(Math.min(...lineup.map((p) => p.priceUsd)))} —{' '}
+                    {formatUsd(Math.max(...lineup.map((p) => p.priceUsd)))}
+                  </span>
+                </div>
+              )
+            }
+          </div>
+        </div>
+
+        <!-- Related reviews -->
+        {
+          review.relatedReviews && review.relatedReviews.length > 0 && (
+            <div class="rounded-lg border border-border-subtle bg-white p-6">
+              <h5 class="mb-4 text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                Related Reviews
+              </h5>
+              <div class="flex flex-col gap-4">
+                {review.relatedReviews.map((related) => (
+                  <a href={`/reviews/${related.slug}`} class="group">
+                    <h6
+                      class="text-[14px] font-bold leading-snug transition-colors group-hover:text-primary"
+                    >
+                      {related.title}
+                    </h6>
+                    {related.readTimeMinutes && (
+                      <span class="text-[11px] text-muted-soft">
+                        {related.readTimeMinutes} min read
+                      </span>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </main>
+</BaseLayout>

@@ -72,6 +72,7 @@ export interface Config {
     'pricing-data': PricingDatum;
     'comparison-articles': ComparisonArticle;
     'educational-guides': EducationalGuide;
+    'review-articles': ReviewArticle;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     'pricing-data': PricingDataSelect<false> | PricingDataSelect<true>;
     'comparison-articles': ComparisonArticlesSelect<false> | ComparisonArticlesSelect<true>;
     'educational-guides': EducationalGuidesSelect<false> | EducationalGuidesSelect<true>;
+    'review-articles': ReviewArticlesSelect<false> | ReviewArticlesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -439,6 +441,105 @@ export interface EducationalGuide {
   createdAt: string;
 }
 /**
+ * Single-brand deep-dive reviews. The product-lineup table pulls live prices from linked pricing-data entries.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "review-articles".
+ */
+export interface ReviewArticle {
+  id: number;
+  /**
+   * e.g. "StoveGuard Review 2026: Honest Independent Breakdown".
+   */
+  title: string;
+  /**
+   * URL path segment. Auto-derived from brand if left empty.
+   */
+  slug: string;
+  status: 'draft' | 'published';
+  /**
+   * Set automatically when status flips to Published.
+   */
+  publishedAt?: string | null;
+  readTimeMinutes?: number | null;
+  /**
+   * Overall review score, 0–5.
+   */
+  ratingOutOf5: number;
+  /**
+   * The single brand under review.
+   */
+  brand: string;
+  /**
+   * SEO meta description — keep under ~160 characters.
+   */
+  metaDescription: string;
+  /**
+   * TL;DR verdict box copy — conclusion first (this is what AI Overviews pull).
+   */
+  verdict: string;
+  /**
+   * Main review body — company background, material breakdown, customer sentiment, first-hand review.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Honest positives — "What users love".
+   */
+  pros?:
+    | {
+        point: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Honest negatives — "Common complaints".
+   */
+  cons?:
+    | {
+        point: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The brand's product tiers shown in the lineup table. Prices pulled live from pricing-data on next build.
+   */
+  productLineup?: (number | PricingDatum)[] | null;
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other brand reviews to link at the bottom and in the sidebar.
+   */
+  relatedReviews?: (number | ReviewArticle)[] | null;
+  sources?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -481,6 +582,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'educational-guides';
         value: number | EducationalGuide;
+      } | null)
+    | ({
+        relationTo: 'review-articles';
+        value: number | ReviewArticle;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -701,6 +806,52 @@ export interface EducationalGuidesSelect<T extends boolean = true> {
         id?: T;
       };
   relatedGuides?: T;
+  sources?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "review-articles_select".
+ */
+export interface ReviewArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  readTimeMinutes?: T;
+  ratingOutOf5?: T;
+  brand?: T;
+  metaDescription?: T;
+  verdict?: T;
+  body?: T;
+  pros?:
+    | T
+    | {
+        point?: T;
+        id?: T;
+      };
+  cons?:
+    | T
+    | {
+        point?: T;
+        id?: T;
+      };
+  productLineup?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  relatedReviews?: T;
   sources?:
     | T
     | {

@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6],
+    "completed": [1, 2, 8, 3, 6, 4],
     "failed": []
   },
   "history": [
@@ -191,6 +191,44 @@
       "round": 1,
       "timestamp": "2026-05-14T14:24:00Z",
       "note": "Issue #6 closed. Next in execution_order: #4 (Review Articles)."
+    },
+    {
+      "issue": 4,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T15:00:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-4.md. review-articles collection (single-brand deep-dive, productLineup -> pricing-data, pros/cons, rating) + /reviews/[slug] template. Phase: design."
+    },
+    {
+      "issue": 4,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T15:06:00Z",
+      "designs": ["review-article.html", "review-article.png"],
+      "note": "Downloaded 'StoveGuard Review: Real User Verdict' screen (0a0e364a...) from existing Stitch project. Cost $0. Has quick-verdict+rating box, product-overview lineup table, What-users-love/Common-complaints callouts (pros/cons), FAQ, TOC sidebar."
+    },
+    {
+      "issue": 4,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T15:25:00Z",
+      "note": "review-articles collection (16 fields, 3 hooks, productLineup -> pricing-data) + /reviews/[slug] + /reviews index templates. payload.ts extended with ReviewArticle + ProsCon types + 2 fetch fns. Self-test: build clean, lineup pricing propagates from pricing-data, rating stars render.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 4,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T15:30:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 10, Code Quality 9. Playwright-verified: review renders with verdict+rating box, product-lineup table ($42.50/$44.95 from pricing-data refs), pros/cons, FAQ, disclosure, sidebar; nav active state; zero console errors. Report: harness/evaluations/issue-4-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 4,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T15:30:00Z",
+      "note": "Issue #4 closed. Next in execution_order: #5 (Buyer Guides)."
     }
   ],
   "history_schema": {
