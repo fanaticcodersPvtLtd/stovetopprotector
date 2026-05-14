@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Crawl-trap guards — filter/query permutations add no unique content
+Disallow: /*?
+
+Sitemap: https://stoveguard.us.com/sitemap.xml

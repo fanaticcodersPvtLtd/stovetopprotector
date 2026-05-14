@@ -6,6 +6,7 @@ import {
   formatUsd,
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
+import { buyerGuideLd } from '../../lib/seo'
 
 export async function getStaticPaths() {
   const guides = await getPublishedBuyerGuides()
@@ -40,9 +41,17 @@ const BADGE_LABELS: Record<string, string> = {
   'best-budget': 'Best Budget',
   'best-for-rv': 'Best for RV',
 }
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
+const jsonLd = buyerGuideLd(guide, pageUrl)
 ---
 
-<BaseLayout title={guide.title} description={guide.metaDescription} activeNav="best">
+<BaseLayout
+  title={guide.title}
+  description={guide.metaDescription}
+  activeNav="best"
+  jsonLd={jsonLd}
+>
   <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
     <!-- Breadcrumbs -->
     <nav

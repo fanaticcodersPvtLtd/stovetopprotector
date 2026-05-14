@@ -6,6 +6,7 @@ import {
   formatUsd,
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
+import { reviewArticleLd } from '../../lib/seo'
 
 export async function getStaticPaths() {
   const reviews = await getPublishedReviewArticles()
@@ -35,9 +36,17 @@ const lineup = review.productLineup ?? []
 const roundedRating = Math.round(review.ratingOutOf5 * 2) / 2
 const fullStars = Math.floor(roundedRating)
 const hasHalf = roundedRating - fullStars >= 0.5
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
+const jsonLd = reviewArticleLd(review, pageUrl)
 ---
 
-<BaseLayout title={review.title} description={review.metaDescription} activeNav="reviews">
+<BaseLayout
+  title={review.title}
+  description={review.metaDescription}
+  activeNav="reviews"
+  jsonLd={jsonLd}
+>
   <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
     <!-- Breadcrumbs -->
     <nav

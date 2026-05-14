@@ -6,6 +6,7 @@ import {
   formatUsd,
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
+import { brandPageLd } from '../../lib/seo'
 
 export async function getStaticPaths() {
   const pages = await getPublishedBrandPages()
@@ -39,9 +40,17 @@ const STOVE_TYPE_LABELS: Record<string, string> = {
   induction: 'Induction',
   'glass-top': 'Glass-Top',
 }
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
+const jsonLd = brandPageLd(brand, pageUrl)
 ---
 
-<BaseLayout title={brand.metaDescription ? `Best Stove Protectors for ${brand.brandName} Stoves` : brand.brandName} description={brand.metaDescription} activeNav="brands">
+<BaseLayout
+  title={`Best Stove Top Protectors for ${brand.brandName} Stoves`}
+  description={brand.metaDescription}
+  activeNav="brands"
+  jsonLd={jsonLd}
+>
   <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
     <!-- Breadcrumbs -->
     <nav

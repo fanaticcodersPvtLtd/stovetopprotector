@@ -6,6 +6,7 @@ import {
   formatUsd,
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
+import { comparisonArticleLd } from '../../lib/seo'
 
 export async function getStaticPaths() {
   const articles = await getPublishedComparisonArticles()
@@ -35,9 +36,17 @@ const publishedDate = article.publishedAt
 
 const products = article.pricedProducts ?? []
 const recommendedProductId = products[0]?.id
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
+const jsonLd = comparisonArticleLd(article, pageUrl)
 ---
 
-<BaseLayout title={article.title} description={article.metaDescription} activeNav="comparisons">
+<BaseLayout
+  title={article.title}
+  description={article.metaDescription}
+  activeNav="comparisons"
+  jsonLd={jsonLd}
+>
   <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
     <!-- Breadcrumbs -->
     <nav

@@ -3,9 +3,9 @@
   "harness_version": "2.0",
   "model": "claude-opus-4-7",
   "current": {
-    "phase": "idle",
-    "active_issue": null,
-    "round": 0,
+    "phase": "build",
+    "active_issue": 11,
+    "round": 1,
     "max_rounds": 3
   },
   "grading_thresholds": {
@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10],
     "failed": [],
     "blocked_on_external_credentials": {
       "12": "Google + Facebook OAuth app credentials",
@@ -372,6 +372,36 @@
       "round": 1,
       "timestamp": "2026-05-14T17:08:00Z",
       "note": "Issue #9 closed. Unblocks #10, #11, #16. Next buildable: #10 (SEO Foundation) — #13/#14 blocked behind #12, #15/#17/#18/#19 blocked on external credentials."
+    },
+    {
+      "issue": 10,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T17:10:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-10.md. SEO Foundation — JSON-LD, canonical/OG, sitemap, robots. has_ui:false — no Designer phase."
+    },
+    {
+      "issue": 10,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T17:30:00Z",
+      "note": "web/src/lib/seo.ts (JSON-LD builders w/ XSS-safe serialization), BaseLayout canonical+OG+jsonLd, sitemap.xml.ts endpoint, robots.txt, jsonLd wired into all 5 content templates. Self-test: build clean, JSON-LD valid per page type, sitemap 11 URLs.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 10,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T17:33:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design 10 (auto/no-UI), Data Integrity 10, Code Quality 9. Verified: Article/Review/ItemList + FAQPage JSON-LD per page type, escaping safe, canonical 1/page, OG tags, sitemap.xml 11 URLs, robots.txt. Report: harness/evaluations/issue-10-round-1.md.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 10,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T17:33:00Z",
+      "note": "Issue #10 closed. Next buildable: #11 (GA4 Tracking)."
     }
   ],
   "history_schema": {

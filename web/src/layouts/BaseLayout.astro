@@ -1,14 +1,20 @@
 ---
 import '../styles/global.css'
+import { serializeJsonLd } from '../lib/seo'
 
 interface Props {
   title: string
   description?: string
   activeNav?: 'home' | 'comparisons' | 'reviews' | 'best' | 'guides' | 'brands'
   noindex?: boolean
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
-const { title, description, activeNav, noindex } = Astro.props
+const { title, description, activeNav, noindex, jsonLd } = Astro.props
+
+// Absolute canonical URL. Astro.site comes from astro.config.mjs `site`.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
+const ogDescription = description ?? 'Independent stove top protector reviews and comparisons.'
 
 const navLinks = [
   { key: 'home', label: 'Home', href: '/' },
@@ -29,6 +35,28 @@ const navLinks = [
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="StoveGuard Reviews" />
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={ogDescription} />
+
+    {
+      jsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={serializeJsonLd(jsonLd)}
+        />
+      )
+    }
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

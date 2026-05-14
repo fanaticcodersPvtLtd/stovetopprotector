@@ -5,6 +5,7 @@ import {
   getEducationalGuideBySlug,
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
+import { educationalGuideLd } from '../../lib/seo'
 
 export async function getStaticPaths() {
   const guides = await getPublishedEducationalGuides()
@@ -28,9 +29,17 @@ const publishedDate = guide.publishedAt
       day: 'numeric',
     })
   : null
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
+const jsonLd = educationalGuideLd(guide, pageUrl)
 ---
 
-<BaseLayout title={guide.title} description={guide.metaDescription} activeNav="guides">
+<BaseLayout
+  title={guide.title}
+  description={guide.metaDescription}
+  activeNav="guides"
+  jsonLd={jsonLd}
+>
   <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
     <!-- Breadcrumbs -->
     <nav
