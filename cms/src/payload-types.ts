@@ -73,6 +73,7 @@ export interface Config {
     'comparison-articles': ComparisonArticle;
     'educational-guides': EducationalGuide;
     'review-articles': ReviewArticle;
+    'buyer-guides': BuyerGuide;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     'comparison-articles': ComparisonArticlesSelect<false> | ComparisonArticlesSelect<true>;
     'educational-guides': EducationalGuidesSelect<false> | EducationalGuidesSelect<true>;
     'review-articles': ReviewArticlesSelect<false> | ReviewArticlesSelect<true>;
+    'buyer-guides': BuyerGuidesSelect<false> | BuyerGuidesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -540,6 +542,104 @@ export interface ReviewArticle {
   createdAt: string;
 }
 /**
+ * Ranked product-list guides (e.g. "Best Stove Top Protectors of 2026"). Ranked entries pull live prices from pricing-data.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "buyer-guides".
+ */
+export interface BuyerGuide {
+  id: number;
+  /**
+   * e.g. "Best Stove Top Protectors of 2026: Independently Tested".
+   */
+  title: string;
+  /**
+   * URL path segment. Auto-derived from title if left empty.
+   */
+  slug: string;
+  status: 'draft' | 'published';
+  /**
+   * Set automatically when status flips to Published.
+   */
+  publishedAt?: string | null;
+  readTimeMinutes?: number | null;
+  /**
+   * SEO meta description — keep under ~160 characters.
+   */
+  metaDescription: string;
+  /**
+   * The methodology box: "We tested X products over Y weeks on Z stoves. Here's how we ranked them."
+   */
+  methodology: string;
+  /**
+   * The numbered ranking. Each entry links a pricing-data product.
+   */
+  rankedProducts?:
+    | {
+        /**
+         * 1-based rank position.
+         */
+        rank: number;
+        /**
+         * The ranked product — price pulled live on next build.
+         */
+        product: number | PricingDatum;
+        /**
+         * Our score for this product, 0–5.
+         */
+        ourScore: number;
+        badge?: ('best-overall' | 'best-for-gas' | 'best-for-glass' | 'best-budget' | 'best-for-rv' | 'none') | null;
+        /**
+         * One paragraph — what this product does well.
+         */
+        positives: string;
+        /**
+         * One paragraph — drawbacks.
+         */
+        drawbacks: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Main guide content — "what to look for", "common mistakes buyers make".
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other buyer guides to link at the bottom and in the sidebar.
+   */
+  relatedGuides?: (number | BuyerGuide)[] | null;
+  sources?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -586,6 +686,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'review-articles';
         value: number | ReviewArticle;
+      } | null)
+    | ({
+        relationTo: 'buyer-guides';
+        value: number | BuyerGuide;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -852,6 +956,48 @@ export interface ReviewArticlesSelect<T extends boolean = true> {
         id?: T;
       };
   relatedReviews?: T;
+  sources?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "buyer-guides_select".
+ */
+export interface BuyerGuidesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  readTimeMinutes?: T;
+  metaDescription?: T;
+  methodology?: T;
+  rankedProducts?:
+    | T
+    | {
+        rank?: T;
+        product?: T;
+        ourScore?: T;
+        badge?: T;
+        positives?: T;
+        drawbacks?: T;
+        id?: T;
+      };
+  body?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  relatedGuides?: T;
   sources?:
     | T
     | {

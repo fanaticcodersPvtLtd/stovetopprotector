@@ -18,9 +18,10 @@ const { slug } = Astro.params
 const article = await getComparisonArticleBySlug(slug!)
 
 // getStaticPaths only emits published slugs, so this is a safety net, not an
-// expected branch — Astro would 404 on unknown routes in a static build anyway.
+// expected branch. rewrite (not redirect) so the 404 renders correctly even
+// in a static build.
 if (!article) {
-  return Astro.redirect('/404')
+  return Astro.rewrite('/404')
 }
 
 const bodyHtml = lexicalToHtml(article.body)

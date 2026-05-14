@@ -5,9 +5,10 @@ interface Props {
   title: string
   description?: string
   activeNav?: 'home' | 'comparisons' | 'reviews' | 'best' | 'guides' | 'brands'
+  noindex?: boolean
 }
 
-const { title, description, activeNav } = Astro.props
+const { title, description, activeNav, noindex } = Astro.props
 
 const navLinks = [
   { key: 'home', label: 'Home', href: '/' },
@@ -27,6 +28,7 @@ const navLinks = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

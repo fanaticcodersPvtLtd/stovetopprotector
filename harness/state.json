@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4],
+    "completed": [1, 2, 8, 3, 6, 4, 5],
     "failed": []
   },
   "history": [
@@ -229,6 +229,56 @@
       "round": 1,
       "timestamp": "2026-05-14T15:30:00Z",
       "note": "Issue #4 closed. Next in execution_order: #5 (Buyer Guides)."
+    },
+    {
+      "issue": null,
+      "event": "github_issues_filed",
+      "timestamp": "2026-05-14T15:40:00Z",
+      "note": "All 19 GitHub issues filed in fanaticcodersPvtLtd/stovetopprotector (were missing — harness had been running from local contracts). Issue numbers map 1:1 to execution_order numbers. Independent Code Reviewer agent ('codex review' layer) launched on the 6 completed issues."
+    },
+    {
+      "issue": 5,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T15:42:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-5.md. buyer-guides collection (ranked product lists, rankedProducts array w/ nested pricing-data relationship + scoring) + /best/[slug] template. Phase: design."
+    },
+    {
+      "issue": null,
+      "event": "code_review_remediation",
+      "timestamp": "2026-05-14T16:10:00Z",
+      "note": "Independent Code Reviewer agent audited issues #1-#4,#6,#8. Found 2 BLOCKERS + 1 critical (all XSS class: user URLs reaching href without scheme validation). Fixed: lexical.ts escapeHtml now escapes quotes + safeHref scheme allow-list; new cms/src/lib/validateUrl.ts applied to productUrl/sourceUrl/sources.url across all collections; verified javascript: URL now rejected at API. Also: Astro.rewrite for 404, star-rating half-round, 404 noindex, toKebabCase extracted to cms/src/lib/slug.ts. Deferred (logged): deploy-hook debounce, generated-types import, depth trimming."
+    },
+    {
+      "issue": 5,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T15:43:00Z",
+      "designs": ["buyer-guide.html", "buyer-guide.png"],
+      "note": "Downloaded '10 Best Stove Top Protectors (2026)' screen (8dcab7b...) from existing Stitch project. Cost $0."
+    },
+    {
+      "issue": 5,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T16:15:00Z",
+      "note": "buyer-guides collection (rankedProducts array w/ nested pricing-data relationship + scoring + badges) + /best/[slug] + /best index. Uses the new shared slug + validateUrl libs from the review remediation. Self-test: build clean, ranked pricing propagates, javascript: URL rejected.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 5,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T16:18:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 10, Code Quality 9. Playwright-verified: ranking list with scores/badges/prices from pricing-data, methodology box, nav active; regression sweep across all 5 page types — zero console errors. Report: harness/evaluations/issue-5-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 5,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T16:18:00Z",
+      "note": "Issue #5 closed. Next in execution_order: #7 (Brand Pages)."
     }
   ],
   "history_schema": {

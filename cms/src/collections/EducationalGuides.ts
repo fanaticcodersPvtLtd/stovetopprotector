@@ -1,15 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { triggerDeploy } from '../lib/triggerDeploy'
-
-function toKebabCase(input: string): string {
-  return input
-    .normalize('NFKD')
-    // strip combining diacritical marks (U+0300–U+036F) left behind by NFKD
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
+import { toKebabCase } from '../lib/slug'
+import { validateHttpUrl } from '../lib/validateUrl'
 
 export const EducationalGuides: CollectionConfig = {
   slug: 'educational-guides',
@@ -143,7 +135,7 @@ export const EducationalGuides: CollectionConfig = {
       labels: { singular: 'Source', plural: 'Sources' },
       fields: [
         { name: 'label', type: 'text', required: true },
-        { name: 'url', type: 'text', required: true },
+        { name: 'url', type: 'text', required: true, validate: validateHttpUrl },
       ],
     },
   ],

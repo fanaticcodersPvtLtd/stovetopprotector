@@ -16,8 +16,9 @@ const { slug } = Astro.params
 const review = await getReviewArticleBySlug(slug!)
 
 // getStaticPaths only emits published slugs — safety net, not an expected branch.
+// rewrite (not redirect) so the 404 renders correctly in a static build.
 if (!review) {
-  return Astro.redirect('/404')
+  return Astro.rewrite('/404')
 }
 
 const bodyHtml = lexicalToHtml(review.body)
@@ -30,9 +31,10 @@ const publishedDate = review.publishedAt
   : null
 
 const lineup = review.productLineup ?? []
-// Round to nearest half for star display.
-const fullStars = Math.floor(review.ratingOutOf5)
-const hasHalf = review.ratingOutOf5 - fullStars >= 0.5
+// Round the raw rating to the nearest half, then derive star display from that.
+const roundedRating = Math.round(review.ratingOutOf5 * 2) / 2
+const fullStars = Math.floor(roundedRating)
+const hasHalf = roundedRating - fullStars >= 0.5
 ---
 
 <BaseLayout title={review.title} description={review.metaDescription} activeNav="reviews">

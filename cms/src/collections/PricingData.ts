@@ -1,17 +1,9 @@
 import type { CollectionConfig } from 'payload'
 import { triggerDeploy } from '../lib/triggerDeploy'
+import { toKebabCase } from '../lib/slug'
+import { validateHttpUrl } from '../lib/validateUrl'
 
 const TRACKING_PARAM_PATTERN = /^(ref|tag|utm_[a-z]+|aff_[a-z]+|affiliate|campaign|source)$/i
-
-function toKebabCase(input: string): string {
-  return input
-    .normalize('NFKD')
-    // strip combining diacritical marks (U+0300–U+036F) left behind by NFKD
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
 
 function stripTrackingParams(rawUrl: string): string {
   try {
@@ -125,20 +117,7 @@ export const PricingData: CollectionConfig = {
       name: 'productUrl',
       type: 'text',
       required: true,
-      validate: (value: string | null | undefined) => {
-        if (typeof value !== 'string' || value.length === 0) {
-          return 'Product URL is required.'
-        }
-        if (!value.startsWith('https://')) {
-          return 'Product URL must start with https://'
-        }
-        try {
-          new URL(value)
-        } catch {
-          return 'Product URL must be a valid URL.'
-        }
-        return true
-      },
+      validate: validateHttpUrl,
       admin: {
         description:
           "Brand's official site URL. Tracking/affiliate query params are stripped automatically on save.",

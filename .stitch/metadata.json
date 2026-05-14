@@ -43,6 +43,18 @@
       "dimensions": { "width": 2560, "height": 8692 },
       "downloadedAt": "2026-05-14T15:05:00Z",
       "variantNote": "Single screen for review-articles. Quick-verdict box with rating, product-overview lineup table, 'What users love' (pros) + 'Common complaints' (cons) callouts, Trustpilot/BBB/Reddit body sections, FAQ, 'Our take', TOC + Quick Facts sidebar. Matches blueprint §5.1."
+    },
+    "buyer-guide": {
+      "screenId": "8dcab7bcc12e41b69424d9481f31f46e",
+      "title": "10 Best Stove Top Protectors (2026)",
+      "issue": 5,
+      "files": {
+        "html": ".stitch/designs/buyer-guide.html",
+        "png": ".stitch/designs/buyer-guide.png"
+      },
+      "dimensions": { "width": 2560, "height": 7744 },
+      "downloadedAt": "2026-05-14T15:42:00Z",
+      "variantNote": "Single screen for buyer-guides. Methodology box, numbered ranking list with per-product score/price/positives/drawbacks, what-to-look-for body, FAQ, TOC sidebar. Matches blueprint §5.3."
     }
   },
   "availableScreensNotDownloaded": {

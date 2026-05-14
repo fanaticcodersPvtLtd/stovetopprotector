@@ -23,11 +23,22 @@ const FORMAT_BOLD = 1
 const FORMAT_ITALIC = 1 << 1
 const FORMAT_UNDERLINE = 1 << 3
 
+// `&amp;` must be replaced first — otherwise a later replacement's `&` gets
+// double-escaped. Escapes quotes too so the same fn is safe in attribute context.
 function escapeHtml(input: string): string {
   return input
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+// Only allow href schemes that can't execute script. Blocks javascript:, data:, etc.
+const SAFE_URL_SCHEME = /^(https?:|mailto:|tel:|\/|#)/i
+
+function safeHref(raw: string): string {
+  return SAFE_URL_SCHEME.test(raw.trim()) ? raw : '#'
 }
 
 function renderText(node: LexicalNode): string {
@@ -65,7 +76,7 @@ function renderNode(node: LexicalNode): string {
     case 'listitem':
       return `<li>${renderChildren(node.children)}</li>`
     case 'link': {
-      const href = node.fields?.url ?? node.url ?? '#'
+      const href = safeHref(node.fields?.url ?? node.url ?? '#')
       const target = node.fields?.newTab ? ' target="_blank" rel="noopener noreferrer"' : ''
       return `<a href="${escapeHtml(href)}"${target}>${renderChildren(node.children)}</a>`
     }

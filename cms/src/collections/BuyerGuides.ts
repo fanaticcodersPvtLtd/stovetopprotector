@@ -3,14 +3,14 @@ import { triggerDeploy } from '../lib/triggerDeploy'
 import { toKebabCase } from '../lib/slug'
 import { validateHttpUrl } from '../lib/validateUrl'
 
-export const ReviewArticles: CollectionConfig = {
-  slug: 'review-articles',
+export const BuyerGuides: CollectionConfig = {
+  slug: 'buyer-guides',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'brand', 'ratingOutOf5', 'status', 'publishedAt'],
+    defaultColumns: ['title', 'status', 'publishedAt'],
     group: 'Content',
     description:
-      'Single-brand deep-dive reviews. The product-lineup table pulls live prices from linked pricing-data entries.',
+      'Ranked product-list guides (e.g. "Best Stove Top Protectors of 2026"). Ranked entries pull live prices from pricing-data.',
   },
   access: {
     read: () => true,
@@ -23,8 +23,8 @@ export const ReviewArticles: CollectionConfig = {
     beforeValidate: [
       ({ data }) => {
         if (!data) return data
-        if (!data.slug && typeof data.brand === 'string' && data.brand.length > 0) {
-          data.slug = toKebabCase(data.brand)
+        if (!data.slug && typeof data.title === 'string' && data.title.length > 0) {
+          data.slug = toKebabCase(data.title)
         }
         return data
       },
@@ -40,7 +40,7 @@ export const ReviewArticles: CollectionConfig = {
     afterChange: [
       ({ doc, req }) => {
         if (doc?.status === 'published') {
-          triggerDeploy(req.payload, `review-articles/${doc.slug}`)
+          triggerDeploy(req.payload, `buyer-guides/${doc.slug}`)
         }
         return doc
       },
@@ -52,7 +52,7 @@ export const ReviewArticles: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description: 'e.g. "StoveGuard Review 2026: Honest Independent Breakdown".',
+        description: 'e.g. "Best Stove Top Protectors of 2026: Independently Tested".',
       },
     },
     {
@@ -62,7 +62,7 @@ export const ReviewArticles: CollectionConfig = {
       unique: true,
       index: true,
       admin: {
-        description: 'URL path segment. Auto-derived from brand if left empty.',
+        description: 'URL path segment. Auto-derived from title if left empty.',
         position: 'sidebar',
       },
     },
@@ -93,68 +93,83 @@ export const ReviewArticles: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     {
-      name: 'ratingOutOf5',
-      type: 'number',
-      required: true,
-      min: 0,
-      max: 5,
-      admin: {
-        position: 'sidebar',
-        description: 'Overall review score, 0–5.',
-      },
-    },
-    {
-      name: 'brand',
-      type: 'text',
-      required: true,
-      admin: { description: 'The single brand under review.' },
-    },
-    {
       name: 'metaDescription',
       type: 'textarea',
       required: true,
       admin: { description: 'SEO meta description — keep under ~160 characters.' },
     },
     {
-      name: 'verdict',
+      name: 'methodology',
       type: 'textarea',
       required: true,
       admin: {
         description:
-          'TL;DR verdict box copy — conclusion first (this is what AI Overviews pull).',
+          'The methodology box: "We tested X products over Y weeks on Z stoves. Here\'s how we ranked them."',
       },
+    },
+    {
+      name: 'rankedProducts',
+      type: 'array',
+      labels: { singular: 'Ranked Product', plural: 'Ranked Products' },
+      admin: {
+        description: 'The numbered ranking. Each entry links a pricing-data product.',
+      },
+      fields: [
+        {
+          name: 'rank',
+          type: 'number',
+          required: true,
+          min: 1,
+          admin: { description: '1-based rank position.' },
+        },
+        {
+          name: 'product',
+          type: 'relationship',
+          relationTo: 'pricing-data',
+          required: true,
+          admin: { description: 'The ranked product — price pulled live on next build.' },
+        },
+        {
+          name: 'ourScore',
+          type: 'number',
+          required: true,
+          min: 0,
+          max: 5,
+          admin: { description: 'Our score for this product, 0–5.' },
+        },
+        {
+          name: 'badge',
+          type: 'select',
+          defaultValue: 'none',
+          options: [
+            { label: 'Best Overall', value: 'best-overall' },
+            { label: 'Best for Gas', value: 'best-for-gas' },
+            { label: 'Best for Glass-Top', value: 'best-for-glass' },
+            { label: 'Best Budget', value: 'best-budget' },
+            { label: 'Best for RV', value: 'best-for-rv' },
+            { label: 'None', value: 'none' },
+          ],
+        },
+        {
+          name: 'positives',
+          type: 'textarea',
+          required: true,
+          admin: { description: 'One paragraph — what this product does well.' },
+        },
+        {
+          name: 'drawbacks',
+          type: 'textarea',
+          required: true,
+          admin: { description: 'One paragraph — drawbacks.' },
+        },
+      ],
     },
     {
       name: 'body',
       type: 'richText',
       required: true,
       admin: {
-        description:
-          'Main review body — company background, material breakdown, customer sentiment, first-hand review.',
-      },
-    },
-    {
-      name: 'pros',
-      type: 'array',
-      labels: { singular: 'Pro', plural: 'Pros' },
-      admin: { description: 'Honest positives — "What users love".' },
-      fields: [{ name: 'point', type: 'text', required: true }],
-    },
-    {
-      name: 'cons',
-      type: 'array',
-      labels: { singular: 'Con', plural: 'Cons' },
-      admin: { description: 'Honest negatives — "Common complaints".' },
-      fields: [{ name: 'point', type: 'text', required: true }],
-    },
-    {
-      name: 'productLineup',
-      type: 'relationship',
-      relationTo: 'pricing-data',
-      hasMany: true,
-      admin: {
-        description:
-          "The brand's product tiers shown in the lineup table. Prices pulled live from pricing-data on next build.",
+        description: 'Main guide content — "what to look for", "common mistakes buyers make".',
       },
     },
     {
@@ -167,11 +182,11 @@ export const ReviewArticles: CollectionConfig = {
       ],
     },
     {
-      name: 'relatedReviews',
+      name: 'relatedGuides',
       type: 'relationship',
-      relationTo: 'review-articles',
+      relationTo: 'buyer-guides',
       hasMany: true,
-      admin: { description: 'Other brand reviews to link at the bottom and in the sidebar.' },
+      admin: { description: 'Other buyer guides to link at the bottom and in the sidebar.' },
     },
     {
       name: 'sources',

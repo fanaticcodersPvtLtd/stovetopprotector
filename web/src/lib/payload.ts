@@ -74,6 +74,38 @@ export type EducationalGuide = {
 
 export type ProsCon = { point: string }
 
+export type RankedProduct = {
+  rank: number
+  product: PricingData
+  ourScore: number
+  badge?:
+    | 'best-overall'
+    | 'best-for-gas'
+    | 'best-for-glass'
+    | 'best-budget'
+    | 'best-for-rv'
+    | 'none'
+  positives: string
+  drawbacks: string
+}
+
+export type BuyerGuide = {
+  id: number
+  title: string
+  slug: string
+  status: 'draft' | 'published'
+  publishedAt?: string
+  readTimeMinutes?: number
+  metaDescription: string
+  methodology: string
+  // `depth=2` resolves rankedProducts[].product to a full pricing-data doc.
+  rankedProducts?: RankedProduct[]
+  body: LexicalRichText
+  faqs?: Faq[]
+  relatedGuides?: BuyerGuide[]
+  sources?: Source[]
+}
+
 export type ReviewArticle = {
   id: number
   title: string
@@ -185,6 +217,30 @@ export async function getReviewArticleBySlug(
     '&depth=2' +
     '&limit=1'
   const data = await fetchJson<PaginatedResponse<ReviewArticle>>(query)
+  return data.docs[0] ?? null
+}
+
+/** All published buyer guides, with ranked-product relationships resolved. */
+export async function getPublishedBuyerGuides(): Promise<BuyerGuide[]> {
+  const query =
+    '/buyer-guides' +
+    '?where[status][equals]=published' +
+    '&depth=2' +
+    '&limit=200' +
+    '&sort=-publishedAt'
+  const data = await fetchJson<PaginatedResponse<BuyerGuide>>(query)
+  return data.docs
+}
+
+/** A single published buyer guide by slug, or null if not found. */
+export async function getBuyerGuideBySlug(slug: string): Promise<BuyerGuide | null> {
+  const query =
+    '/buyer-guides' +
+    `?where[slug][equals]=${encodeURIComponent(slug)}` +
+    '&where[status][equals]=published' +
+    '&depth=2' +
+    '&limit=1'
+  const data = await fetchJson<PaginatedResponse<BuyerGuide>>(query)
   return data.docs[0] ?? null
 }
 
