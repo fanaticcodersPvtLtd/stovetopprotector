@@ -9,6 +9,7 @@ import { lexicalToHtml } from '../../lib/lexical'
 import { reviewArticleLd } from '../../lib/seo'
 import ReviewSection from '../../components/ReviewSection.astro'
 import ShareButtons from '../../components/ShareButtons.astro'
+import AdSlot from '../../components/AdSlot.astro'
 
 export async function getStaticPaths() {
   const reviews = await getPublishedReviewArticles()
@@ -262,6 +263,8 @@ const jsonLd = reviewArticleLd(review, pageUrl)
             </>
           )
         }
+
+        <AdSlot slot="1000000002" />
 
         <!-- CTA -->
         <div class="mb-10 rounded-xl bg-ink-dark p-10 text-center">

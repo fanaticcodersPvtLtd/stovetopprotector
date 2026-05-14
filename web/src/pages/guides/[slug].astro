@@ -7,6 +7,7 @@ import {
 import { lexicalToHtml } from '../../lib/lexical'
 import { educationalGuideLd } from '../../lib/seo'
 import ShareButtons from '../../components/ShareButtons.astro'
+import AdSlot from '../../components/AdSlot.astro'
 
 export async function getStaticPaths() {
   const guides = await getPublishedEducationalGuides()
@@ -141,6 +142,8 @@ const jsonLd = educationalGuideLd(guide, pageUrl)
             </>
           )
         }
+
+        <AdSlot slot="1000000003" />
 
         <!-- CTA -->
         <div class="mb-16 rounded-xl bg-ink-dark p-10 text-center">

@@ -20,6 +20,11 @@ const ogDescription = description ?? 'Independent stove top protector reviews an
 // GA4 — only renders when the measurement ID is configured. Unset = zero analytics markup.
 const ga4Id = import.meta.env.GA4_MEASUREMENT_ID
 
+// AdSense — loader only ships when enabled + a publisher id is set.
+const adsensePublisherId = import.meta.env.ADSENSE_PUBLISHER_ID
+const adsenseEnabled =
+  import.meta.env.ADSENSE_ENABLED === 'true' && Boolean(adsensePublisherId)
+
 const navLinks = [
   { key: 'home', label: 'Home', href: '/' },
   { key: 'comparisons', label: 'Comparisons', href: '/compare' },
@@ -57,6 +62,17 @@ const navLinks = [
         <script
           type="application/ld+json"
           set:html={serializeJsonLd(jsonLd)}
+        />
+      )
+    }
+
+    {
+      adsenseEnabled && (
+        <script
+          is:inline
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`}
+          crossorigin="anonymous"
         />
       )
     }

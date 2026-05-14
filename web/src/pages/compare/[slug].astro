@@ -9,6 +9,7 @@ import { lexicalToHtml } from '../../lib/lexical'
 import { comparisonArticleLd } from '../../lib/seo'
 import ReviewSection from '../../components/ReviewSection.astro'
 import ShareButtons from '../../components/ShareButtons.astro'
+import AdSlot from '../../components/AdSlot.astro'
 
 export async function getStaticPaths() {
   const articles = await getPublishedComparisonArticles()
@@ -242,6 +243,8 @@ const jsonLd = comparisonArticleLd(article, pageUrl)
             </>
           )
         }
+
+        <AdSlot slot="1000000001" />
 
         <!-- CTA -->
         <div class="mb-16 rounded-xl bg-ink-dark p-10 text-center">

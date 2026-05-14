@@ -1,0 +1,42 @@
+---
+/**
+ * Google AdSense display-ad slot. Renders the real AdSense `<ins>` unit ONLY
+ * when both `ADSENSE_ENABLED === 'true'` and `ADSENSE_PUBLISHER_ID` are set.
+ * Otherwise renders nothing — no placeholder, no layout shift.
+ *
+ * The loader script is injected once by BaseLayout (also gated). Slot ids are
+ * placeholders until real ad units are created in the AdSense dashboard.
+ */
+interface Props {
+  /** AdSense ad-unit slot id. */
+  slot: string
+  /** Optional context label for the AdSense "Advertisement" disclosure. */
+  label?: string
+}
+const { slot, label = 'Advertisement' } = Astro.props
+
+const enabled = import.meta.env.ADSENSE_ENABLED === 'true'
+const publisherId = import.meta.env.ADSENSE_PUBLISHER_ID
+const showAd = enabled && Boolean(publisherId)
+---
+
+{
+  showAd && (
+    <aside class="my-10 text-center" aria-label={label}>
+      <span class="mb-1 block text-[10px] uppercase tracking-widest text-muted-soft">
+        {label}
+      </span>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={publisherId}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script is:inline>
+        (adsbygoogle = window.adsbygoogle || []).push({})
+      </script>
+    </aside>
+  )
+}
