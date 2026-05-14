@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'pricing-data': PricingDatum;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'pricing-data': PricingDataSelect<false> | PricingDataSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -162,6 +164,67 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Single source of truth for product pricing. Referenced by all content types. One update propagates everywhere on next build.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-data".
+ */
+export interface PricingDatum {
+  id: number;
+  /**
+   * Display name, e.g. "StoveGuard", "Stove Shield".
+   */
+  brand: string;
+  /**
+   * URL-safe identifier. Auto-derived from brand if left empty.
+   */
+  brandSlug: string;
+  /**
+   * e.g. "StoveGuard Premium".
+   */
+  productName: string;
+  productLine?: ('lite' | 'premium' | 'pro' | 'grip' | 'standard' | 'other') | null;
+  /**
+   * Price in US dollars. Decimals allowed (e.g. 29.99).
+   */
+  priceUsd: number;
+  /**
+   * US market only for v1. Schema kept extensible.
+   */
+  currency: 'USD';
+  /**
+   * Brand's official site URL. Tracking/affiliate query params are stripped automatically on save.
+   */
+  productUrl: string;
+  specs?: {
+    /**
+     * Material thickness in millimeters.
+     */
+    thicknessMm?: number | null;
+    materialType?: ('silicone' | 'fiberglass-coated-silicone' | 'aluminized-steel' | 'other') | null;
+    /**
+     * Maximum rated temperature in °F.
+     */
+    heatRatingFahrenheit?: number | null;
+    warrantyMonths?: number | null;
+    /**
+     * Free-form, e.g. "28 x 20".
+     */
+    dimensionsInches?: string | null;
+  };
+  inStock: boolean;
+  /**
+   * Date this price was last manually verified against the official site.
+   */
+  lastVerifiedAt: string;
+  /**
+   * Internal editor note. Not displayed publicly.
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -192,6 +255,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'pricing-data';
+        value: number | PricingDatum;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -274,6 +341,33 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-data_select".
+ */
+export interface PricingDataSelect<T extends boolean = true> {
+  brand?: T;
+  brandSlug?: T;
+  productName?: T;
+  productLine?: T;
+  priceUsd?: T;
+  currency?: T;
+  productUrl?: T;
+  specs?:
+    | T
+    | {
+        thicknessMm?: T;
+        materialType?: T;
+        heatRatingFahrenheit?: T;
+        warrantyMonths?: T;
+        dimensionsInches?: T;
+      };
+  inStock?: T;
+  lastVerifiedAt?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

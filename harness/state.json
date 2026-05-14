@@ -1,7 +1,7 @@
 {
   "project": "StoveGuard.us.com",
   "harness_version": "2.0",
-  "model": "claude-opus-4-6",
+  "model": "claude-opus-4-7",
   "current": {
     "phase": "idle",
     "active_issue": null,
@@ -37,10 +37,49 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [],
+    "completed": [1, 2],
     "failed": []
   },
-  "history": [],
+  "history": [
+    {
+      "issue": 1,
+      "event": "completed_manually",
+      "round": 1,
+      "timestamp": "2026-05-13T15:30:00Z",
+      "note": "Payload CMS scaffolded with Postgres. Admin user salilkhan19@gmail.com seeded. Pushed to github.com/fanaticcodersPvtLtd/stovetopprotector. Harness contracts/evaluations not produced retroactively.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 2,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-13T16:00:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-2.md from PRD+plan (GitHub issues not filed yet)."
+    },
+    {
+      "issue": 2,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T11:48:00Z",
+      "note": "PricingData collection created (cms/src/collections/PricingData.ts), wired into payload.config.ts. Postgres pricing_data table auto-created. Self-test: CRUD + hooks + validation + access control all pass via REST.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 2,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T11:52:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design 10 (auto/no-UI), Data Integrity 10, Code Quality 9. Report: harness/evaluations/issue-2-round-1.md. Harness note: generate:types CLI exits without writing in this env; rely on dev-server type regeneration.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 2,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T11:52:00Z",
+      "note": "Issue #2 closed. Unblocks #3, #4, #5, #7, #16. Next in execution_order: #8 (Media Collection)."
+    }
+  ],
   "history_schema": {
     "fields": ["issue", "event", "round", "timestamp", "duration_seconds", "cost_usd", "tokens_input", "tokens_output", "testing_mode"],
     "testing_modes": ["playwright", "manual_degraded"],
