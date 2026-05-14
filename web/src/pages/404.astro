@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Page Not Found — StoveGuard Reviews">
+  <main
+    class="mx-auto flex min-h-[60vh] max-w-[1160px] flex-col items-center justify-center px-6 pt-28 text-center"
+  >
+    <span class="mb-4 font-headline text-6xl font-bold text-primary">404</span>
+    <h1 class="mb-3 font-headline text-3xl font-bold text-ink">Page not found</h1>
+    <p class="mb-8 text-muted">
+      The page you're looking for doesn't exist or has moved.
+    </p>
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 rounded-lg bg-primary-bright px-6 py-3 font-bold text-white transition-colors hover:bg-primary-hover"
+    >
+      <span class="material-symbols-outlined">arrow_back</span>
+      Back to home
+    </a>
+  </main>
+</BaseLayout>

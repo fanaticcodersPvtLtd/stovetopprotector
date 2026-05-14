@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — "The Authoritative Editorial" system.
+ * Ported from .stitch/designs/comparison-article.html (Stitch project 6849064886324327137).
+ * See .stitch/DESIGN.md for the full rationale.
+ */
+@theme {
+  --color-background: #faf9f7;
+  --color-surface: #faf9f7;
+  --color-surface-card: #ffffff;
+  --color-surface-container: #f7f6f3;
+  --color-surface-container-low: #f4f3f1;
+
+  --color-ink: #18181b;
+  --color-ink-soft: #3f3f46;
+  --color-muted: #71717a;
+  --color-muted-soft: #a1a1aa;
+
+  --color-primary: #a33900;
+  --color-primary-bright: #ea580c;
+  --color-primary-hover: #c2410c;
+  --color-surface-warm: #fff7ed;
+
+  --color-border-subtle: #e4e4e7;
+  --color-border-faint: #f4f4f5;
+  --color-ink-dark: #1c1917;
+
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-headline: 'Source Serif 4', ui-serif, Georgia, serif;
+}
+
+/* Rich-text body (article prose converted from Lexical) */
+.article-body p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+  color: var(--color-ink-soft);
+  font-family: var(--font-headline);
+  font-size: 1.125rem;
+}
+.article-body h2 {
+  font-family: var(--font-headline);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+.article-body h3 {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.5rem 1.5rem;
+  font-family: var(--font-headline);
+  font-size: 1.125rem;
+  color: var(--color-ink-soft);
+  line-height: 1.8;
+}
+.article-body ul {
+  list-style: disc;
+}
+.article-body ol {
+  list-style: decimal;
+}
+.article-body a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+.article-body strong {
+  font-weight: 700;
+  color: var(--color-ink);
+}

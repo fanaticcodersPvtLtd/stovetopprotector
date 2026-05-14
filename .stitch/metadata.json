@@ -1,0 +1,44 @@
+{
+  "project": {
+    "id": "6849064886324327137",
+    "name": "projects/6849064886324327137",
+    "title": "Stove Protector Review Homepage",
+    "designSystem": "The Authoritative Editorial",
+    "deviceType": "DESKTOP",
+    "note": "Pre-existing Stitch project — ~30 screens already designed covering the full site. Harness Designer downloads from here rather than generating new screens."
+  },
+  "screens": {
+    "comparison-article": {
+      "screenId": "15ce255665494eb1b83d2fccee839b88",
+      "title": "StoveGuard vs Stove Shield Comparison",
+      "issue": 3,
+      "files": {
+        "html": ".stitch/designs/comparison-article.html",
+        "png": ".stitch/designs/comparison-article.png"
+      },
+      "dimensions": { "width": 2560, "height": 10532 },
+      "downloadedAt": "2026-05-14T12:55:00Z",
+      "variantNote": "Chosen variant A of 3. Cleanest section structure, TOC sidebar, scannable spec table — best match to blueprint §5.2. Alternates: e29a1c55... (taller, denser), 00d5d034... (short, incomplete)."
+    }
+  },
+  "availableScreensNotDownloaded": {
+    "comment": "Other titled screens in the Stitch project, available for future issues:",
+    "homepage": ["96294f8960794b19a45c7bf7855c7d7e", "f9114e05e7fb41e2ae081b82777460ed"],
+    "educational-guide": ["e932402af02e498aa01003d1416c87e0", "f1bc7e67f32843b6b4fe3e9892c8f992", "83387bc39f08419885b559712919113a"],
+    "buyer-guide": ["8dcab7bcc12e41b69424d9481f31f46e"],
+    "brand-page-ge": ["f1f2cd4f7d2549389976f0702750b81b", "070cea4098514ecc8ff9699c504b7855", "f84ecb4db8964093a23cbbb4daef4c7c"],
+    "review-article": ["0a0e364a1b204b8d9e47857f5a56a764"],
+    "brand-hub": ["11653e38340047be9751aec190a75e0d", "65f30355c7ce4d3e846e94f9a2a57851"],
+    "comparisons-index": ["a6c96db20cbf4100a8883c6012854859", "d07bd756d24044eb8a4a36c2d771dde5"],
+    "articles-index": ["c8fb90f10fc0433cb53708760979eb04", "d22b09bf1cbf4e37a93aecfd5d5c7e38"],
+    "comparison-tool": ["c17c7935419444fc8b7f5ccb0aa83228", "0317056457c245d99095d8be109bbbba"],
+    "user-profile": ["11bfdcb4615749adb20ef612374f5812", "211afa2a129644a3905f8fc54a1c26c7"],
+    "legal": {
+      "terms": "c0460694746e430a9aace1ca4e045436",
+      "disclaimer": "abc8d7d3610f42a08cdb53fed690d31a",
+      "privacy": "452ee5298c7141d9ab095ffddec49877",
+      "about": "92517c90021a4df09f5862e5b90ed063",
+      "contact": "bba2171e198d428dbbaebff23ba1c81d"
+    }
+  }
+}

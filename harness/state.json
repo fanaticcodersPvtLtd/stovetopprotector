@@ -15,7 +15,14 @@
     "code_quality": 7
   },
   "issue_queue": {
-    "execution_order": [1, 2, 8, 6, 3, 4, 5, 7, 12, 9, 13, 10, 11, 14, 15, 16, 17, 18, 19],
+    "execution_order": [1, 2, 8, 3, 6, 4, 5, 7, 12, 9, 13, 10, 11, 14, 15, 16, 17, 18, 19],
+    "execution_order_history": [
+      {
+        "previous": [1, 2, 8, 6, 3, 4, 5, 7, 12, 9, 13, 10, 11, 14, 15, 16, 17, 18, 19],
+        "changed_at": "2026-05-14T12:45:00Z",
+        "reason": "Swapped #3 before #6. #3 (Comparison Articles) is the real Astro-frontend bootstrap issue per plans/stoveguard-site.md Phase 1. #6 (Educational Guides) is has_ui:true and cannot render a template before the Astro base exists. Every downstream UI issue depends on #3's foundation."
+      }
+    ],
     "dependency_graph": {
       "1":  { "blocked_by": [], "blocks": [2, 6, 8, 12], "has_ui": false },
       "2":  { "blocked_by": [1], "blocks": [3, 4, 5, 7, 16], "has_ui": false },
@@ -37,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8],
+    "completed": [1, 2, 8, 3],
     "failed": []
   },
   "history": [
@@ -108,6 +115,44 @@
       "round": 1,
       "timestamp": "2026-05-14T12:36:00Z",
       "note": "Issue #8 closed. No downstream blocks. Next in execution_order: #6 (Educational Guides — has_ui: true, Designer phase required)."
+    },
+    {
+      "issue": 3,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T12:50:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-3.md. Big issue: comparison-articles collection + Astro frontend bootstrap (web/ workspace) + /compare/[slug] template + Cloudflare deploy-hook wiring. Phase set to design — first Designer run, .stitch/ infra to be bootstrapped."
+    },
+    {
+      "issue": 3,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T13:00:00Z",
+      "designs": ["comparison-article.html", "comparison-article.png"],
+      "note": "No Stitch generation needed — pre-existing project 6849064886324327137 already had 3 comparison-article variants + the full site (~30 screens). Designer bootstrapped .stitch/ infra (metadata.json, DESIGN.md, SITE.md) and downloaded variant A (screen 15ce2556...). Cost: $0 (no generate call). Key finding: Stitch design system is 'The Authoritative Editorial' (burnt orange #a33900 + warm off-white, Plus Jakarta Sans + Source Serif) — diverges from repo-root DESIGN.md (Lemkus). .stitch/DESIGN.md is now the authoritative token source for the Generator."
+    },
+    {
+      "issue": 3,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T13:40:00Z",
+      "note": "comparison-articles collection (14 fields, 3 hooks) + triggerDeploy util (added to comparison-articles + pricing-data afterChange) + Astro web/ workspace bootstrap (Astro 6, Tailwind v4, typed Payload REST client, Lexical->HTML walker) + /compare/[slug] template + index/compare-index/404 pages. Deviations: no @astrojs/cloudflare adapter (pure static is sufficient), wrote own Lexical converter instead of deprecated lexicalHTML field. Self-test: astro build clean, pricing propagates from refs.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 3,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T13:45:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 10, Code Quality 8. Playwright-verified: template renders + matches Stitch variant A, pricing propagates (PATCH 39.99->42.50 -> rebuild shows 42.50), deploy hook fires when env set / no-ops when unset, 404 + empty states handled. Report: harness/evaluations/issue-3-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 3,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T13:45:00Z",
+      "note": "Issue #3 closed. Astro frontend foundation now exists for all later UI issues. Unblocks #4, #5, #7, #16 (and #6 was already unblocked). Next in execution_order: #6 (Educational Guides)."
     }
   ],
   "history_schema": {

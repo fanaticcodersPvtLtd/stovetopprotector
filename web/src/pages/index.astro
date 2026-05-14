@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getPublishedComparisonArticles } from '../lib/payload'
+
+const articles = await getPublishedComparisonArticles()
+---
+
+<BaseLayout
+  title="StoveGuard Reviews — Independent Stove Top Protector Reviews"
+  description="Independent, unbiased reviews and comparisons of stove top protectors. No affiliations, no affiliate links."
+  activeNav="home"
+>
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <section class="mb-12 max-w-3xl">
+      <div
+        class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
+      >
+        <span class="material-symbols-outlined text-sm">verified_user</span>
+        Independent &amp; Unbiased
+      </div>
+      <h1
+        class="mb-4 font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl"
+      >
+        Stove top protectors, tested and compared.
+      </h1>
+      <p class="text-lg text-muted">
+        No brand affiliations. No affiliate links. No commissions. Just
+        hands-on comparisons to help you pick the right protector.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="mb-6 font-headline text-2xl font-bold text-ink">
+        Comparison Articles
+      </h2>
+
+      {
+        articles.length === 0 ? (
+          <div
+            class="rounded-lg border border-border-subtle bg-surface-card p-10 text-center"
+          >
+            <p class="font-headline text-lg text-muted">
+              No comparison articles published yet. Check back soon.
+            </p>
+          </div>
+        ) : (
+          <ul class="grid gap-6 md:grid-cols-2">
+            {articles.map((article) => (
+              <li>
+                <a
+                  href={`/compare/${article.slug}`}
+                  class="group block h-full rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
+                >
+                  <span
+                    class="mb-3 inline-block text-[11px] font-extrabold uppercase tracking-widest text-primary"
+                  >
+                    {article.brandA} vs {article.brandB}
+                  </span>
+                  <h3
+                    class="mb-2 font-headline text-xl font-bold leading-snug text-ink group-hover:text-primary"
+                  >
+                    {article.title}
+                  </h3>
+                  <p class="text-sm text-muted">{article.metaDescription}</p>
+                  {article.readTimeMinutes && (
+                    <span class="mt-3 block text-[11px] text-muted-soft">
+                      {article.readTimeMinutes} min read
+                    </span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+  </main>
+</BaseLayout>

@@ -31,7 +31,10 @@ postgres-data/
 .firecrawl/
 .factory/
 .claude/
-.stitch/designs/
 graphify-out/wiki/cache/
 graphify-out/cache/
 graphify-out/.rebuild.lock
+
+# .stitch/ IS tracked — design references the harness Evaluator needs.
+# Only the stitch-loop transient baton is ignored.
+.stitch/next-prompt.md

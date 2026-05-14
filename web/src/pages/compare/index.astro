@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getPublishedComparisonArticles } from '../../lib/payload'
+
+const articles = await getPublishedComparisonArticles()
+---
+
+<BaseLayout
+  title="Stove Protector Comparisons — StoveGuard Reviews"
+  description="Side-by-side comparisons of stove top protector brands. Independent and unbiased."
+  activeNav="comparisons"
+>
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <h1 class="mb-2 font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl">
+      Brand Comparisons
+    </h1>
+    <p class="mb-12 max-w-2xl text-lg text-muted">
+      Head-to-head matchups of stove top protector brands — specs, pricing, and
+      real-world testing.
+    </p>
+
+    {
+      articles.length === 0 ? (
+        <div class="rounded-lg border border-border-subtle bg-surface-card p-10 text-center">
+          <p class="font-headline text-lg text-muted">
+            No comparison articles published yet. Check back soon.
+          </p>
+        </div>
+      ) : (
+        <ul class="grid gap-6 md:grid-cols-2">
+          {articles.map((article) => (
+            <li>
+              <a
+                href={`/compare/${article.slug}`}
+                class="group block h-full rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
+              >
+                <span class="mb-3 inline-block text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                  {article.brandA} vs {article.brandB}
+                </span>
+                <h2 class="mb-2 font-headline text-xl font-bold leading-snug text-ink group-hover:text-primary">
+                  {article.title}
+                </h2>
+                <p class="text-sm text-muted">{article.metaDescription}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</BaseLayout>

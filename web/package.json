@@ -1,0 +1,20 @@
+{
+  "name": "web",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "StoveGuard Astro frontend",
+  "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --port 4321",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "6.3.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.0",
+    "tailwindcss": "4.3.0"
+  }
+}

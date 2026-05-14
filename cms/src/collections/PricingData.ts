@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { triggerDeploy } from '../lib/triggerDeploy'
 
 const TRACKING_PARAM_PATTERN = /^(ref|tag|utm_[a-z]+|aff_[a-z]+|affiliate|campaign|source)$/i
 
@@ -60,6 +61,13 @@ export const PricingData: CollectionConfig = {
           data.productUrl = stripTrackingParams(data.productUrl)
         }
         return data
+      },
+    ],
+    afterChange: [
+      ({ doc, req }) => {
+        // A price change should rebuild the static site so every article reflects it.
+        triggerDeploy(req.payload, `pricing-data/${doc?.brandSlug ?? doc?.id}`)
+        return doc
       },
     ],
   },

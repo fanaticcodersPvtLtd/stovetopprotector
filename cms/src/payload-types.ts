@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     'pricing-data': PricingDatum;
+    'comparison-articles': ComparisonArticle;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'pricing-data': PricingDataSelect<false> | PricingDataSelect<true>;
+    'comparison-articles': ComparisonArticlesSelect<false> | ComparisonArticlesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -270,6 +272,102 @@ export interface PricingDatum {
   createdAt: string;
 }
 /**
+ * Brand-vs-brand matchup articles. Prices in the comparison table are pulled live from linked pricing-data entries.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comparison-articles".
+ */
+export interface ComparisonArticle {
+  id: number;
+  /**
+   * e.g. "StoveGuard vs Stove Shield 2026: Tested Side-by-Side".
+   */
+  title: string;
+  /**
+   * URL path segment. Auto-derived as {brandA}-vs-{brandB} if left empty.
+   */
+  slug: string;
+  status: 'draft' | 'published';
+  /**
+   * Set automatically when status flips to Published.
+   */
+  publishedAt?: string | null;
+  readTimeMinutes?: number | null;
+  /**
+   * First brand in the matchup.
+   */
+  brandA: string;
+  /**
+   * Second brand in the matchup.
+   */
+  brandB: string;
+  /**
+   * SEO meta description — keep under ~160 characters.
+   */
+  metaDescription: string;
+  /**
+   * The TL;DR verdict box copy shown near the top of the article.
+   */
+  tldrVerdict: string;
+  /**
+   * Main article body — deep-dive sections.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * The top spec table — one row per attribute (price, thickness, warranty, etc.).
+   */
+  comparisonRows?:
+    | {
+        label: string;
+        valueA: string;
+        valueB: string;
+        /**
+         * Citation URL for this row.
+         */
+        sourceUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The pricing-data entries whose live prices appear in this article. One price update propagates here on next build.
+   */
+  pricedProducts?: (number | PricingDatum)[] | null;
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other comparison articles to link at the bottom.
+   */
+  relatedArticles?: (number | ComparisonArticle)[] | null;
+  sources?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -304,6 +402,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pricing-data';
         value: number | PricingDatum;
+      } | null)
+    | ({
+        relationTo: 'comparison-articles';
+        value: number | ComparisonArticle;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -457,6 +559,49 @@ export interface PricingDataSelect<T extends boolean = true> {
   inStock?: T;
   lastVerifiedAt?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comparison-articles_select".
+ */
+export interface ComparisonArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  readTimeMinutes?: T;
+  brandA?: T;
+  brandB?: T;
+  metaDescription?: T;
+  tldrVerdict?: T;
+  body?: T;
+  comparisonRows?:
+    | T
+    | {
+        label?: T;
+        valueA?: T;
+        valueB?: T;
+        sourceUrl?: T;
+        id?: T;
+      };
+  pricedProducts?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  relatedArticles?: T;
+  sources?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

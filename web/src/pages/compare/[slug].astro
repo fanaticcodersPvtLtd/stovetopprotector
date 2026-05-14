@@ -1,0 +1,375 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import {
+  getPublishedComparisonArticles,
+  getComparisonArticleBySlug,
+  formatUsd,
+} from '../../lib/payload'
+import { lexicalToHtml } from '../../lib/lexical'
+
+export async function getStaticPaths() {
+  const articles = await getPublishedComparisonArticles()
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+  }))
+}
+
+const { slug } = Astro.params
+const article = await getComparisonArticleBySlug(slug!)
+
+// getStaticPaths only emits published slugs, so this is a safety net, not an
+// expected branch — Astro would 404 on unknown routes in a static build anyway.
+if (!article) {
+  return Astro.redirect('/404')
+}
+
+const bodyHtml = lexicalToHtml(article.body)
+const publishedDate = article.publishedAt
+  ? new Date(article.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : null
+
+const products = article.pricedProducts ?? []
+const recommendedProductId = products[0]?.id
+---
+
+<BaseLayout title={article.title} description={article.metaDescription} activeNav="comparisons">
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <!-- Breadcrumbs -->
+    <nav
+      class="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted"
+    >
+      <a href="/" class="hover:text-ink">Home</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/compare" class="hover:text-ink">Comparisons</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-primary-bright">{article.brandA} vs {article.brandB}</span>
+    </nav>
+
+    <div
+      class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
+    >
+      <span class="material-symbols-outlined text-sm">compare_arrows</span>
+      Side-by-Side Comparison
+    </div>
+
+    <h1
+      class="mb-8 max-w-4xl font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl lg:text-6xl"
+    >
+      {article.title}
+    </h1>
+
+    <div
+      class="mb-10 flex flex-wrap items-center gap-6 border-b border-border-faint pb-8 text-[13px] font-medium text-muted"
+    >
+      {
+        publishedDate && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">schedule</span>
+            Updated {publishedDate}
+          </div>
+        )
+      }
+      {
+        article.readTimeMinutes && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">menu_book</span>
+            {article.readTimeMinutes} min read
+          </div>
+        )
+      }
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg text-primary-bright">verified_user</span>
+        Independently Reviewed
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <!-- Main content -->
+      <article class="article-body max-w-[760px] flex-1">
+        <!-- Editorial box -->
+        <section
+          class="mb-10 flex items-start gap-5 rounded-lg border border-border-subtle bg-surface-container p-6"
+        >
+          <div
+            class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xl font-bold text-white"
+          >
+            SG
+          </div>
+          <div>
+            <h4 class="mb-1 font-bold text-ink">StoveGuard Review Team</h4>
+            <p class="m-0 text-sm italic leading-relaxed text-muted">
+              We conduct independent research and hands-on testing. We have no
+              brand affiliations and use no affiliate links — this site is
+              supported by display advertising, not commissions.
+            </p>
+          </div>
+        </section>
+
+        <!-- TL;DR verdict -->
+        <h2 id="quick-verdict">Quick Verdict</h2>
+        <div class="mb-8 rounded-r-lg border-l-4 border-primary bg-surface-warm p-6">
+          <p class="m-0 font-headline text-lg italic text-ink">{article.tldrVerdict}</p>
+        </div>
+
+        <!-- Comparison table -->
+        {
+          article.comparisonRows && article.comparisonRows.length > 0 && (
+            <div class="mb-10 overflow-x-auto rounded-lg border border-border-subtle">
+              <table class="w-full bg-white text-left text-sm">
+                <thead class="border-b border-border-subtle bg-surface-container">
+                  <tr>
+                    <th class="p-4 font-bold">Feature</th>
+                    <th class="p-4 font-bold">{article.brandA}</th>
+                    <th class="p-4 font-bold">{article.brandB}</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-border-faint">
+                  {article.comparisonRows.map((row) => (
+                    <tr>
+                      <td class="p-4 font-semibold">
+                        {row.label}
+                        {row.sourceUrl && (
+                          <a
+                            href={row.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="ml-1 text-primary"
+                            title="Source"
+                          >
+                            <span class="material-symbols-outlined text-[14px]">link</span>
+                          </a>
+                        )}
+                      </td>
+                      <td class="p-4">{row.valueA}</td>
+                      <td class="p-4">{row.valueB}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
+
+        <!-- Article body (rich text) -->
+        <div set:html={bodyHtml} />
+
+        <!-- Pricing breakdown — live from pricing-data -->
+        {
+          products.length > 0 && (
+            <>
+              <h2 id="pricing">Pricing Breakdown</h2>
+              <div class="mb-10 overflow-x-auto rounded-lg border border-border-subtle">
+                <table class="w-full bg-white text-left text-sm">
+                  <thead class="bg-surface-container">
+                    <tr>
+                      <th class="border-b border-border-subtle p-4 font-bold">Product</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Price</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Status</th>
+                      <th class="border-b border-border-subtle p-4 font-bold">Official Site</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-border-faint">
+                    {products.map((product) => (
+                      <tr class={product.id === recommendedProductId ? 'bg-orange-50/50' : ''}>
+                        <td class="p-4 font-bold">
+                          {product.brand} {product.productName}
+                        </td>
+                        <td class="p-4 font-bold">{formatUsd(product.priceUsd)}</td>
+                        <td class="p-4 text-muted">
+                          {product.inStock ? 'In Stock' : 'Out of Stock'}
+                        </td>
+                        <td class="p-4">
+                          <a
+                            href={product.productUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-semibold text-primary hover:underline"
+                          >
+                            Visit site
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )
+        }
+
+        <!-- FAQ -->
+        {
+          article.faqs && article.faqs.length > 0 && (
+            <>
+              <h2 id="faq">Frequently Asked Questions</h2>
+              <div class="mb-12 space-y-4">
+                {article.faqs.map((faq) => (
+                  <details class="group rounded-lg border border-border-subtle bg-white">
+                    <summary
+                      class="flex cursor-pointer list-none items-center justify-between p-5 font-bold"
+                    >
+                      {faq.question}
+                      <span
+                        class="material-symbols-outlined transition-transform group-open:rotate-180"
+                      >
+                        expand_more
+                      </span>
+                    </summary>
+                    <div class="p-5 pt-0 font-headline text-base text-ink-soft">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </>
+          )
+        }
+
+        <!-- CTA -->
+        <div class="mb-16 rounded-xl bg-ink-dark p-10 text-center">
+          <h2 class="mb-4 mt-0 font-headline text-3xl text-white">
+            Still deciding?
+          </h2>
+          <p class="mb-8 font-body text-base text-stone-400">
+            Compare specs and current prices yourself — every link below goes
+            straight to the brand's official site. No affiliate redirects.
+          </p>
+          <a
+            href="/compare"
+            class="group inline-flex items-center gap-2 rounded-lg bg-primary-bright px-8 py-4 font-bold text-white transition-all hover:bg-primary-hover"
+          >
+            See all comparisons
+            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">
+              arrow_forward
+            </span>
+          </a>
+        </div>
+
+        <!-- Sources -->
+        {
+          article.sources && article.sources.length > 0 && (
+            <div id="sources" class="mb-10 border-t border-border-faint pt-8">
+              <h5 class="mb-6 text-xs font-bold uppercase tracking-widest text-muted">
+                Article Sources &amp; Research
+              </h5>
+              <ol class="space-y-3 text-[13px] text-muted">
+                {article.sources.map((source, i) => (
+                  <li>
+                    <span class="mr-2 font-bold text-primary">{i + 1}.</span>
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="italic hover:text-primary"
+                      >
+                        {source.label}
+                      </a>
+                    ) : (
+                      <i>{source.label}</i>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="w-full space-y-8 lg:w-[280px]">
+        <!-- TOC -->
+        <div class="sticky top-24 rounded-lg border border-border-subtle bg-white p-6">
+          <h5
+            class="mb-4 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-muted-soft"
+          >
+            <span class="material-symbols-outlined text-sm">toc</span> On This Page
+          </h5>
+          <nav class="flex flex-col gap-1 text-[13px] font-medium text-muted">
+            <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#quick-verdict">Quick Verdict</a>
+            {
+              products.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#pricing">
+                  Pricing Breakdown
+                </a>
+              )
+            }
+            {
+              article.faqs && article.faqs.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#faq">
+                  FAQ
+                </a>
+              )
+            }
+            {
+              article.sources && article.sources.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#sources">
+                  Sources
+                </a>
+              )
+            }
+          </nav>
+        </div>
+
+        <!-- Related articles -->
+        {
+          article.relatedArticles && article.relatedArticles.length > 0 && (
+            <div class="rounded-lg border border-border-subtle bg-white p-6">
+              <h5 class="mb-4 text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                Related Comparisons
+              </h5>
+              <div class="flex flex-col gap-4">
+                {article.relatedArticles.map((related) => (
+                  <a href={`/compare/${related.slug}`} class="group">
+                    <h6
+                      class="text-[14px] font-bold leading-snug transition-colors group-hover:text-primary"
+                    >
+                      {related.title}
+                    </h6>
+                    {related.readTimeMinutes && (
+                      <span class="text-[11px] text-muted-soft">
+                        {related.readTimeMinutes} min read
+                      </span>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
+
+        <!-- Quick facts -->
+        {
+          products.length > 0 && (
+            <div class="rounded-lg border border-border-subtle bg-surface-container p-6">
+              <h5 class="mb-5 text-[11px] font-extrabold uppercase tracking-widest text-ink">
+                Quick Facts
+              </h5>
+              <div class="space-y-4">
+                <div>
+                  <span class="mb-1 block text-[10px] font-bold uppercase text-muted-soft">
+                    Price Range
+                  </span>
+                  <span class="text-sm font-bold text-ink">
+                    {formatUsd(Math.min(...products.map((p) => p.priceUsd)))} —{' '}
+                    {formatUsd(Math.max(...products.map((p) => p.priceUsd)))}
+                  </span>
+                </div>
+                <div>
+                  <span class="mb-1 block text-[10px] font-bold uppercase text-muted-soft">
+                    Products Compared
+                  </span>
+                  <span class="text-sm font-bold text-ink">{products.length}</span>
+                </div>
+              </div>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </main>
+</BaseLayout>
