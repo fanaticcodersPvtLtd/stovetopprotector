@@ -16,6 +16,9 @@ const { title, description, activeNav, noindex, jsonLd } = Astro.props
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href
 const ogDescription = description ?? 'Independent stove top protector reviews and comparisons.'
 
+// GA4 — only renders when the measurement ID is configured. Unset = zero analytics markup.
+const ga4Id = import.meta.env.GA4_MEASUREMENT_ID
+
 const navLinks = [
   { key: 'home', label: 'Home', href: '/' },
   { key: 'comparisons', label: 'Comparisons', href: '/compare' },
@@ -67,6 +70,26 @@ const navLinks = [
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
+
+    {
+      ga4Id && (
+        <>
+          <script
+            is:inline
+            src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
+          />
+          <script is:inline define:vars={{ ga4Id }}>
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+              window.dataLayer.push(arguments)
+            }
+            window.gtag = gtag
+            gtag('js', new Date())
+            gtag('config', ga4Id)
+          </script>
+        </>
+      )
+    }
   </head>
   <body class="bg-background text-ink font-body antialiased">
     <header
@@ -116,6 +139,9 @@ const navLinks = [
         </p>
       </div>
     </footer>
+
+    {/* Custom GA4 event tracking — only shipped when GA4 is configured. */}
+    {ga4Id && <script src="../scripts/analytics.ts"></script>}
 
     <style>
       .material-symbols-outlined {

@@ -4,7 +4,7 @@
   "model": "claude-opus-4-7",
   "current": {
     "phase": "build",
-    "active_issue": 11,
+    "active_issue": 16,
     "round": 1,
     "max_rounds": 3
   },
@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11],
     "failed": [],
     "blocked_on_external_credentials": {
       "12": "Google + Facebook OAuth app credentials",
@@ -402,6 +402,36 @@
       "round": 1,
       "timestamp": "2026-05-14T17:33:00Z",
       "note": "Issue #10 closed. Next buildable: #11 (GA4 Tracking)."
+    },
+    {
+      "issue": 11,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T17:35:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-11.md. GA4 — gtag, outbound/scroll/CTA events, graceful no-op without GA4_MEASUREMENT_ID. has_ui:false."
+    },
+    {
+      "issue": 11,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T17:50:00Z",
+      "note": "BaseLayout gtag snippet (env-conditional), web/src/scripts/analytics.ts (outbound/CTA/scroll-depth events, all gtag-guarded), data-cta on representative CTAs, GA4_MEASUREMENT_ID in web/.env. Self-test: build with var unset = 0 analytics markup; with var set = gtag present.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 11,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T17:53:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design 10 (auto/no-UI), Data Integrity 9, Code Quality 9. Verified graceful degradation both ways. Report: harness/evaluations/issue-11-round-1.md.",
+      "testing_mode": "manual_degraded"
+    },
+    {
+      "issue": 11,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T17:53:00Z",
+      "note": "Issue #11 closed. Next buildable: #16 (Comparison Tool) — #13/#14 blocked behind #12 (Auth, needs OAuth creds)."
     }
   ],
   "history_schema": {
