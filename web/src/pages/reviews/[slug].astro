@@ -7,6 +7,7 @@ import {
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
 import { reviewArticleLd } from '../../lib/seo'
+import ReviewSection from '../../components/ReviewSection.astro'
 
 export async function getStaticPaths() {
   const reviews = await getPublishedReviewArticles()
@@ -288,6 +289,9 @@ const jsonLd = reviewArticleLd(review, pageUrl)
           site is supported by display advertising. Products are evaluated
           independently.
         </div>
+
+        <!-- Reader reviews -->
+        <ReviewSection targetType="review-articles" targetId={review.id} />
 
         <!-- Sources -->
         {

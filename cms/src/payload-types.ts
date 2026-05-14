@@ -77,6 +77,7 @@ export interface Config {
     'review-articles': ReviewArticle;
     'buyer-guides': BuyerGuide;
     'brand-pages': BrandPage;
+    'visitor-reviews': VisitorReview;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -93,6 +94,7 @@ export interface Config {
     'review-articles': ReviewArticlesSelect<false> | ReviewArticlesSelect<true>;
     'buyer-guides': BuyerGuidesSelect<false> | BuyerGuidesSelect<true>;
     'brand-pages': BrandPagesSelect<false> | BrandPagesSelect<true>;
+    'visitor-reviews': VisitorReviewsSelect<false> | VisitorReviewsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -796,6 +798,64 @@ export interface BrandPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitor-reviews".
+ */
+export interface VisitorReview {
+  id: number;
+  /**
+   * The review text.
+   */
+  body: string;
+  /**
+   * Star rating, 1–5.
+   */
+  rating: number;
+  /**
+   * Set automatically to the submitting visitor — not editable by visitors.
+   */
+  author: number | User;
+  /**
+   * Denormalized copy of the author's display name (the users collection is not publicly readable).
+   */
+  authorName?: string | null;
+  /**
+   * The content page this review is about.
+   */
+  target:
+    | {
+        relationTo: 'comparison-articles';
+        value: number | ComparisonArticle;
+      }
+    | {
+        relationTo: 'review-articles';
+        value: number | ReviewArticle;
+      }
+    | {
+        relationTo: 'buyer-guides';
+        value: number | BuyerGuide;
+      }
+    | {
+        relationTo: 'educational-guides';
+        value: number | EducationalGuide;
+      }
+    | {
+        relationTo: 'brand-pages';
+        value: number | BrandPage;
+      };
+  /**
+   * Moderation status. Visitors cannot change this.
+   */
+  status: 'pending' | 'approved' | 'rejected';
+  /**
+   * Shown to the visitor when their submission is rejected.
+   */
+  rejectionReason?: string | null;
+  submittedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -853,6 +913,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'brand-pages';
         value: number | BrandPage;
+      } | null)
+    | ({
+        relationTo: 'visitor-reviews';
+        value: number | VisitorReview;
       } | null);
   globalSlug?: string | null;
   user:
@@ -1251,6 +1315,22 @@ export interface BrandPagesSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "visitor-reviews_select".
+ */
+export interface VisitorReviewsSelect<T extends boolean = true> {
+  body?: T;
+  rating?: T;
+  author?: T;
+  authorName?: T;
+  target?: T;
+  status?: T;
+  rejectionReason?: T;
+  submittedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

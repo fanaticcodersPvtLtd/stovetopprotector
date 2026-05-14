@@ -305,6 +305,40 @@ export async function getBrandPageBySlug(slug: string): Promise<BrandPage | null
   return data.docs[0] ?? null
 }
 
+export type VisitorReview = {
+  id: number
+  body: string
+  rating: number
+  // Denormalized at submission — the `users` collection isn't publicly
+  // readable, so the relationship can't be resolved by the SSG build.
+  authorName?: string
+  submittedAt?: string
+}
+
+/** Approved reviews for a given content page (polymorphic target). */
+export async function getApprovedReviewsFor(
+  targetType: string,
+  targetId: number,
+): Promise<VisitorReview[]> {
+  const query =
+    '/visitor-reviews' +
+    '?where[status][equals]=approved' +
+    `&where[target.relationTo][equals]=${encodeURIComponent(targetType)}` +
+    `&where[target.value][equals]=${targetId}` +
+    '&depth=0&limit=100&sort=-submittedAt'
+  try {
+    const data = await fetchJson<PaginatedResponse<VisitorReview>>(query)
+    return data.docs
+  } catch {
+    // Reviews are non-critical to the page — never fail the build over them.
+    return []
+  }
+}
+
+export function reviewAuthorName(review: VisitorReview): string {
+  return review.authorName?.trim() || 'StoveGuard reader'
+}
+
 export type HomepageContent = {
   comparisons: ComparisonArticle[]
   reviews: ReviewArticle[]

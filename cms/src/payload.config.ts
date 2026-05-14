@@ -15,6 +15,7 @@ import { EducationalGuides } from './collections/EducationalGuides'
 import { ReviewArticles } from './collections/ReviewArticles'
 import { BuyerGuides } from './collections/BuyerGuides'
 import { BrandPages } from './collections/BrandPages'
+import { VisitorReviews } from './collections/VisitorReviews'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -57,6 +58,7 @@ export default buildConfig({
     ReviewArticles,
     BuyerGuides,
     BrandPages,
+    VisitorReviews,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

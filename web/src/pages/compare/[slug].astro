@@ -7,6 +7,7 @@ import {
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
 import { comparisonArticleLd } from '../../lib/seo'
+import ReviewSection from '../../components/ReviewSection.astro'
 
 export async function getStaticPaths() {
   const articles = await getPublishedComparisonArticles()
@@ -259,6 +260,9 @@ const jsonLd = comparisonArticleLd(article, pageUrl)
             </span>
           </a>
         </div>
+
+        <!-- Reader reviews -->
+        <ReviewSection targetType="comparison-articles" targetId={article.id} />
 
         <!-- Sources -->
         {
