@@ -27,7 +27,8 @@
     "payload": "^3.84.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "sharp": "^0.34.2"
+    "sharp": "^0.34.2",
+    "@payloadcms/email-resend": "^3.84.1"
   },
   "devDependencies": {
     "@types/node": "^24.12.3",

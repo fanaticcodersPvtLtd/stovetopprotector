@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Verify Your Email — StoveGuard Reviews"
+  description="Verify your StoveGuard Reviews email address."
+  noindex={true}
+>
+  <main class="mx-auto flex min-h-[60vh] max-w-md flex-col justify-center px-6 pt-28 pb-20 text-center">
+    <div id="state-pending">
+      <span class="material-symbols-outlined mb-3 text-4xl text-muted-soft">hourglass_top</span>
+      <h1 class="mb-2 font-headline text-2xl font-bold text-ink">Verifying your email…</h1>
+      <p class="text-sm text-muted">One moment.</p>
+    </div>
+
+    <div id="state-success" class="hidden">
+      <span class="material-symbols-outlined mb-3 text-4xl text-primary">check_circle</span>
+      <h1 class="mb-2 font-headline text-2xl font-bold text-ink">Email verified</h1>
+      <p class="mb-6 text-sm text-muted">Your account is ready. You can log in now.</p>
+      <a
+        href="/login"
+        class="inline-flex items-center gap-2 rounded-lg bg-primary-bright px-6 py-3 font-bold text-white transition-colors hover:bg-primary-hover"
+      >
+        Log in
+      </a>
+    </div>
+
+    <div id="state-error" class="hidden">
+      <span class="material-symbols-outlined mb-3 text-4xl text-red-600">error</span>
+      <h1 class="mb-2 font-headline text-2xl font-bold text-ink">Verification failed</h1>
+      <p class="mb-6 text-sm text-muted">
+        The link is invalid or has expired. Try registering again, or contact support.
+      </p>
+      <a
+        href="/register"
+        class="inline-flex items-center gap-2 rounded-lg border border-border-subtle px-6 py-3 font-bold text-ink transition-colors hover:border-primary"
+      >
+        Back to sign up
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const API = (import.meta.env.PUBLIC_PAYLOAD_API_URL ||
+    'http://localhost:3001/api') as string
+
+  const show = (id: string) => {
+    for (const s of ['state-pending', 'state-success', 'state-error']) {
+      document.getElementById(s)?.classList.toggle('hidden', s !== id)
+    }
+  }
+
+  const token = new URLSearchParams(window.location.search).get('token')
+  if (!token) {
+    show('state-error')
+  } else {
+    // Payload verification endpoint: POST /api/users/verify/:token
+    fetch(`${API}/users/verify/${encodeURIComponent(token)}`, { method: 'POST' })
+      .then((res) => show(res.ok ? 'state-success' : 'state-error'))
+      .catch(() => show('state-error'))
+  }
+</script>

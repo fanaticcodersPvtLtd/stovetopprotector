@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { isCmsAdmin } from '../lib/access'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -12,10 +13,9 @@ export const Media: CollectionConfig = {
   access: {
     // Public read — Astro SSG build fetches image URLs.
     read: () => true,
-    // TODO(issue-6): replace with cms-admins role gate once that collection exists.
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    create: isCmsAdmin,
+    update: isCmsAdmin,
+    delete: isCmsAdmin,
   },
   fields: [
     {

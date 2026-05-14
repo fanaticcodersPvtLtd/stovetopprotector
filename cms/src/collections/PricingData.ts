@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { triggerDeploy } from '../lib/triggerDeploy'
 import { toKebabCase } from '../lib/slug'
 import { validateHttpUrl } from '../lib/validateUrl'
+import { isCmsAdmin } from '../lib/access'
 
 const TRACKING_PARAM_PATTERN = /^(ref|tag|utm_[a-z]+|aff_[a-z]+|affiliate|campaign|source)$/i
 
@@ -32,10 +33,9 @@ export const PricingData: CollectionConfig = {
   access: {
     // Public read enables Astro SSG fetches at build time.
     read: () => true,
-    // TODO(issue-6): replace with cms-admins role gate once that collection exists.
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    create: isCmsAdmin,
+    update: isCmsAdmin,
+    delete: isCmsAdmin,
   },
   hooks: {
     beforeValidate: [

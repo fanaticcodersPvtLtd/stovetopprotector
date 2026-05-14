@@ -3,9 +3,9 @@
   "harness_version": "2.0",
   "model": "claude-opus-4-7",
   "current": {
-    "phase": "idle",
-    "active_issue": null,
-    "round": 0,
+    "phase": "build",
+    "active_issue": 13,
+    "round": 1,
     "max_rounds": 3
   },
   "grading_thresholds": {
@@ -44,18 +44,15 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12],
     "failed": [],
-    "blocked_on_external_credentials": {
-      "12": "Google + Facebook OAuth app credentials",
-      "15": "RESEND_API_KEY + verified sender domain (DNS)",
-      "17": "depends on #15 (Resend)",
-      "18": "Twitter/Facebook/Pinterest API tokens",
-      "19": "ADSENSE_PUBLISHER_ID (requires Google AdSense approval)"
+    "scope_changes": {
+      "12": "OAuth (Google/Facebook) dropped per project-owner direction 2026-05-14 — email-only signup/login + verification. Removed the external-credential blocker; #12 fully delivered."
     },
-    "blocked_on_issue_12": {
-      "13": "Review System needs visitor auth (#12)",
-      "14": "Profile Page needs #13"
+    "blocked_on_external_credentials": {
+      "15": "RESEND_API_KEY + verified sender domain — but the email-send CODE is buildable + works via console in dev",
+      "18": "Twitter/Facebook/Pinterest API tokens — but social SHARE buttons (non-API half) are buildable",
+      "19": "ADSENSE_PUBLISHER_ID + AdSense approval — but ad-slot components behind ADSENSE_ENABLED are buildable"
     }
   },
   "history": [
@@ -470,6 +467,13 @@
       "round": 1,
       "timestamp": "2026-05-14T18:15:00Z",
       "note": "Issue #16 closed. LAST issue buildable without external credentials. 12/19 complete. Remaining 7 (#12,#13,#14,#15,#17,#18,#19) all blocked on OAuth creds / Resend / social API keys / AdSense approval — see blocked_on_external_credentials + blocked_on_issue_12."
+    },
+    {
+      "issue": 12,
+      "event": "scope_change_and_completed",
+      "round": 1,
+      "timestamp": "2026-05-14T19:00:00Z",
+      "note": "Project owner dropped OAuth — email-only auth. Unblocked #12 entirely. Built: cms-admins collection (+ re-seeded super-admin), users-as-visitors w/ email verification, cms/src/lib/access.ts, access control hardened across all 7 collections (TODO(issue-6) debt resolved), Resend email adapter (console fallback), CORS/CSRF, /register + /login + /verify pages, client auth.ts + nav state. Playwright-verified full flow. Round 1 PASS 10/8/10/9. Report: harness/evaluations/issue-12-round-1.md. Unblocks #13, #14."
     }
   ],
   "history_schema": {

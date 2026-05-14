@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { triggerDeploy } from '../lib/triggerDeploy'
 import { toKebabCase } from '../lib/slug'
 import { validateHttpUrl, validateOptionalHttpUrl } from '../lib/validateUrl'
+import { isCmsAdmin } from '../lib/access'
 
 export const ComparisonArticles: CollectionConfig = {
   slug: 'comparison-articles',
@@ -14,10 +15,9 @@ export const ComparisonArticles: CollectionConfig = {
   },
   access: {
     read: () => true,
-    // TODO(issue-6): replace with cms-admins role gate once that collection exists.
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    create: isCmsAdmin,
+    update: isCmsAdmin,
+    delete: isCmsAdmin,
   },
   hooks: {
     beforeValidate: [

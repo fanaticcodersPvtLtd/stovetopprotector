@@ -114,7 +114,11 @@ const navLinks = [
             ))
           }
         </div>
-        <span class="material-symbols-outlined cursor-pointer text-muted-soft">search</span>
+        <div class="flex items-center gap-4">
+          {/* Filled client-side by auth.ts — logged-out: "Log in"; logged-in: name + logout. */}
+          <span data-auth-slot class="flex items-center gap-3" />
+          <span class="material-symbols-outlined cursor-pointer text-muted-soft">search</span>
+        </div>
       </nav>
     </header>
 
@@ -142,6 +146,9 @@ const navLinks = [
 
     {/* Custom GA4 event tracking — only shipped when GA4 is configured. */}
     {ga4Id && <script src="../scripts/analytics.ts"></script>}
+
+    {/* Client-side visitor auth state in the header. */}
+    <script src="../scripts/auth.ts"></script>
 
     <style>
       .material-symbols-outlined {
