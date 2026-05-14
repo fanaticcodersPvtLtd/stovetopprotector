@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Profile | Editorial Journal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#1e1b15",
+                      "secondary-container": "#fd6b36",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed-dim": "#ffb599",
+                      "on-tertiary-container": "#fffbff",
+                      "inverse-primary": "#ffb599",
+                      "surface-container": "#efeeec",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1a1c1b",
+                      "primary": "#a33900",
+                      "surface-tint": "#a73a00",
+                      "surface-container-low": "#f4f3f1",
+                      "on-surface": "#1a1c1b",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#4a463f",
+                      "on-secondary-fixed-variant": "#832600",
+                      "secondary": "#ac3400",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e3e2e0",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#cc4900",
+                      "error-container": "#ffdad6",
+                      "primary-fixed": "#ffdbce",
+                      "on-secondary-container": "#5d1900",
+                      "tertiary": "#605b54",
+                      "background": "#faf9f7",
+                      "outline-variant": "#e2bfb2",
+                      "tertiary-fixed": "#e9e1d8",
+                      "surface-dim": "#dadad8",
+                      "outline": "#8e7166",
+                      "tertiary-fixed-dim": "#ccc5bc",
+                      "surface-variant": "#e3e2e0",
+                      "surface-container-high": "#e9e8e6",
+                      "on-primary-container": "#fffbff",
+                      "on-surface-variant": "#5a4138",
+                      "on-secondary-fixed": "#390c00",
+                      "tertiary-container": "#79746c",
+                      "secondary-fixed-dim": "#ffb59d",
+                      "inverse-on-surface": "#f1f1ef",
+                      "on-primary-fixed": "#370e00",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#7f2b00",
+                      "inverse-surface": "#2f3130",
+                      "surface-bright": "#faf9f7",
+                      "surface": "#faf9f7",
+                      "secondary-fixed": "#ffdbd0",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Public Sans"],
+                      "body": ["Plus Jakarta Sans"],
+                      "label": ["Plus Jakarta Sans"]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FCFBF9; }
+        .serif { font-family: 'Source Serif 4', serif; }
+        .accent-color { color: #EA580C; }
+        .accent-bg { background-color: #EA580C; }
+        .accent-border { border-color: #EA580C; }
+        .muted-text { color: #A1A1AA; }
+        .secondary-ink { color: #3F3F46; }
+        .tertiary-ink { color: #71717A; }
+    </style>
+</head>
+<body class="text-[#18181B] antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 h-16">
+<div class="max-w-[1160px] mx-auto flex justify-between items-center h-full px-6">
+<div class="flex items-center gap-10">
+<a class="font-['Source_Serif_4'] text-2xl font-bold text-stone-900 dark:text-stone-50 cursor-pointer active:opacity-80 transition-opacity" href="/">Editorial Journal</a>
+<div class="hidden md:flex items-center gap-8 font-['Plus_Jakarta_Sans'] text-sm tracking-tight">
+<a class="text-stone-600 dark:text-stone-400 font-medium hover:text-orange-700 dark:hover:text-orange-400 transition-colors" href="#">Articles</a>
+<a class="text-stone-600 dark:text-stone-400 font-medium hover:text-orange-700 dark:hover:text-orange-400 transition-colors" href="#">Topics</a>
+<a class="text-stone-600 dark:text-stone-400 font-medium hover:text-orange-700 dark:hover:text-orange-400 transition-colors" href="#">Archive</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-[#F4F4F5] px-3 py-1.5 rounded-full border border-stone-200">
+<span class="material-symbols-outlined text-stone-400 text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-stone-600 placeholder-stone-400" placeholder="Search..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-stone-500 cursor-pointer hover:text-orange-600 transition-colors">notifications</span>
+<!-- User Avatar Circle -->
+<div class="w-8 h-8 rounded-full accent-bg flex items-center justify-center text-white text-xs font-bold ring-2 ring-white ring-offset-1">
+                        AH
+                    </div>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-24 pb-20 max-w-[1160px] mx-auto px-6">
+<!-- Breadcrumb -->
+<nav class="mb-8 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-stone-500">
+<a class="hover:text-orange-600 transition-colors" href="/">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-orange-600">My Profile</span>
+</nav>
+<!-- Profile Header -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-[#F4F4F5]">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-full accent-bg flex items-center justify-center text-white text-xl font-bold">
+                    AH
+                </div>
+<div>
+<h1 class="serif text-[24px] font-bold leading-tight">Alex Henderson</h1>
+<p class="text-[13px] muted-text mt-0.5">Member since March 2026</p>
+</div>
+</div>
+<a class="accent-color font-medium text-sm flex items-center gap-2 hover:underline decoration-orange-600/30 transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+                Edit profile
+            </a>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
+<!-- Left Column: Submissions -->
+<div class="lg:col-span-8">
+<div class="mb-10">
+<span class="block text-[11px] font-bold uppercase tracking-[1.5px] accent-color mb-3">MY SUBMISSIONS</span>
+<h2 class="serif text-[28px] font-bold leading-tight">Your reviews and comments</h2>
+</div>
+<div class="space-y-6">
+<!-- Submission Card 1 -->
+<article class="bg-white border border-[#E4E4E7] rounded-[14px] p-6 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
+<div>
+<h3 class="font-bold text-lg mb-1 leading-snug">StoveGuard vs Stove Shield: Honest Comparison</h3>
+<time class="text-xs text-[#A1A1AA] font-medium uppercase tracking-wider">Oct 12, 2026</time>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700 w-fit">
+                                Approved
+                            </span>
+</div>
+<p class="text-[#3F3F46] text-[15px] leading-relaxed mb-0">
+                            "I purchased the Stove Shield based on this review and it fits my Samsung range perfectly. The thickness is exactly as described and it hasn't warped after several weeks of heavy use. Definitely better than the generic ones."
+                        </p>
+</article>
+<!-- Submission Card 2 -->
+<article class="bg-white border border-[#E4E4E7] rounded-[14px] p-6 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
+<div>
+<h3 class="font-bold text-lg mb-1 leading-snug">10 Best Stove Top Protectors (2026)</h3>
+<time class="text-xs text-[#A1A1AA] font-medium uppercase tracking-wider">Oct 15, 2026</time>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700 w-fit">
+                                Pending
+                            </span>
+</div>
+<p class="text-[#3F3F46] text-[15px] leading-relaxed">
+                            "Does the #1 pick work for electric glass tops as well? I see it mentioned for gas but want to be sure before buying."
+                        </p>
+</article>
+<!-- Submission Card 3 -->
+<article class="bg-white border border-[#E4E4E7] rounded-[14px] p-6 shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-red-500">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
+<div>
+<h3 class="font-bold text-lg mb-1 leading-snug">StoveGuard Review: Real User Verdict</h3>
+<time class="text-xs text-[#A1A1AA] font-medium uppercase tracking-wider">Sep 28, 2026</time>
+</div>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700 w-fit">
+                                Rejected
+                            </span>
+</div>
+<p class="text-[#3F3F46] text-[15px] leading-relaxed mb-4 italic">
+                            "The shipping took much longer than 3-5 days. It actually took 14 days to arrive in Seattle and the box was slightly crushed on one side..."
+                        </p>
+<div class="bg-red-50 p-3 rounded-lg flex items-start gap-3 border border-red-100">
+<span class="material-symbols-outlined text-red-500 text-[20px]">info</span>
+<div class="text-[13px] text-red-800">
+<span class="font-bold">Reason:</span> Please avoid including shipping carrier complaints in product reviews.
+                            </div>
+</div>
+</article>
+</div>
+<!-- Illustrative Empty State (Hidden in this view, but structure provided) -->
+<div class="hidden mt-12 py-20 px-6 border-2 border-dashed border-[#E4E4E7] rounded-[14px] flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-stone-300 text-[48px] mb-4">rate_review</span>
+<p class="text-stone-500 mb-4">You haven't submitted any reviews yet.</p>
+<a class="accent-color font-semibold hover:underline flex items-center gap-1" href="#">
+                        Browse articles and share your experience <span class="material-symbols-outlined text-[18px]">arrow_right_alt</span>
+</a>
+</div>
+</div>
+<!-- Right Column: Stats/Meta -->
+<div class="lg:col-span-4 space-y-6">
+<aside class="bg-[#F7F6F3] p-8 rounded-[14px] sticky top-24">
+<h4 class="font-bold text-sm uppercase tracking-widest text-[#18181B] mb-6 border-b border-stone-200 pb-2">Profile Stats</h4>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<span class="block text-[28px] serif font-bold">12</span>
+<span class="text-[11px] font-bold uppercase tracking-wider tertiary-ink">Total Reviews</span>
+</div>
+<div>
+<span class="block text-[28px] serif font-bold">8</span>
+<span class="text-[11px] font-bold uppercase tracking-wider tertiary-ink">Helpful Votes</span>
+</div>
+</div>
+<div class="mt-10 space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-600 border border-stone-200">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="text-sm font-bold">Verified Reviewer</p>
+<p class="text-[12px] text-stone-500">Identity confirmed via email</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-600 border border-stone-200">
+<span class="material-symbols-outlined">military_tech</span>
+</div>
+<div>
+<p class="text-sm font-bold">Early Adopter</p>
+<p class="text-[12px] text-stone-500">Joined in the first 6 months</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-stone-50 dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800 w-full py-12">
+<div class="max-w-[1160px] mx-auto px-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
+<div class="space-y-4 max-w-sm">
+<span class="font-['Source_Serif_4'] text-xl font-bold text-stone-900 dark:text-stone-50">Editorial Journal</span>
+<p class="text-xs leading-relaxed text-stone-500 italic">
+                        The Editorial Journal provides independent, objective reviews. We may earn a commission through links on our site, which helps us continue our rigorous testing procedures. All reviews are our own.
+                    </p>
+</div>
+<div class="flex flex-wrap font-['Plus_Jakarta_Sans'] text-xs uppercase tracking-widest"><a class="text-[#57534E] text-[11px] font-medium uppercase tracking-widest hover:text-orange-700 transition-colors" href="#">Privacy</a>
+<a class="text-[#57534E] text-[11px] font-medium uppercase tracking-widest hover:text-orange-700 transition-colors" href="#">Terms</a>
+<a class="text-[#57534E] text-[11px] font-medium uppercase tracking-widest hover:text-orange-700 transition-colors" href="#">Contact</a>
+<a class="text-[#57534E] text-[11px] font-medium uppercase tracking-widest hover:text-orange-700 transition-colors" href="#">About</a>
+<a class="text-[#57534E] text-[11px] font-medium uppercase tracking-widest hover:text-orange-700 transition-colors" href="#">All Brands</a></div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-stone-200 dark:border-stone-800 gap-6">
+<p class="text-xs uppercase tracking-widest text-stone-500">© 2024 Editorial Journal. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-stone-400 cursor-pointer hover:text-orange-600 transition-colors">brand_awareness</span>
+<span class="material-symbols-outlined text-stone-400 cursor-pointer hover:text-orange-600 transition-colors">share</span>
+<span class="material-symbols-outlined text-stone-400 cursor-pointer hover:text-orange-600 transition-colors">rss_feed</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

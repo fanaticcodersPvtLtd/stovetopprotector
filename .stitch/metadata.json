@@ -91,6 +91,18 @@
       "dimensions": { "width": 2560, "height": 4062 },
       "downloadedAt": "2026-05-14T18:00:00Z",
       "variantNote": "Chosen of 2 near-identical comparison-tool variants (alternate: 0317056...). Two brand <select> dropdowns + 'vs' badge, side-by-side spec comparison table with per-row highlight."
+    },
+    "profile": {
+      "screenId": "11bfdcb4615749adb20ef612374f5812",
+      "title": "User Profile - GuardYourStove.com",
+      "issue": 14,
+      "files": {
+        "html": ".stitch/designs/profile.html",
+        "png": ".stitch/designs/profile.png"
+      },
+      "dimensions": { "width": 1280, "height": 1430 },
+      "downloadedAt": "2026-05-14T19:35:00Z",
+      "variantNote": "User profile — account info + submission history with status badges. Alternate: 211afa2a..."
     }
   },
   "availableScreensNotDownloaded": {

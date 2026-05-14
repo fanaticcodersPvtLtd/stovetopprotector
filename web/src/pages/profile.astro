@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Your Profile — StoveGuard Reviews"
+  description="Your StoveGuard Reviews account and submission history."
+  noindex={true}
+>
+  <main class="mx-auto max-w-2xl px-6 pt-28 pb-20">
+    {/* Filled client-side by profile.ts after an /api/users/me check —
+        no flash of private content, no server-side auth on a static site. */}
+    <div data-profile-root>
+      <div class="rounded-lg border border-border-subtle bg-surface-card p-10 text-center">
+        <p class="text-sm text-muted">Loading your profile…</p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import '../scripts/profile.ts'
+</script>

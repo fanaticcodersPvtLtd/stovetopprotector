@@ -4,7 +4,7 @@
   "model": "claude-opus-4-7",
   "current": {
     "phase": "build",
-    "active_issue": 14,
+    "active_issue": 15,
     "round": 1,
     "max_rounds": 3
   },
@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12, 13],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12, 13, 14],
     "failed": [],
     "scope_changes": {
       "12": "OAuth (Google/Facebook) dropped per project-owner direction 2026-05-14 — email-only signup/login + verification. Removed the external-credential blocker; #12 fully delivered."
@@ -481,6 +481,13 @@
       "round": 1,
       "timestamp": "2026-05-14T19:30:00Z",
       "note": "Review System. visitor-reviews collection (polymorphic target, moderation status, author+status server-enforced in beforeChange — spoof test passed, authorName denormalized for privacy-safe public render). ReviewSection.astro on comparison/review/brand templates; reviewForm.ts auth-gated client submission. Playwright-verified: approved reviews render, logged-out sees login prompt, logged-in sees form. Round 1 PASS 10/8/10/9. Report: harness/evaluations/issue-13-round-1.md. Unblocks #14."
+    },
+    {
+      "issue": 14,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T19:45:00Z",
+      "note": "Profile Page. /profile.astro client-rendered shell + profile.ts: auth-gated (logged-out shows login prompt, no flash), shows displayName/email + submission history with pending/approved/rejected status badges + rejection reasons. Playwright-verified all 3 statuses render. Round 1 PASS 10/9/9/9. Report: harness/evaluations/issue-14-round-1.md. Visitor account loop (#12->#13->#14) complete."
     }
   ],
   "history_schema": {
