@@ -1,0 +1,44 @@
+---
+interface Props {
+  /** Visual variant: 'footer' (compact, on dark bg) or 'panel' (standalone). */
+  variant?: 'footer' | 'panel'
+}
+const { variant = 'panel' } = Astro.props
+const isFooter = variant === 'footer'
+---
+
+<div data-newsletter-signup class={isFooter ? 'w-full max-w-sm' : 'w-full max-w-md'}>
+  <form data-newsletter-form class="flex flex-col gap-2 sm:flex-row">
+    <input
+      type="email"
+      name="email"
+      required
+      placeholder="you@example.com"
+      class:list={[
+        'flex-1 rounded-lg border px-4 py-2.5 text-sm',
+        isFooter
+          ? 'border-[#3f3f46] bg-[#1c1917] text-white placeholder:text-[#71717a]'
+          : 'border-border-subtle bg-white text-ink',
+      ]}
+    />
+    <button
+      type="submit"
+      data-newsletter-submit
+      class="rounded-lg bg-primary-bright px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-primary-hover disabled:opacity-60"
+    >
+      Subscribe
+    </button>
+  </form>
+  <p
+    data-newsletter-msg
+    class:list={[
+      'mt-2 hidden text-xs',
+      isFooter ? 'text-stone-400' : 'text-muted',
+    ]}
+  >
+  </p>
+</div>
+
+<script>
+  import '../scripts/newsletter.ts'
+</script>

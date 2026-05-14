@@ -78,6 +78,7 @@ export interface Config {
     'buyer-guides': BuyerGuide;
     'brand-pages': BrandPage;
     'visitor-reviews': VisitorReview;
+    'newsletter-subscribers': NewsletterSubscriber;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -95,6 +96,7 @@ export interface Config {
     'buyer-guides': BuyerGuidesSelect<false> | BuyerGuidesSelect<true>;
     'brand-pages': BrandPagesSelect<false> | BrandPagesSelect<true>;
     'visitor-reviews': VisitorReviewsSelect<false> | VisitorReviewsSelect<true>;
+    'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -856,6 +858,23 @@ export interface VisitorReview {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers".
+ */
+export interface NewsletterSubscriber {
+  id: number;
+  email: string;
+  status: 'pending' | 'subscribed' | 'unsubscribed';
+  /**
+   * Double opt-in token. Kept for confirm + unsubscribe links.
+   */
+  confirmationToken?: string | null;
+  subscribedAt?: string | null;
+  unsubscribedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -917,6 +936,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'visitor-reviews';
         value: number | VisitorReview;
+      } | null)
+    | ({
+        relationTo: 'newsletter-subscribers';
+        value: number | NewsletterSubscriber;
       } | null);
   globalSlug?: string | null;
   user:
@@ -1331,6 +1354,19 @@ export interface VisitorReviewsSelect<T extends boolean = true> {
   status?: T;
   rejectionReason?: T;
   submittedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers_select".
+ */
+export interface NewsletterSubscribersSelect<T extends boolean = true> {
+  email?: T;
+  status?: T;
+  confirmationToken?: T;
+  subscribedAt?: T;
+  unsubscribedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

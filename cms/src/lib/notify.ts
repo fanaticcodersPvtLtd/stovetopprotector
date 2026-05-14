@@ -38,6 +38,8 @@ async function resolveAuthorEmail(
   }
 }
 
+const SITE_PUBLIC = process.env.SITE_URL || 'http://localhost:4321'
+
 function emailShell(heading: string, bodyHtml: string): string {
   return `<div style="font-family:'Plus Jakarta Sans',Arial,sans-serif;max-width:480px;margin:0 auto;color:#1a1c1b">
     <h2 style="color:#a33900;font-size:20px;margin:0 0 16px">${heading}</h2>
@@ -46,6 +48,77 @@ function emailShell(heading: string, bodyHtml: string): string {
       StoveGuard Reviews — independent stove top protector reviews.
     </p>
   </div>`
+}
+
+export async function sendNewsletterConfirmationEmail(
+  payload: Payload,
+  sub: { email: string; confirmationToken: string },
+): Promise<void> {
+  try {
+    const confirmUrl = `${SITE_PUBLIC}/newsletter/confirm?token=${encodeURIComponent(sub.confirmationToken)}`
+    await payload.sendEmail({
+      to: sub.email,
+      subject: 'Confirm your StoveGuard Reviews newsletter subscription',
+      text: `Thanks for signing up. Confirm your subscription:\n\n${confirmUrl}\n\nIf you didn't request this, ignore this email.`,
+      html: emailShell(
+        'Confirm your subscription',
+        `<p>Thanks for signing up for the StoveGuard Reviews newsletter.</p>
+         <p><a href="${confirmUrl}" style="color:#a33900;font-weight:bold">Confirm your subscription</a></p>
+         <p style="color:#71717a;font-size:13px">If you didn't request this, just ignore this email.</p>`,
+      ),
+    })
+    payload.logger.info(`[notify] newsletter confirmation email sent to ${sub.email}`)
+  } catch (err) {
+    payload.logger.error(`[notify] newsletter confirmation email failed: ${String(err)}`)
+  }
+}
+
+/**
+ * Sends a content digest to every confirmed subscriber. Admin/scheduler-
+ * triggered (no automated cron in this issue). Fire-and-forget per recipient.
+ */
+export async function sendNewsletterDigest(
+  payload: Payload,
+  digest: { subject: string; introHtml: string; items: { title: string; url: string }[] },
+): Promise<{ sent: number; failed: number }> {
+  let sent = 0
+  let failed = 0
+  try {
+    const subscribers = await payload.find({
+      collection: 'newsletter-subscribers',
+      where: { status: { equals: 'subscribed' } },
+      limit: 10000,
+      overrideAccess: true,
+    })
+    const itemsHtml = digest.items
+      .map(
+        (i) =>
+          `<li style="margin-bottom:8px"><a href="${i.url}" style="color:#a33900">${i.title}</a></li>`,
+      )
+      .join('')
+    for (const sub of subscribers.docs as { email: string; confirmationToken?: string }[]) {
+      const unsubUrl = `${SITE_PUBLIC}/newsletter/unsubscribe?token=${encodeURIComponent(sub.confirmationToken ?? '')}`
+      try {
+        await payload.sendEmail({
+          to: sub.email,
+          subject: digest.subject,
+          text: `${digest.subject}\n\n${digest.items.map((i) => `- ${i.title}: ${i.url}`).join('\n')}\n\nUnsubscribe: ${unsubUrl}`,
+          html: emailShell(
+            digest.subject,
+            `${digest.introHtml}<ul style="padding-left:18px">${itemsHtml}</ul>
+             <p style="color:#71717a;font-size:12px"><a href="${unsubUrl}" style="color:#71717a">Unsubscribe</a></p>`,
+          ),
+        })
+        sent += 1
+      } catch {
+        failed += 1
+      }
+    }
+    payload.logger.info(`[notify] newsletter digest: ${sent} sent, ${failed} failed`)
+  } catch (err) {
+    payload.logger.error(`[notify] newsletter digest failed: ${String(err)}`)
+  }
+  return { sent, failed }
 }
 
 export async function sendReviewApprovedEmail(

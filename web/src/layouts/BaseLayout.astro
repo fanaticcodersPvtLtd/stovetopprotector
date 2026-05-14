@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { serializeJsonLd } from '../lib/seo'
+import NewsletterSignup from '../components/NewsletterSignup.astro'
 
 interface Props {
   title: string
@@ -129,6 +130,14 @@ const navLinks = [
         class="mx-auto flex max-w-[1160px] flex-col items-center space-y-6 px-4 text-center"
       >
         <div class="text-lg font-bold text-white">StoveGuard Reviews</div>
+
+        <div class="w-full max-w-sm">
+          <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-[#71717a]">
+            Get new comparisons by email
+          </p>
+          <NewsletterSignup variant="footer" />
+        </div>
+
         <div class="flex flex-wrap justify-center gap-6">
           <a href="/privacy" class="text-[11px] text-[#57534e] transition-colors hover:text-stone-300">Privacy</a>
           <a href="/terms" class="text-[11px] text-[#57534e] transition-colors hover:text-stone-300">Terms</a>

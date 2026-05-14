@@ -4,7 +4,7 @@
   "model": "claude-opus-4-7",
   "current": {
     "phase": "build",
-    "active_issue": 17,
+    "active_issue": 18,
     "round": 1,
     "max_rounds": 3
   },
@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12, 13, 14, 15],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16, 12, 13, 14, 15, 17],
     "failed": [],
     "scope_changes": {
       "12": "OAuth (Google/Facebook) dropped per project-owner direction 2026-05-14 — email-only signup/login + verification. Removed the external-credential blocker; #12 fully delivered."
@@ -495,6 +495,13 @@
       "round": 1,
       "timestamp": "2026-05-14T20:00:00Z",
       "note": "Email Notifications. cms/src/lib/notify.ts (sendReviewApprovedEmail/sendReviewRejectedEmail, fire-and-forget, never throw, author email resolved server-side). Wired into VisitorReviews afterChange on status transitions. Verified via console transport: signup-verify + approval + rejection emails all attempt-send correctly, no crash without RESEND_API_KEY. Round 1 PASS 10/10/9/9. Report: harness/evaluations/issue-15-round-1.md. Real delivery activates by setting RESEND_API_KEY. Unblocks #17."
+    },
+    {
+      "issue": 17,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T20:20:00Z",
+      "note": "Newsletter. newsletter-subscribers collection (double opt-in, unique email, token-keyed confirm/unsubscribe custom endpoints — open update never exposed). NewsletterSignup component (footer + panel variants) embedded site-wide; /newsletter + confirm + unsubscribe pages; newsletter.ts client script. sendNewsletterConfirmationEmail + sendNewsletterDigest helpers in notify.ts. Verified: signup->pending->confirm->subscribed->unsubscribe, bad token 404, duplicate reject. Round 1 PASS 10/8/10/9. Report: harness/evaluations/issue-17-round-1.md."
     }
   ],
   "history_schema": {

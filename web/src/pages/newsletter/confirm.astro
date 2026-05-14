@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Confirm Subscription — StoveGuard Reviews"
+  description="Confirm your newsletter subscription."
+  noindex={true}
+>
+  <main class="mx-auto flex min-h-[60vh] max-w-md flex-col justify-center px-6 pt-28 pb-20 text-center">
+    <div id="state-pending">
+      <span class="material-symbols-outlined mb-3 text-4xl text-muted-soft">hourglass_top</span>
+      <h1 class="mb-2 font-headline text-2xl font-bold text-ink">Confirming…</h1>
+    </div>
+    <div id="state-success" class="hidden">
+      <span class="material-symbols-outlined mb-3 text-4xl text-primary">mark_email_read</span>
+      <h1 class="mb-2 font-headline text-2xl font-bold text-ink">You're subscribed</h1>
+      <p class="mb-6 text-sm text-muted">
+        Thanks for confirming — you'll get new comparisons and guides as we publish them.
+      </p>
+      <a href="/" class="inline-flex items-center gap-2 rounded-lg bg-primary-bright px-6 py-3 font-bold text-white transition-colors hover:bg-primary-hover">Back to home</a>
+    </div>
+    <div id="state-error" class="hidden">
+      <span class="material-symbols-outlined mb-3 text-4xl text-red-600">error</span>
+      <h1 class="mb-2 font-headline text-2xl font-bold text-ink">Couldn't confirm</h1>
+      <p class="mb-6 text-sm text-muted">The link is invalid or has expired. Try subscribing again.</p>
+      <a href="/newsletter" class="inline-flex items-center gap-2 rounded-lg border border-border-subtle px-6 py-3 font-bold text-ink transition-colors hover:border-primary">Back to newsletter</a>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const API = (import.meta.env.PUBLIC_PAYLOAD_API_URL ||
+    'http://localhost:3001/api') as string
+  const show = (id: string) => {
+    for (const s of ['state-pending', 'state-success', 'state-error']) {
+      document.getElementById(s)?.classList.toggle('hidden', s !== id)
+    }
+  }
+  const token = new URLSearchParams(window.location.search).get('token')
+  if (!token) {
+    show('state-error')
+  } else {
+    fetch(`${API}/newsletter-subscribers/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    })
+      .then((res) => show(res.ok ? 'state-success' : 'state-error'))
+      .catch(() => show('state-error'))
+  }
+</script>
