@@ -44,8 +44,19 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7],
-    "failed": []
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9],
+    "failed": [],
+    "blocked_on_external_credentials": {
+      "12": "Google + Facebook OAuth app credentials",
+      "15": "RESEND_API_KEY + verified sender domain (DNS)",
+      "17": "depends on #15 (Resend)",
+      "18": "Twitter/Facebook/Pinterest API tokens",
+      "19": "ADSENSE_PUBLISHER_ID (requires Google AdSense approval)"
+    },
+    "blocked_on_issue_12": {
+      "13": "Review System needs visitor auth (#12)",
+      "14": "Profile Page needs #13"
+    }
   },
   "history": [
     {
@@ -323,6 +334,44 @@
       "round": 1,
       "timestamp": "2026-05-14T16:48:00Z",
       "note": "Issue #7 closed. All 5 content collections + templates complete. #9 (Homepage) now fully unblocked. Next in execution_order: #12 (Auth)."
+    },
+    {
+      "issue": 9,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T16:55:00Z",
+      "note": "#12 (Auth) skipped — blocked on Google/Facebook OAuth credentials. Proceeded to #9 (Homepage), fully unblocked. Orchestrator wrote harness/contracts/issue-9.md."
+    },
+    {
+      "issue": 9,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T17:00:00Z",
+      "designs": ["homepage.html", "homepage.png"],
+      "note": "Downloaded homepage screen (96294f89...) from existing Stitch project. Cost $0."
+    },
+    {
+      "issue": 9,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T17:05:00Z",
+      "note": "index.astro rebuilt as full homepage: dark hero, 5-card category nav, recent sections per content type, how-we-research. getHomepageContent() helper aggregates all 5 collections via Promise.allSettled. Self-test: build clean, all nav links resolve.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 9,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T17:08:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 9, Code Quality 9. Playwright: 6 homepage sections, 5 category cards, all 6 nav links resolve 200, zero console errors. Report: harness/evaluations/issue-9-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 9,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T17:08:00Z",
+      "note": "Issue #9 closed. Unblocks #10, #11, #16. Next buildable: #10 (SEO Foundation) — #13/#14 blocked behind #12, #15/#17/#18/#19 blocked on external credentials."
     }
   ],
   "history_schema": {

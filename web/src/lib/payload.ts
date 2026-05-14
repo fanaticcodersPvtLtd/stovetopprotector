@@ -297,6 +297,42 @@ export async function getBrandPageBySlug(slug: string): Promise<BrandPage | null
   return data.docs[0] ?? null
 }
 
+export type HomepageContent = {
+  comparisons: ComparisonArticle[]
+  reviews: ReviewArticle[]
+  buyerGuides: BuyerGuide[]
+  educationalGuides: EducationalGuide[]
+  brandPages: BrandPage[]
+}
+
+/**
+ * Fetches recent published content from every collection for the homepage.
+ * Resilient: a failure in one collection fetch does not blank the others —
+ * that section just renders empty.
+ */
+export async function getHomepageContent(): Promise<HomepageContent> {
+  const settled = await Promise.allSettled([
+    getPublishedComparisonArticles(),
+    getPublishedReviewArticles(),
+    getPublishedBuyerGuides(),
+    getPublishedEducationalGuides(),
+    getPublishedBrandPages(),
+  ])
+
+  const value = <T>(i: number): T[] =>
+    settled[i].status === 'fulfilled'
+      ? ((settled[i] as PromiseFulfilledResult<T[]>).value ?? [])
+      : []
+
+  return {
+    comparisons: value<ComparisonArticle>(0).slice(0, 4),
+    reviews: value<ReviewArticle>(1).slice(0, 4),
+    buyerGuides: value<BuyerGuide>(2).slice(0, 3),
+    educationalGuides: value<EducationalGuide>(3).slice(0, 3),
+    brandPages: value<BrandPage>(4).slice(0, 6),
+  }
+}
+
 export function formatUsd(amount: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
 }

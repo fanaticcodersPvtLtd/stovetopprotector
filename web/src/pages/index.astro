@@ -1,78 +1,309 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { getPublishedComparisonArticles } from '../lib/payload'
+import { getHomepageContent } from '../lib/payload'
 
-const articles = await getPublishedComparisonArticles()
+const content = await getHomepageContent()
+
+const categories = [
+  {
+    href: '/compare',
+    label: 'Comparisons',
+    icon: 'compare_arrows',
+    blurb: 'Brand-vs-brand matchups, spec by spec.',
+    count: content.comparisons.length,
+  },
+  {
+    href: '/reviews',
+    label: 'Brand Reviews',
+    icon: 'rate_review',
+    blurb: 'In-depth single-brand deep-dives.',
+    count: content.reviews.length,
+  },
+  {
+    href: '/best',
+    label: 'Buyer Guides',
+    icon: 'trophy',
+    blurb: 'Ranked, independently tested shortlists.',
+    count: content.buyerGuides.length,
+  },
+  {
+    href: '/guides',
+    label: 'Educational Guides',
+    icon: 'menu_book',
+    blurb: 'Thickness, materials, safety — explained.',
+    count: content.educationalGuides.length,
+  },
+  {
+    href: '/brands',
+    label: 'By Appliance Brand',
+    icon: 'kitchen',
+    blurb: 'Protectors that fit your GE, Samsung, and more.',
+    count: content.brandPages.length,
+  },
+]
+
+const hasAnyContent =
+  content.comparisons.length +
+    content.reviews.length +
+    content.buyerGuides.length +
+    content.educationalGuides.length +
+    content.brandPages.length >
+  0
 ---
 
 <BaseLayout
   title="StoveGuard Reviews — Independent Stove Top Protector Reviews"
-  description="Independent, unbiased reviews and comparisons of stove top protectors. No affiliations, no affiliate links."
+  description="Independent, unbiased reviews and comparisons of stove top protectors. No brand affiliations, no affiliate links, no commissions."
   activeNav="home"
 >
-  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
-    <section class="mb-12 max-w-3xl">
+  <!-- Hero -->
+  <section class="bg-ink-dark">
+    <div class="mx-auto max-w-[1160px] px-6 py-20 md:px-8 md:py-28">
       <div
-        class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
+        class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
       >
         <span class="material-symbols-outlined text-sm">verified_user</span>
         Independent &amp; Unbiased
       </div>
       <h1
-        class="mb-4 font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl"
+        class="mb-5 max-w-3xl font-headline text-4xl font-bold leading-[1.1] text-white md:text-6xl"
       >
-        Stove top protectors, tested and compared.
+        Stove top protector reviews you can trust.
       </h1>
-      <p class="text-lg text-muted">
-        No brand affiliations. No affiliate links. No commissions. Just
-        hands-on comparisons to help you pick the right protector.
+      <p class="mb-8 max-w-2xl text-lg text-stone-400">
+        We test stove top protectors hands-on and compare them honestly. No
+        brand affiliations. No affiliate links. No commissions — this site is
+        supported by display advertising alone.
       </p>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="/best"
+          class="inline-flex items-center gap-2 rounded-lg bg-primary-bright px-6 py-3 font-bold text-white transition-colors hover:bg-primary-hover"
+        >
+          See the rankings
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </a>
+        <a
+          href="/compare"
+          class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-6 py-3 font-bold text-white transition-colors hover:bg-white/5"
+        >
+          Compare brands
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 md:px-8">
+    <!-- Category navigation -->
+    <section class="py-14">
+      <h2 class="mb-2 font-headline text-2xl font-bold text-ink">Browse our research</h2>
+      <p class="mb-8 text-muted">Five ways into the same independent testing.</p>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          categories.map((cat) => (
+            <a
+              href={cat.href}
+              class="group flex flex-col rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
+            >
+              <span
+                class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-surface-warm text-primary"
+              >
+                <span class="material-symbols-outlined">{cat.icon}</span>
+              </span>
+              <h3 class="mb-1 font-headline text-lg font-bold text-ink group-hover:text-primary">
+                {cat.label}
+              </h3>
+              <p class="mb-3 flex-1 text-sm text-muted">{cat.blurb}</p>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-muted-soft">
+                {cat.count} published
+              </span>
+            </a>
+          ))
+        }
+      </div>
     </section>
 
-    <section>
-      <h2 class="mb-6 font-headline text-2xl font-bold text-ink">
-        Comparison Articles
-      </h2>
+    {
+      !hasAnyContent && (
+        <section class="rounded-lg border border-border-subtle bg-surface-card p-10 text-center">
+          <p class="font-headline text-lg text-muted">
+            Content is being published. Check back shortly.
+          </p>
+        </section>
+      )
+    }
 
-      {
-        articles.length === 0 ? (
-          <div
-            class="rounded-lg border border-border-subtle bg-surface-card p-10 text-center"
-          >
-            <p class="font-headline text-lg text-muted">
-              No comparison articles published yet. Check back soon.
-            </p>
+    <!-- Recent comparisons -->
+    {
+      content.comparisons.length > 0 && (
+        <section class="border-t border-border-faint py-14">
+          <div class="mb-6 flex items-end justify-between">
+            <h2 class="font-headline text-2xl font-bold text-ink">Latest Comparisons</h2>
+            <a href="/compare" class="text-sm font-semibold text-primary hover:underline">
+              All comparisons →
+            </a>
           </div>
-        ) : (
           <ul class="grid gap-6 md:grid-cols-2">
-            {articles.map((article) => (
+            {content.comparisons.map((article) => (
               <li>
                 <a
                   href={`/compare/${article.slug}`}
                   class="group block h-full rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
                 >
-                  <span
-                    class="mb-3 inline-block text-[11px] font-extrabold uppercase tracking-widest text-primary"
-                  >
+                  <span class="mb-2 inline-block text-[11px] font-extrabold uppercase tracking-widest text-primary">
                     {article.brandA} vs {article.brandB}
                   </span>
-                  <h3
-                    class="mb-2 font-headline text-xl font-bold leading-snug text-ink group-hover:text-primary"
-                  >
+                  <h3 class="mb-2 font-headline text-xl font-bold leading-snug text-ink group-hover:text-primary">
                     {article.title}
                   </h3>
                   <p class="text-sm text-muted">{article.metaDescription}</p>
-                  {article.readTimeMinutes && (
-                    <span class="mt-3 block text-[11px] text-muted-soft">
-                      {article.readTimeMinutes} min read
-                    </span>
-                  )}
                 </a>
               </li>
             ))}
           </ul>
-        )
-      }
+        </section>
+      )
+    }
+
+    <!-- Recent reviews -->
+    {
+      content.reviews.length > 0 && (
+        <section class="border-t border-border-faint py-14">
+          <div class="mb-6 flex items-end justify-between">
+            <h2 class="font-headline text-2xl font-bold text-ink">Latest Brand Reviews</h2>
+            <a href="/reviews" class="text-sm font-semibold text-primary hover:underline">
+              All reviews →
+            </a>
+          </div>
+          <ul class="grid gap-6 md:grid-cols-2">
+            {content.reviews.map((review) => (
+              <li>
+                <a
+                  href={`/reviews/${review.slug}`}
+                  class="group block h-full rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
+                >
+                  <div class="mb-2 flex items-center justify-between">
+                    <span class="text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                      {review.brand}
+                    </span>
+                    <span class="flex items-center gap-1 text-sm font-bold text-ink">
+                      <span
+                        class="material-symbols-outlined text-base text-primary"
+                        style="font-variation-settings: 'FILL' 1;"
+                      >
+                        star
+                      </span>
+                      {review.ratingOutOf5.toFixed(1)}
+                    </span>
+                  </div>
+                  <h3 class="mb-2 font-headline text-xl font-bold leading-snug text-ink group-hover:text-primary">
+                    {review.title}
+                  </h3>
+                  <p class="text-sm text-muted">{review.metaDescription}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Recent guides + buyer guides combined -->
+    {
+      (content.buyerGuides.length > 0 || content.educationalGuides.length > 0) && (
+        <section class="border-t border-border-faint py-14">
+          <h2 class="mb-6 font-headline text-2xl font-bold text-ink">Guides &amp; Rankings</h2>
+          <ul class="grid gap-6 md:grid-cols-3">
+            {content.buyerGuides.map((guide) => (
+              <li>
+                <a
+                  href={`/best/${guide.slug}`}
+                  class="group block h-full rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
+                >
+                  <span class="mb-2 inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                    <span class="material-symbols-outlined text-sm">trophy</span>
+                    Ranked Guide
+                  </span>
+                  <h3 class="font-headline text-lg font-bold leading-snug text-ink group-hover:text-primary">
+                    {guide.title}
+                  </h3>
+                </a>
+              </li>
+            ))}
+            {content.educationalGuides.map((guide) => (
+              <li>
+                <a
+                  href={`/guides/${guide.slug}`}
+                  class="group block h-full rounded-lg border border-border-subtle bg-surface-card p-6 transition-colors hover:border-primary"
+                >
+                  <span class="mb-2 inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                    <span class="material-symbols-outlined text-sm">menu_book</span>
+                    Guide
+                  </span>
+                  <h3 class="font-headline text-lg font-bold leading-snug text-ink group-hover:text-primary">
+                    {guide.title}
+                  </h3>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Brands -->
+    {
+      content.brandPages.length > 0 && (
+        <section class="border-t border-border-faint py-14">
+          <div class="mb-6 flex items-end justify-between">
+            <h2 class="font-headline text-2xl font-bold text-ink">Find Protectors by Brand</h2>
+            <a href="/brands" class="text-sm font-semibold text-primary hover:underline">
+              All brands →
+            </a>
+          </div>
+          <ul class="flex flex-wrap gap-3">
+            {content.brandPages.map((brand) => (
+              <li>
+                <a
+                  href={`/brands/${brand.slug}`}
+                  class="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-card px-5 py-2.5 font-bold text-ink transition-colors hover:border-primary hover:text-primary"
+                >
+                  <span class="material-symbols-outlined text-base text-primary">kitchen</span>
+                  {brand.brandName}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- How we research -->
+    <section class="border-t border-border-faint py-14">
+      <h2 class="mb-6 font-headline text-2xl font-bold text-ink">How we research</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="rounded-lg border border-border-subtle bg-surface-card p-6">
+          <span class="material-symbols-outlined mb-3 text-primary">science</span>
+          <h3 class="mb-1 font-bold text-ink">Hands-on testing</h3>
+          <p class="text-sm text-muted">
+            We buy protectors with our own funds and test them on real stoves.
+          </p>
+        </div>
+        <div class="rounded-lg border border-border-subtle bg-surface-card p-6">
+          <span class="material-symbols-outlined mb-3 text-primary">block</span>
+          <h3 class="mb-1 font-bold text-ink">No affiliate links</h3>
+          <p class="text-sm text-muted">
+            Zero commissions. Every "visit site" link goes straight to the brand.
+          </p>
+        </div>
+        <div class="rounded-lg border border-border-subtle bg-surface-card p-6">
+          <span class="material-symbols-outlined mb-3 text-primary">update</span>
+          <h3 class="mb-1 font-bold text-ink">Kept current</h3>
+          <p class="text-sm text-muted">
+            Pricing is verified and updated — one source of truth across the site.
+          </p>
+        </div>
+      </div>
     </section>
   </main>
 </BaseLayout>

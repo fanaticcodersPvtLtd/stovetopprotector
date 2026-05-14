@@ -7,7 +7,7 @@ Stitch project `6849064886324327137` has the full site visually designed (~30 sc
 | Route | Page type | Issue | Stitch screen | Built? |
 |---|---|---|---|---|
 | `/compare/[slug]` | Comparison article | #3 | `comparison-article` ✅ downloaded | in progress |
-| `/` | Homepage | #9 | homepage (2 variants) | no |
+| `/` | Homepage | #9 | homepage ✅ downloaded | in progress |
 | `/guides/[slug]` | Educational guide | #6 | educational-guide ✅ downloaded | in progress |
 | `/best/[slug]` | Buyer guide | #5 | buyer-guide ✅ downloaded | in progress |
 | `/reviews/[slug]` | Review article | #4 | review-article ✅ downloaded | in progress |

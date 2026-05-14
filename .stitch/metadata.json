@@ -67,6 +67,18 @@
       "dimensions": { "width": 2560, "height": 9348 },
       "downloadedAt": "2026-05-14T16:25:00Z",
       "variantNote": "Chosen 'Editorial' of 3 GE Brand Template variants. Has the protector-comparison table, GE model-series list, and FAQ — best match to the brand-pages schema. Alternates: f1f2cd4f... ('Visual Analysis'), 070cea40... ('High Contrast', image-led)."
+    },
+    "homepage": {
+      "screenId": "96294f8960794b19a45c7bf7855c7d7e",
+      "title": "GuardYourStove.com Homepage",
+      "issue": 9,
+      "files": {
+        "html": ".stitch/designs/homepage.html",
+        "png": ".stitch/designs/homepage.png"
+      },
+      "dimensions": { "width": 2560, "height": 8758 },
+      "downloadedAt": "2026-05-14T17:00:00Z",
+      "variantNote": "Chosen of 2 near-identical homepage variants (alternate: f9114e05...). Dark hero + stat badges, brand-comparison table, 'Browse our research' category nav, 'Most recent articles', 'how we research' methodology, dark CTA."
     }
   },
   "availableScreensNotDownloaded": {
