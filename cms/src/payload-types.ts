@@ -74,6 +74,7 @@ export interface Config {
     'educational-guides': EducationalGuide;
     'review-articles': ReviewArticle;
     'buyer-guides': BuyerGuide;
+    'brand-pages': BrandPage;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -88,6 +89,7 @@ export interface Config {
     'educational-guides': EducationalGuidesSelect<false> | EducationalGuidesSelect<true>;
     'review-articles': ReviewArticlesSelect<false> | ReviewArticlesSelect<true>;
     'buyer-guides': BuyerGuidesSelect<false> | BuyerGuidesSelect<true>;
+    'brand-pages': BrandPagesSelect<false> | BrandPagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -640,6 +642,102 @@ export interface BuyerGuide {
   createdAt: string;
 }
 /**
+ * Structured data for appliance brands (GE, Samsung, etc.). The frontend auto-generates the page from this data.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-pages".
+ */
+export interface BrandPage {
+  id: number;
+  /**
+   * Appliance brand, e.g. "GE", "Samsung", "Frigidaire".
+   */
+  brandName: string;
+  /**
+   * URL path segment. Auto-derived from brand name if left empty.
+   */
+  slug: string;
+  status: 'draft' | 'published';
+  /**
+   * Set automatically when status flips to Published.
+   */
+  publishedAt?: string | null;
+  /**
+   * SEO meta description — keep under ~160 characters.
+   */
+  metaDescription: string;
+  /**
+   * What makes this brand's stoves tricky for protectors (sealed vs open burners, glass vs coil, etc.).
+   */
+  intro: string;
+  /**
+   * Popular stove model series for this brand.
+   */
+  stoveModels?:
+    | {
+        seriesName: string;
+        stoveType: 'gas' | 'electric' | 'induction' | 'glass-top';
+        burnerCount?: number | null;
+        /**
+         * e.g. "30" or "36".
+         */
+        sizeInches?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Which protector products serve this appliance brand. Price pulled live from pricing-data.
+   */
+  protectorOptions?:
+    | {
+        product: number | PricingDatum;
+        /**
+         * Which models it fits, caveats, install notes.
+         */
+        compatibilityNote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Install tips and deeper guidance specific to this brand.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other appliance brand pages to link.
+   */
+  relatedBrands?: (number | BrandPage)[] | null;
+  sources?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -690,6 +788,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'buyer-guides';
         value: number | BuyerGuide;
+      } | null)
+    | ({
+        relationTo: 'brand-pages';
+        value: number | BrandPage;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -998,6 +1100,52 @@ export interface BuyerGuidesSelect<T extends boolean = true> {
         id?: T;
       };
   relatedGuides?: T;
+  sources?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-pages_select".
+ */
+export interface BrandPagesSelect<T extends boolean = true> {
+  brandName?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  metaDescription?: T;
+  intro?: T;
+  stoveModels?:
+    | T
+    | {
+        seriesName?: T;
+        stoveType?: T;
+        burnerCount?: T;
+        sizeInches?: T;
+        id?: T;
+      };
+  protectorOptions?:
+    | T
+    | {
+        product?: T;
+        compatibilityNote?: T;
+        id?: T;
+      };
+  body?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  relatedBrands?: T;
   sources?:
     | T
     | {

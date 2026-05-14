@@ -55,6 +55,18 @@
       "dimensions": { "width": 2560, "height": 7744 },
       "downloadedAt": "2026-05-14T15:42:00Z",
       "variantNote": "Single screen for buyer-guides. Methodology box, numbered ranking list with per-product score/price/positives/drawbacks, what-to-look-for body, FAQ, TOC sidebar. Matches blueprint §5.3."
+    },
+    "brand-page": {
+      "screenId": "f84ecb4db8964093a23cbbb4daef4c7c",
+      "title": "Best GE Stove Protectors (Editorial)",
+      "issue": 7,
+      "files": {
+        "html": ".stitch/designs/brand-page.html",
+        "png": ".stitch/designs/brand-page.png"
+      },
+      "dimensions": { "width": 2560, "height": 9348 },
+      "downloadedAt": "2026-05-14T16:25:00Z",
+      "variantNote": "Chosen 'Editorial' of 3 GE Brand Template variants. Has the protector-comparison table, GE model-series list, and FAQ — best match to the brand-pages schema. Alternates: f1f2cd4f... ('Visual Analysis'), 070cea40... ('High Contrast', image-led)."
     }
   },
   "availableScreensNotDownloaded": {

@@ -106,6 +106,35 @@ export type BuyerGuide = {
   sources?: Source[]
 }
 
+export type StoveModel = {
+  seriesName: string
+  stoveType: 'gas' | 'electric' | 'induction' | 'glass-top'
+  burnerCount?: number
+  sizeInches?: string
+}
+
+export type ProtectorOption = {
+  product: PricingData
+  compatibilityNote?: string
+}
+
+export type BrandPage = {
+  id: number
+  brandName: string
+  slug: string
+  status: 'draft' | 'published'
+  publishedAt?: string
+  metaDescription: string
+  intro: string
+  stoveModels?: StoveModel[]
+  // `depth=2` resolves protectorOptions[].product to a full pricing-data doc.
+  protectorOptions?: ProtectorOption[]
+  body: LexicalRichText
+  faqs?: Faq[]
+  relatedBrands?: BrandPage[]
+  sources?: Source[]
+}
+
 export type ReviewArticle = {
   id: number
   title: string
@@ -241,6 +270,30 @@ export async function getBuyerGuideBySlug(slug: string): Promise<BuyerGuide | nu
     '&depth=2' +
     '&limit=1'
   const data = await fetchJson<PaginatedResponse<BuyerGuide>>(query)
+  return data.docs[0] ?? null
+}
+
+/** All published brand pages, with protector-option relationships resolved. */
+export async function getPublishedBrandPages(): Promise<BrandPage[]> {
+  const query =
+    '/brand-pages' +
+    '?where[status][equals]=published' +
+    '&depth=2' +
+    '&limit=200' +
+    '&sort=brandName'
+  const data = await fetchJson<PaginatedResponse<BrandPage>>(query)
+  return data.docs
+}
+
+/** A single published brand page by slug, or null if not found. */
+export async function getBrandPageBySlug(slug: string): Promise<BrandPage | null> {
+  const query =
+    '/brand-pages' +
+    `?where[slug][equals]=${encodeURIComponent(slug)}` +
+    '&where[status][equals]=published' +
+    '&depth=2' +
+    '&limit=1'
+  const data = await fetchJson<PaginatedResponse<BrandPage>>(query)
   return data.docs[0] ?? null
 }
 

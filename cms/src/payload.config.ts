@@ -12,6 +12,7 @@ import { ComparisonArticles } from './collections/ComparisonArticles'
 import { EducationalGuides } from './collections/EducationalGuides'
 import { ReviewArticles } from './collections/ReviewArticles'
 import { BuyerGuides } from './collections/BuyerGuides'
+import { BrandPages } from './collections/BrandPages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,6 +32,7 @@ export default buildConfig({
     EducationalGuides,
     ReviewArticles,
     BuyerGuides,
+    BrandPages,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

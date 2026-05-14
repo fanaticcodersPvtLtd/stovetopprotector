@@ -1,0 +1,318 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import {
+  getPublishedBrandPages,
+  getBrandPageBySlug,
+  formatUsd,
+} from '../../lib/payload'
+import { lexicalToHtml } from '../../lib/lexical'
+
+export async function getStaticPaths() {
+  const pages = await getPublishedBrandPages()
+  return pages.map((page) => ({ params: { slug: page.slug } }))
+}
+
+const { slug } = Astro.params
+const brand = await getBrandPageBySlug(slug!)
+
+// getStaticPaths only emits published slugs — safety net, not an expected branch.
+// rewrite (not redirect) so the 404 renders correctly in a static build.
+if (!brand) {
+  return Astro.rewrite('/404')
+}
+
+const bodyHtml = lexicalToHtml(brand.body)
+const publishedDate = brand.publishedAt
+  ? new Date(brand.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : null
+
+const models = brand.stoveModels ?? []
+const protectors = brand.protectorOptions ?? []
+
+const STOVE_TYPE_LABELS: Record<string, string> = {
+  gas: 'Gas',
+  electric: 'Electric',
+  induction: 'Induction',
+  'glass-top': 'Glass-Top',
+}
+---
+
+<BaseLayout title={brand.metaDescription ? `Best Stove Protectors for ${brand.brandName} Stoves` : brand.brandName} description={brand.metaDescription} activeNav="brands">
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <!-- Breadcrumbs -->
+    <nav
+      class="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted"
+    >
+      <a href="/" class="hover:text-ink">Home</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/brands" class="hover:text-ink">By Brand</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-primary-bright">{brand.brandName}</span>
+    </nav>
+
+    <div
+      class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
+    >
+      <span class="material-symbols-outlined text-sm">kitchen</span>
+      Appliance Brand Guide
+    </div>
+
+    <h1
+      class="mb-8 max-w-4xl font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl lg:text-6xl"
+    >
+      Best Stove Top Protectors for {brand.brandName} Stoves
+    </h1>
+
+    <div
+      class="mb-10 flex flex-wrap items-center gap-6 border-b border-border-faint pb-8 text-[13px] font-medium text-muted"
+    >
+      {
+        publishedDate && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">schedule</span>
+            Updated {publishedDate}
+          </div>
+        )
+      }
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg text-primary-bright">verified_user</span>
+        Independently Compiled
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <!-- Main content -->
+      <article class="article-body max-w-[760px] flex-1">
+        <!-- Intro -->
+        <h2 id="intro">About {brand.brandName} Stoves</h2>
+        <p>{brand.intro}</p>
+
+        <!-- Stove models -->
+        {
+          models.length > 0 && (
+            <>
+              <h2 id="models">Popular {brand.brandName} Stove Models</h2>
+              <div class="mb-10 overflow-x-auto rounded-lg border border-border-subtle">
+                <table class="w-full bg-white text-left text-sm">
+                  <thead class="border-b border-border-subtle bg-surface-container">
+                    <tr>
+                      <th class="p-4 font-bold">Series</th>
+                      <th class="p-4 font-bold">Type</th>
+                      <th class="p-4 font-bold">Burners</th>
+                      <th class="p-4 font-bold">Size</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-border-faint">
+                    {models.map((model) => (
+                      <tr>
+                        <td class="p-4 font-semibold">{model.seriesName}</td>
+                        <td class="p-4">{STOVE_TYPE_LABELS[model.stoveType] ?? model.stoveType}</td>
+                        <td class="p-4">{model.burnerCount ?? '—'}</td>
+                        <td class="p-4">{model.sizeInches ? `${model.sizeInches}"` : '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )
+        }
+
+        <!-- Protector options -->
+        {
+          protectors.length > 0 && (
+            <>
+              <h2 id="protectors">Protectors That Fit {brand.brandName}</h2>
+              <div class="mb-10 space-y-4">
+                {protectors.map((option) => (
+                  <div class="rounded-lg border border-border-subtle bg-white p-6">
+                    <div class="mb-2 flex items-center justify-between gap-4">
+                      <h3 class="m-0 font-headline text-lg font-bold text-ink">
+                        {option.product.brand} {option.product.productName}
+                      </h3>
+                      <span class="flex-shrink-0 font-headline text-lg font-bold text-primary">
+                        {formatUsd(option.product.priceUsd)}
+                      </span>
+                    </div>
+                    {option.compatibilityNote && (
+                      <p class="m-0 mb-3 text-sm leading-relaxed text-ink-soft">
+                        {option.compatibilityNote}
+                      </p>
+                    )}
+                    <a
+                      href={option.product.productUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                    >
+                      Visit official site
+                      <span class="material-symbols-outlined text-base">open_in_new</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </>
+          )
+        }
+
+        <!-- Body (install tips) -->
+        <div set:html={bodyHtml} />
+
+        <!-- FAQ -->
+        {
+          brand.faqs && brand.faqs.length > 0 && (
+            <>
+              <h2 id="faq">{brand.brandName} Stove Protector FAQ</h2>
+              <div class="mb-12 space-y-4">
+                {brand.faqs.map((faq) => (
+                  <details class="group rounded-lg border border-border-subtle bg-white">
+                    <summary
+                      class="flex cursor-pointer list-none items-center justify-between p-5 font-bold"
+                    >
+                      {faq.question}
+                      <span
+                        class="material-symbols-outlined transition-transform group-open:rotate-180"
+                      >
+                        expand_more
+                      </span>
+                    </summary>
+                    <div class="p-5 pt-0 font-headline text-base text-ink-soft">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </>
+          )
+        }
+
+        <!-- CTA -->
+        <div class="mb-10 rounded-xl bg-ink-dark p-10 text-center">
+          <h2 class="mb-4 mt-0 font-headline text-3xl text-white">
+            Compare protectors head-to-head
+          </h2>
+          <p class="mb-8 font-body text-base text-stone-400">
+            Found a couple of options for your {brand.brandName} stove? See how
+            they stack up against each other.
+          </p>
+          <a
+            href="/compare"
+            class="group inline-flex items-center gap-2 rounded-lg bg-primary-bright px-8 py-4 font-bold text-white transition-all hover:bg-primary-hover"
+          >
+            See all comparisons
+            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">
+              arrow_forward
+            </span>
+          </a>
+        </div>
+
+        <!-- Disclosure -->
+        <div
+          class="mb-10 rounded-lg border border-border-subtle bg-surface-container p-5 text-[13px] italic text-muted"
+        >
+          Disclosure: stoveguard.us.com is not affiliated with {brand.brandName}
+          or any protector brand mentioned. We have no affiliate links and earn
+          no commissions — this site is supported by display advertising.
+        </div>
+
+        <!-- Sources -->
+        {
+          brand.sources && brand.sources.length > 0 && (
+            <div id="sources" class="mb-10 border-t border-border-faint pt-8">
+              <h5 class="mb-6 text-xs font-bold uppercase tracking-widest text-muted">
+                Article Sources &amp; Research
+              </h5>
+              <ol class="space-y-3 text-[13px] text-muted">
+                {brand.sources.map((source, i) => (
+                  <li>
+                    <span class="mr-2 font-bold text-primary">{i + 1}.</span>
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="italic hover:text-primary"
+                      >
+                        {source.label}
+                      </a>
+                    ) : (
+                      <i>{source.label}</i>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="w-full space-y-8 lg:w-[280px]">
+        <!-- TOC -->
+        <div class="sticky top-24 rounded-lg border border-border-subtle bg-white p-6">
+          <h5
+            class="mb-4 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-muted-soft"
+          >
+            <span class="material-symbols-outlined text-sm">toc</span> On This Page
+          </h5>
+          <nav class="flex flex-col gap-1 text-[13px] font-medium text-muted">
+            <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#intro">About {brand.brandName}</a>
+            {
+              models.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#models">
+                  Stove Models
+                </a>
+              )
+            }
+            {
+              protectors.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#protectors">
+                  Protectors That Fit
+                </a>
+              )
+            }
+            {
+              brand.faqs && brand.faqs.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#faq">
+                  FAQ
+                </a>
+              )
+            }
+            {
+              brand.sources && brand.sources.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#sources">
+                  Sources
+                </a>
+              )
+            }
+          </nav>
+        </div>
+
+        <!-- Related brands -->
+        {
+          brand.relatedBrands && brand.relatedBrands.length > 0 && (
+            <div class="rounded-lg border border-border-subtle bg-white p-6">
+              <h5 class="mb-4 text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                Other Brands
+              </h5>
+              <div class="flex flex-col gap-3">
+                {brand.relatedBrands.map((related) => (
+                  <a
+                    href={`/brands/${related.slug}`}
+                    class="text-[14px] font-bold leading-snug text-ink transition-colors hover:text-primary"
+                  >
+                    {related.brandName}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </main>
+</BaseLayout>

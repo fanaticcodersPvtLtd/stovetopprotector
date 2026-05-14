@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7],
     "failed": []
   },
   "history": [
@@ -279,6 +279,50 @@
       "round": 1,
       "timestamp": "2026-05-14T16:18:00Z",
       "note": "Issue #5 closed. Next in execution_order: #7 (Brand Pages)."
+    },
+    {
+      "issue": null,
+      "event": "github_issues_closed",
+      "timestamp": "2026-05-14T16:20:00Z",
+      "note": "Closed GitHub issues #1,#2,#3,#4,#5,#6,#8 — each with a comment referencing its harness evaluation + the independent Code Reviewer audit + commit SHA. 12 issues remain open (#7,#9-#19)."
+    },
+    {
+      "issue": 7,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T16:22:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-7.md. brand-pages collection (appliance-brand structured data: stoveModels array, protectorOptions array w/ nested pricing-data relationship) + /brands/[slug] template."
+    },
+    {
+      "issue": 7,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T16:26:00Z",
+      "designs": ["brand-page.html", "brand-page.png"],
+      "note": "Downloaded 'Editorial' GE Brand Template variant (f84ecb4d...) — has protector-comparison table + model-series list + FAQ. Cost $0."
+    },
+    {
+      "issue": 7,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T16:45:00Z",
+      "note": "brand-pages collection (stoveModels array, protectorOptions array w/ nested pricing-data relationship) + /brands/[slug] + /brands index. payload.ts extended with BrandPage/StoveModel/ProtectorOption types. Self-test: build clean, all 6 page types build, protector pricing propagates.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 7,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T16:48:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 10, Code Quality 9. Playwright-verified: stove-models table, protector cards with prices from pricing-data, FAQ, nav active; zero console errors. Report: harness/evaluations/issue-7-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 7,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T16:48:00Z",
+      "note": "Issue #7 closed. All 5 content collections + templates complete. #9 (Homepage) now fully unblocked. Next in execution_order: #12 (Auth)."
     }
   ],
   "history_schema": {
