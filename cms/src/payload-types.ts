@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     'pricing-data': PricingDatum;
     'comparison-articles': ComparisonArticle;
+    'educational-guides': EducationalGuide;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     'pricing-data': PricingDataSelect<false> | PricingDataSelect<true>;
     'comparison-articles': ComparisonArticlesSelect<false> | ComparisonArticlesSelect<true>;
+    'educational-guides': EducationalGuidesSelect<false> | EducationalGuidesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -368,6 +370,75 @@ export interface ComparisonArticle {
   createdAt: string;
 }
 /**
+ * Informational, non-commercial guides (thickness, safety, how-to). No pricing or brand comparison — purely educational.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "educational-guides".
+ */
+export interface EducationalGuide {
+  id: number;
+  /**
+   * e.g. "Stove Protector Thickness Guide: How Thick Is Enough?".
+   */
+  title: string;
+  /**
+   * URL path segment. Auto-derived from title if left empty.
+   */
+  slug: string;
+  status: 'draft' | 'published';
+  /**
+   * Set automatically when status flips to Published.
+   */
+  publishedAt?: string | null;
+  readTimeMinutes?: number | null;
+  /**
+   * SEO meta description — keep under ~160 characters.
+   */
+  metaDescription: string;
+  /**
+   * The 40–60 word direct answer / key takeaway, shown in a callout box near the top of the guide.
+   */
+  keyTakeaway: string;
+  /**
+   * Main guide content.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Other educational guides to link at the bottom and in the sidebar.
+   */
+  relatedGuides?: (number | EducationalGuide)[] | null;
+  sources?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -406,6 +477,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'comparison-articles';
         value: number | ComparisonArticle;
+      } | null)
+    | ({
+        relationTo: 'educational-guides';
+        value: number | EducationalGuide;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -595,6 +670,37 @@ export interface ComparisonArticlesSelect<T extends boolean = true> {
         id?: T;
       };
   relatedArticles?: T;
+  sources?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "educational-guides_select".
+ */
+export interface EducationalGuidesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  readTimeMinutes?: T;
+  metaDescription?: T;
+  keyTakeaway?: T;
+  body?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  relatedGuides?: T;
   sources?:
     | T
     | {

@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3],
+    "completed": [1, 2, 8, 3, 6],
     "failed": []
   },
   "history": [
@@ -153,6 +153,44 @@
       "round": 1,
       "timestamp": "2026-05-14T13:45:00Z",
       "note": "Issue #3 closed. Astro frontend foundation now exists for all later UI issues. Unblocks #4, #5, #7, #16 (and #6 was already unblocked). Next in execution_order: #6 (Educational Guides)."
+    },
+    {
+      "issue": 6,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T14:00:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-6.md. educational-guides collection (informational content, no pricing refs) + /guides/[slug] Astro template reusing the Issue #3 foundation. Phase: design."
+    },
+    {
+      "issue": 6,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T14:08:00Z",
+      "designs": ["educational-guide.html", "educational-guide.png"],
+      "note": "Downloaded 'Standard Layout' variant (screen f1bc7e6...) from existing Stitch project — most complete of 3. Cost $0. 'Data Heavy' variant's orange Key Takeaway callout borrowed for the keyTakeaway field styling."
+    },
+    {
+      "issue": 6,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T14:20:00Z",
+      "note": "educational-guides collection (11 fields, 3 hooks, no pricing refs) + /guides/[slug] + /guides index Astro templates reusing the Issue #3 foundation. payload.ts extended with EducationalGuide type + 2 fetch fns. Self-test: build clean, draft filtering works, keyTakeaway box renders.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 6,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T14:24:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 10, Code Quality 9. Playwright-verified: guide renders with key-takeaway callout, FAQ, sidebar TOC; draft excluded from published list + index; nav active state; zero console errors. Report: harness/evaluations/issue-6-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 6,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T14:24:00Z",
+      "note": "Issue #6 closed. Next in execution_order: #4 (Review Articles)."
     }
   ],
   "history_schema": {

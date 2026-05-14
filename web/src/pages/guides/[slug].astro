@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import {
+  getPublishedEducationalGuides,
+  getEducationalGuideBySlug,
+} from '../../lib/payload'
+import { lexicalToHtml } from '../../lib/lexical'
+
+export async function getStaticPaths() {
+  const guides = await getPublishedEducationalGuides()
+  return guides.map((guide) => ({ params: { slug: guide.slug } }))
+}
+
+const { slug } = Astro.params
+const guide = await getEducationalGuideBySlug(slug!)
+
+// getStaticPaths only emits published slugs — safety net, not an expected branch.
+if (!guide) {
+  return Astro.redirect('/404')
+}
+
+const bodyHtml = lexicalToHtml(guide.body)
+const publishedDate = guide.publishedAt
+  ? new Date(guide.publishedAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : null
+---
+
+<BaseLayout title={guide.title} description={guide.metaDescription} activeNav="guides">
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <!-- Breadcrumbs -->
+    <nav
+      class="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted"
+    >
+      <a href="/" class="hover:text-ink">Home</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/guides" class="hover:text-ink">Guides</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-primary-bright">{guide.title}</span>
+    </nav>
+
+    <div
+      class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-bright"
+    >
+      <span class="material-symbols-outlined text-sm">menu_book</span>
+      Educational Guide
+    </div>
+
+    <h1
+      class="mb-8 max-w-4xl font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl lg:text-6xl"
+    >
+      {guide.title}
+    </h1>
+
+    <div
+      class="mb-10 flex flex-wrap items-center gap-6 border-b border-border-faint pb-8 text-[13px] font-medium text-muted"
+    >
+      {
+        publishedDate && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">schedule</span>
+            Updated {publishedDate}
+          </div>
+        )
+      }
+      {
+        guide.readTimeMinutes && (
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-primary-bright">menu_book</span>
+            {guide.readTimeMinutes} min read
+          </div>
+        )
+      }
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg text-primary-bright">verified_user</span>
+        Independently Researched
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <!-- Main content -->
+      <article class="article-body max-w-[760px] flex-1">
+        <!-- Key takeaway box -->
+        <section
+          class="mb-10 flex items-start gap-4 rounded-lg border border-primary/30 bg-surface-warm p-6"
+        >
+          <span class="material-symbols-outlined mt-0.5 text-primary">lightbulb</span>
+          <div>
+            <h2 id="key-takeaway" class="m-0 mb-2 text-sm font-extrabold uppercase tracking-widest text-primary">
+              Key Takeaway
+            </h2>
+            <p class="m-0 font-headline text-lg leading-relaxed text-ink">
+              {guide.keyTakeaway}
+            </p>
+          </div>
+        </section>
+
+        <!-- Guide body (rich text) -->
+        <div set:html={bodyHtml} />
+
+        <!-- FAQ -->
+        {
+          guide.faqs && guide.faqs.length > 0 && (
+            <>
+              <h2 id="faq">Frequently Asked Questions</h2>
+              <div class="mb-12 space-y-4">
+                {guide.faqs.map((faq) => (
+                  <details class="group rounded-lg border border-border-subtle bg-white">
+                    <summary
+                      class="flex cursor-pointer list-none items-center justify-between p-5 font-bold"
+                    >
+                      {faq.question}
+                      <span
+                        class="material-symbols-outlined transition-transform group-open:rotate-180"
+                      >
+                        expand_more
+                      </span>
+                    </summary>
+                    <div class="p-5 pt-0 font-headline text-base text-ink-soft">
+                      {faq.answer}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </>
+          )
+        }
+
+        <!-- CTA -->
+        <div class="mb-16 rounded-xl bg-ink-dark p-10 text-center">
+          <h2 class="mb-4 mt-0 font-headline text-3xl text-white">
+            Ready to compare protectors?
+          </h2>
+          <p class="mb-8 font-body text-base text-stone-400">
+            Now that you know what to look for, see how the brands stack up
+            side by side.
+          </p>
+          <a
+            href="/compare"
+            class="group inline-flex items-center gap-2 rounded-lg bg-primary-bright px-8 py-4 font-bold text-white transition-all hover:bg-primary-hover"
+          >
+            See all comparisons
+            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">
+              arrow_forward
+            </span>
+          </a>
+        </div>
+
+        <!-- Sources -->
+        {
+          guide.sources && guide.sources.length > 0 && (
+            <div id="sources" class="mb-10 border-t border-border-faint pt-8">
+              <h5 class="mb-6 text-xs font-bold uppercase tracking-widest text-muted">
+                Article Sources &amp; Research
+              </h5>
+              <ol class="space-y-3 text-[13px] text-muted">
+                {guide.sources.map((source, i) => (
+                  <li>
+                    <span class="mr-2 font-bold text-primary">{i + 1}.</span>
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="italic hover:text-primary"
+                      >
+                        {source.label}
+                      </a>
+                    ) : (
+                      <i>{source.label}</i>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="w-full space-y-8 lg:w-[280px]">
+        <!-- TOC -->
+        <div class="sticky top-24 rounded-lg border border-border-subtle bg-white p-6">
+          <h5
+            class="mb-4 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-widest text-muted-soft"
+          >
+            <span class="material-symbols-outlined text-sm">toc</span> On This Page
+          </h5>
+          <nav class="flex flex-col gap-1 text-[13px] font-medium text-muted">
+            <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#key-takeaway">Key Takeaway</a>
+            {
+              guide.faqs && guide.faqs.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#faq">
+                  FAQ
+                </a>
+              )
+            }
+            {
+              guide.sources && guide.sources.length > 0 && (
+                <a class="rounded px-3 py-2 transition-colors hover:bg-surface-warm hover:text-primary" href="#sources">
+                  Sources
+                </a>
+              )
+            }
+          </nav>
+        </div>
+
+        <!-- Related guides -->
+        {
+          guide.relatedGuides && guide.relatedGuides.length > 0 && (
+            <div class="rounded-lg border border-border-subtle bg-white p-6">
+              <h5 class="mb-4 text-[11px] font-extrabold uppercase tracking-widest text-primary">
+                Related Guides
+              </h5>
+              <div class="flex flex-col gap-4">
+                {guide.relatedGuides.map((related) => (
+                  <a href={`/guides/${related.slug}`} class="group">
+                    <h6
+                      class="text-[14px] font-bold leading-snug transition-colors group-hover:text-primary"
+                    >
+                      {related.title}
+                    </h6>
+                    {related.readTimeMinutes && (
+                      <span class="text-[11px] text-muted-soft">
+                        {related.readTimeMinutes} min read
+                      </span>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </main>
+</BaseLayout>

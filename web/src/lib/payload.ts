@@ -57,6 +57,21 @@ export type ComparisonArticle = {
   sources?: Source[]
 }
 
+export type EducationalGuide = {
+  id: number
+  title: string
+  slug: string
+  status: 'draft' | 'published'
+  publishedAt?: string
+  readTimeMinutes?: number
+  metaDescription: string
+  keyTakeaway: string
+  body: LexicalRichText
+  faqs?: Faq[]
+  relatedGuides?: EducationalGuide[]
+  sources?: Source[]
+}
+
 type PaginatedResponse<T> = {
   docs: T[]
   totalDocs: number
@@ -95,6 +110,32 @@ export async function getComparisonArticleBySlug(
     '&depth=2' +
     '&limit=1'
   const data = await fetchJson<PaginatedResponse<ComparisonArticle>>(query)
+  return data.docs[0] ?? null
+}
+
+/** All published educational guides. */
+export async function getPublishedEducationalGuides(): Promise<EducationalGuide[]> {
+  const query =
+    '/educational-guides' +
+    '?where[status][equals]=published' +
+    '&depth=1' +
+    '&limit=200' +
+    '&sort=-publishedAt'
+  const data = await fetchJson<PaginatedResponse<EducationalGuide>>(query)
+  return data.docs
+}
+
+/** A single published educational guide by slug, or null if not found. */
+export async function getEducationalGuideBySlug(
+  slug: string,
+): Promise<EducationalGuide | null> {
+  const query =
+    '/educational-guides' +
+    `?where[slug][equals]=${encodeURIComponent(slug)}` +
+    '&where[status][equals]=published' +
+    '&depth=1' +
+    '&limit=1'
+  const data = await fetchJson<PaginatedResponse<EducationalGuide>>(query)
   return data.docs[0] ?? null
 }
 

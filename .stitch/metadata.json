@@ -19,6 +19,18 @@
       "dimensions": { "width": 2560, "height": 10532 },
       "downloadedAt": "2026-05-14T12:55:00Z",
       "variantNote": "Chosen variant A of 3. Cleanest section structure, TOC sidebar, scannable spec table — best match to blueprint §5.2. Alternates: e29a1c55... (taller, denser), 00d5d034... (short, incomplete)."
+    },
+    "educational-guide": {
+      "screenId": "f1bc7e67f32843b6b4fe3e9892c8f992",
+      "title": "Educational Guide - Standard Layout",
+      "issue": 6,
+      "files": {
+        "html": ".stitch/designs/educational-guide.html",
+        "png": ".stitch/designs/educational-guide.png"
+      },
+      "dimensions": { "width": 2560, "height": 9032 },
+      "downloadedAt": "2026-05-14T14:05:00Z",
+      "variantNote": "Chosen 'Standard Layout' of 3. Most complete: hero, sectioned body, heat-resistance table, FAQ accordion, dark CTA, TOC sidebar. Alternates: e932402... ('Data Heavy' — has the orange Key Takeaway callout box, borrowed for the keyTakeaway field styling), 83387bc... ('Visual Focus')."
     }
   },
   "availableScreensNotDownloaded": {
