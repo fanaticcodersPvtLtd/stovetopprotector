@@ -1,0 +1,80 @@
+---
+interface Props {
+  /** Absolute canonical URL of the page being shared. */
+  url: string
+  /** Page title used as share text. */
+  title: string
+}
+const { url, title } = Astro.props
+
+const enc = encodeURIComponent
+const shareLinks = [
+  {
+    label: 'Share on X',
+    icon: 'share',
+    href: `https://twitter.com/intent/tweet?url=${enc(url)}&text=${enc(title)}`,
+  },
+  {
+    label: 'Share on Facebook',
+    icon: 'thumb_up',
+    href: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`,
+  },
+  {
+    label: 'Save to Pinterest',
+    icon: 'push_pin',
+    href: `https://www.pinterest.com/pin/create/button/?url=${enc(url)}&description=${enc(title)}`,
+  },
+]
+---
+
+<div class="flex flex-wrap items-center gap-2" data-share-buttons data-share-url={url}>
+  <span class="mr-1 text-[11px] font-extrabold uppercase tracking-widest text-muted-soft">
+    Share
+  </span>
+  {
+    shareLinks.map((link) => (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={link.label}
+        title={link.label}
+        class="flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle bg-white text-muted transition-colors hover:border-primary hover:text-primary"
+      >
+        <span class="material-symbols-outlined text-[18px]">{link.icon}</span>
+      </a>
+    ))
+  }
+  <button
+    type="button"
+    data-copy-link
+    aria-label="Copy link"
+    title="Copy link"
+    class="flex h-9 items-center gap-1.5 rounded-full border border-border-subtle bg-white px-3 text-[13px] font-medium text-muted transition-colors hover:border-primary hover:text-primary"
+  >
+    <span class="material-symbols-outlined text-[18px]">link</span>
+    <span data-copy-label>Copy link</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-share-buttons]').forEach((root) => {
+    const btn = root.querySelector<HTMLButtonElement>('[data-copy-link]')
+    const label = root.querySelector<HTMLElement>('[data-copy-label]')
+    const url = root.dataset.shareUrl ?? window.location.href
+    btn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url)
+        if (label) {
+          const prev = label.textContent
+          label.textContent = 'Copied!'
+          setTimeout(() => {
+            label.textContent = prev
+          }, 1800)
+        }
+      } catch {
+        // clipboard blocked — no-op, the share links still work
+      }
+    })
+  })
+</script>

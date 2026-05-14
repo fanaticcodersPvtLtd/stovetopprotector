@@ -3,6 +3,7 @@ import { triggerDeploy } from '../lib/triggerDeploy'
 import { toKebabCase } from '../lib/slug'
 import { validateHttpUrl } from '../lib/validateUrl'
 import { isCmsAdmin } from '../lib/access'
+import { autoPostArticle } from '../lib/socialPost'
 
 export const BrandPages: CollectionConfig = {
   slug: 'brand-pages',
@@ -38,9 +39,15 @@ export const BrandPages: CollectionConfig = {
       },
     ],
     afterChange: [
-      ({ doc, req }) => {
+      ({ doc, previousDoc, req }) => {
         if (doc?.status === 'published') {
           triggerDeploy(req.payload, `brand-pages/${doc.slug}`)
+          if (previousDoc?.status !== 'published') {
+            autoPostArticle(req.payload, {
+              title: `Best Stove Top Protectors for ${doc.brandName} Stoves`,
+              path: `/brands/${doc.slug}`,
+            })
+          }
         }
         return doc
       },

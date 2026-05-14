@@ -3,6 +3,7 @@ import { triggerDeploy } from '../lib/triggerDeploy'
 import { toKebabCase } from '../lib/slug'
 import { validateHttpUrl } from '../lib/validateUrl'
 import { isCmsAdmin } from '../lib/access'
+import { autoPostArticle } from '../lib/socialPost'
 
 export const BuyerGuides: CollectionConfig = {
   slug: 'buyer-guides',
@@ -38,9 +39,12 @@ export const BuyerGuides: CollectionConfig = {
       },
     ],
     afterChange: [
-      ({ doc, req }) => {
+      ({ doc, previousDoc, req }) => {
         if (doc?.status === 'published') {
           triggerDeploy(req.payload, `buyer-guides/${doc.slug}`)
+          if (previousDoc?.status !== 'published') {
+            autoPostArticle(req.payload, { title: doc.title, path: `/best/${doc.slug}` })
+          }
         }
         return doc
       },

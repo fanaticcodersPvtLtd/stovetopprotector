@@ -8,6 +8,7 @@ import {
 import { lexicalToHtml } from '../../lib/lexical'
 import { brandPageLd } from '../../lib/seo'
 import ReviewSection from '../../components/ReviewSection.astro'
+import ShareButtons from '../../components/ShareButtons.astro'
 
 export async function getStaticPaths() {
   const pages = await getPublishedBrandPages()
@@ -97,6 +98,13 @@ const jsonLd = brandPageLd(brand, pageUrl)
     <div class="flex flex-col gap-12 lg:flex-row">
       <!-- Main content -->
       <article class="article-body max-w-[760px] flex-1">
+        <div class="mb-8">
+          <ShareButtons
+            url={pageUrl}
+            title={`Best Stove Top Protectors for ${brand.brandName} Stoves`}
+          />
+        </div>
+
         <!-- Intro -->
         <h2 id="intro">About {brand.brandName} Stoves</h2>
         <p>{brand.intro}</p>

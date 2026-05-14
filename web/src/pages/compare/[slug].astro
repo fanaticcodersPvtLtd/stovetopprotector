@@ -8,6 +8,7 @@ import {
 import { lexicalToHtml } from '../../lib/lexical'
 import { comparisonArticleLd } from '../../lib/seo'
 import ReviewSection from '../../components/ReviewSection.astro'
+import ShareButtons from '../../components/ShareButtons.astro'
 
 export async function getStaticPaths() {
   const articles = await getPublishedComparisonArticles()
@@ -101,6 +102,8 @@ const jsonLd = comparisonArticleLd(article, pageUrl)
     <div class="flex flex-col gap-12 lg:flex-row">
       <!-- Main content -->
       <article class="article-body max-w-[760px] flex-1">
+        <div class="mb-8"><ShareButtons url={pageUrl} title={article.title} /></div>
+
         <!-- Editorial box -->
         <section
           class="mb-10 flex items-start gap-5 rounded-lg border border-border-subtle bg-surface-container p-6"

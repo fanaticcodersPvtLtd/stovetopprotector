@@ -8,6 +8,7 @@ import {
 import { lexicalToHtml } from '../../lib/lexical'
 import { reviewArticleLd } from '../../lib/seo'
 import ReviewSection from '../../components/ReviewSection.astro'
+import ShareButtons from '../../components/ShareButtons.astro'
 
 export async function getStaticPaths() {
   const reviews = await getPublishedReviewArticles()
@@ -101,6 +102,8 @@ const jsonLd = reviewArticleLd(review, pageUrl)
     <div class="flex flex-col gap-12 lg:flex-row">
       <!-- Main content -->
       <article class="article-body max-w-[760px] flex-1">
+        <div class="mb-8"><ShareButtons url={pageUrl} title={review.title} /></div>
+
         <!-- Verdict box with rating -->
         <h2 id="verdict">Quick Verdict</h2>
         <div

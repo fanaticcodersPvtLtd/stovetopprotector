@@ -6,6 +6,7 @@ import {
 } from '../../lib/payload'
 import { lexicalToHtml } from '../../lib/lexical'
 import { educationalGuideLd } from '../../lib/seo'
+import ShareButtons from '../../components/ShareButtons.astro'
 
 export async function getStaticPaths() {
   const guides = await getPublishedEducationalGuides()
@@ -93,6 +94,8 @@ const jsonLd = educationalGuideLd(guide, pageUrl)
     <div class="flex flex-col gap-12 lg:flex-row">
       <!-- Main content -->
       <article class="article-body max-w-[760px] flex-1">
+        <div class="mb-8"><ShareButtons url={pageUrl} title={guide.title} /></div>
+
         <!-- Key takeaway box -->
         <section
           class="mb-10 flex items-start gap-4 rounded-lg border border-primary/30 bg-surface-warm p-6"

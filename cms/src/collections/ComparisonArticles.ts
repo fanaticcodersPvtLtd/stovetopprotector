@@ -3,6 +3,7 @@ import { triggerDeploy } from '../lib/triggerDeploy'
 import { toKebabCase } from '../lib/slug'
 import { validateHttpUrl, validateOptionalHttpUrl } from '../lib/validateUrl'
 import { isCmsAdmin } from '../lib/access'
+import { autoPostArticle } from '../lib/socialPost'
 
 export const ComparisonArticles: CollectionConfig = {
   slug: 'comparison-articles',
@@ -44,9 +45,13 @@ export const ComparisonArticles: CollectionConfig = {
       },
     ],
     afterChange: [
-      ({ doc, req }) => {
+      ({ doc, previousDoc, req }) => {
         if (doc?.status === 'published') {
           triggerDeploy(req.payload, `comparison-articles/${doc.slug}`)
+          // Auto-post only on the transition to published, not every re-save.
+          if (previousDoc?.status !== 'published') {
+            autoPostArticle(req.payload, { title: doc.title, path: `/compare/${doc.slug}` })
+          }
         }
         return doc
       },
