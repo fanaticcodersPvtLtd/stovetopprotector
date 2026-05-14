@@ -14,10 +14,18 @@ const articles = await getPublishedComparisonArticles()
     <h1 class="mb-2 font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl">
       Brand Comparisons
     </h1>
-    <p class="mb-12 max-w-2xl text-lg text-muted">
+    <p class="mb-6 max-w-2xl text-lg text-muted">
       Head-to-head matchups of stove top protector brands — specs, pricing, and
       real-world testing.
     </p>
+    <a
+      href="/compare/tool"
+      data-cta="compare-index-tool"
+      class="mb-12 inline-flex items-center gap-2 rounded-lg bg-primary-bright px-6 py-3 font-bold text-white transition-colors hover:bg-primary-hover"
+    >
+      <span class="material-symbols-outlined text-base">tune</span>
+      Build your own comparison
+    </a>
 
     {
       articles.length === 0 ? (

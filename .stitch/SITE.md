@@ -15,7 +15,7 @@ Stitch project `6849064886324327137` has the full site visually designed (~30 sc
 | `/brands` | Brand hub | #9 | brand-hub | no |
 | `/compare` | Comparison index | #9 | comparisons-index | no |
 | `/articles` | All articles index | #9 | articles-index | no |
-| `/compare` (tool) | Interactive comparison tool | #16 | comparison-tool | no |
+| `/compare/tool` | Interactive comparison tool | #16 | comparison-tool ✅ downloaded | in progress |
 | `/profile` | User profile | #14 | user-profile | no |
 | `/terms`, `/privacy`, `/disclaimer`, `/about`, `/contact` | Legal/info | #9 area | legal screens | no |
 

@@ -79,6 +79,18 @@
       "dimensions": { "width": 2560, "height": 8758 },
       "downloadedAt": "2026-05-14T17:00:00Z",
       "variantNote": "Chosen of 2 near-identical homepage variants (alternate: f9114e05...). Dark hero + stat badges, brand-comparison table, 'Browse our research' category nav, 'Most recent articles', 'how we research' methodology, dark CTA."
+    },
+    "comparison-tool": {
+      "screenId": "c17c7935419444fc8b7f5ccb0aa83228",
+      "title": "Interactive Comparison Tool",
+      "issue": 16,
+      "files": {
+        "html": ".stitch/designs/comparison-tool.html",
+        "png": ".stitch/designs/comparison-tool.png"
+      },
+      "dimensions": { "width": 2560, "height": 4062 },
+      "downloadedAt": "2026-05-14T18:00:00Z",
+      "variantNote": "Chosen of 2 near-identical comparison-tool variants (alternate: 0317056...). Two brand <select> dropdowns + 'vs' badge, side-by-side spec comparison table with per-row highlight."
     }
   },
   "availableScreensNotDownloaded": {

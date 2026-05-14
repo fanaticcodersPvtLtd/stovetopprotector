@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getAllPricingData } from '../../lib/payload'
+
+const products = await getAllPricingData()
+const hasEnough = products.length >= 2
+
+// Build-time data island for the client-side tool. Only the fields the tool
+// renders — keep the payload small. `<` is escaped to prevent </script> breakout.
+const toolData = products.map((p) => ({
+  id: p.id,
+  brand: p.brand,
+  productName: p.productName,
+  productLine: p.productLine ?? null,
+  priceUsd: p.priceUsd,
+  inStock: p.inStock,
+  productUrl: p.productUrl,
+  thicknessMm: p.specs?.thicknessMm ?? null,
+  materialType: p.specs?.materialType ?? null,
+  heatRatingFahrenheit: p.specs?.heatRatingFahrenheit ?? null,
+  warrantyMonths: p.specs?.warrantyMonths ?? null,
+  dimensionsInches: p.specs?.dimensionsInches ?? null,
+}))
+const dataJson = JSON.stringify(toolData).replace(/</g, '\\u003c')
+---
+
+<BaseLayout
+  title="Compare Stove Protectors Side-by-Side — StoveGuard Reviews"
+  description="Interactive tool: pick any two stove top protectors and compare price and specs side by side."
+  activeNav="comparisons"
+>
+  <main class="mx-auto max-w-[1160px] px-6 pb-20 pt-28 md:px-8">
+    <nav
+      class="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted"
+    >
+      <a href="/" class="hover:text-ink">Home</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <a href="/compare" class="hover:text-ink">Comparisons</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      <span class="text-primary-bright">Comparison Tool</span>
+    </nav>
+
+    <h1 class="mb-2 font-headline text-4xl font-bold leading-[1.1] text-ink md:text-5xl">
+      Compare Stove Protectors
+    </h1>
+    <p class="mb-10 max-w-2xl text-lg text-muted">
+      Pick any two protectors below for a side-by-side comparison of price and
+      specs — built from our verified pricing data.
+    </p>
+
+    {
+      !hasEnough ? (
+        <div class="rounded-lg border border-border-subtle bg-surface-card p-10 text-center">
+          <p class="font-headline text-lg text-muted">
+            The comparison tool needs at least two products in the catalog.
+            Check back once more pricing data is published.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Selectors */}
+          <div
+            class="mb-8 flex flex-col items-stretch gap-4 rounded-lg border border-border-subtle bg-surface-card p-6 sm:flex-row sm:items-center"
+          >
+            <label class="flex-1">
+              <span class="mb-1 block text-[11px] font-extrabold uppercase tracking-widest text-muted-soft">
+                Select a product
+              </span>
+              <select
+                id="product-a"
+                class="w-full rounded-lg border border-border-subtle bg-white px-4 py-3 text-sm font-semibold text-ink"
+              >
+                {products.map((p, i) => (
+                  <option value={p.id} selected={i === 0}>
+                    {p.brand} {p.productName} (${p.priceUsd.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <span
+              class="mx-auto flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white"
+            >
+              VS
+            </span>
+            <label class="flex-1">
+              <span class="mb-1 block text-[11px] font-extrabold uppercase tracking-widest text-muted-soft">
+                Select a product
+              </span>
+              <select
+                id="product-b"
+                class="w-full rounded-lg border border-border-subtle bg-white px-4 py-3 text-sm font-semibold text-ink"
+              >
+                {products.map((p, i) => (
+                  <option value={p.id} selected={i === 1}>
+                    {p.brand} {p.productName} (${p.priceUsd.toFixed(2)})
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          {/* Comparison output — populated by the client script */}
+          <div id="comparison-output" class="overflow-x-auto rounded-lg border border-border-subtle" />
+
+          <p class="mt-8 text-center text-sm text-muted">
+            Want the full write-up?{' '}
+            <a href="/compare" class="font-semibold text-primary hover:underline">
+              Read our in-depth comparisons →
+            </a>
+          </p>
+
+          <script type="application/json" id="tool-data" set:html={dataJson} />
+        </>
+      )
+    }
+  </main>
+</BaseLayout>
+
+<script>
+  type ToolProduct = {
+    id: number
+    brand: string
+    productName: string
+    productLine: string | null
+    priceUsd: number
+    inStock: boolean
+    productUrl: string
+    thicknessMm: number | null
+    materialType: string | null
+    heatRatingFahrenheit: number | null
+    warrantyMonths: number | null
+    dimensionsInches: string | null
+  }
+
+  const dataEl = document.getElementById('tool-data')
+  const selectA = document.getElementById('product-a') as HTMLSelectElement | null
+  const selectB = document.getElementById('product-b') as HTMLSelectElement | null
+  const output = document.getElementById('comparison-output')
+
+  if (dataEl && selectA && selectB && output) {
+    const products: ToolProduct[] = JSON.parse(dataEl.textContent ?? '[]')
+    const byId = new Map(products.map((p) => [p.id, p]))
+
+    const usd = (n: number) =>
+      new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
+    const esc = (s: string) =>
+      s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+    const ROWS: { label: string; get: (p: ToolProduct) => string }[] = [
+      { label: 'Price', get: (p) => usd(p.priceUsd) },
+      { label: 'Product Line', get: (p) => (p.productLine ? p.productLine : '—') },
+      { label: 'In Stock', get: (p) => (p.inStock ? 'Yes' : 'No') },
+      { label: 'Thickness', get: (p) => (p.thicknessMm != null ? `${p.thicknessMm} mm` : '—') },
+      { label: 'Material', get: (p) => (p.materialType ? p.materialType : '—') },
+      {
+        label: 'Heat Rating',
+        get: (p) => (p.heatRatingFahrenheit != null ? `${p.heatRatingFahrenheit}°F` : '—'),
+      },
+      {
+        label: 'Warranty',
+        get: (p) => (p.warrantyMonths != null ? `${p.warrantyMonths} months` : '—'),
+      },
+      { label: 'Dimensions', get: (p) => (p.dimensionsInches ? p.dimensionsInches : '—') },
+    ]
+
+    function render() {
+      const a = byId.get(Number(selectA!.value))
+      const b = byId.get(Number(selectB!.value))
+      if (!a || !b) return
+
+      if (a.id === b.id) {
+        output!.innerHTML =
+          '<p class="bg-surface-warm p-6 text-center text-sm font-semibold text-ink">Pick two different products to compare.</p>'
+        return
+      }
+
+      const head = `<thead class="bg-surface-container"><tr>
+        <th class="p-4 text-left font-bold">Spec</th>
+        <th class="p-4 text-left font-bold">${esc(a.brand)} ${esc(a.productName)}</th>
+        <th class="p-4 text-left font-bold">${esc(b.brand)} ${esc(b.productName)}</th>
+      </tr></thead>`
+
+      const body = ROWS.map((row) => {
+        const va = esc(row.get(a))
+        const vb = esc(row.get(b))
+        // Highlight the cheaper price.
+        let aCls = 'p-4'
+        let bCls = 'p-4'
+        if (row.label === 'Price') {
+          if (a.priceUsd < b.priceUsd) aCls += ' bg-surface-warm font-bold'
+          else if (b.priceUsd < a.priceUsd) bCls += ' bg-surface-warm font-bold'
+        }
+        return `<tr>
+          <td class="p-4 font-semibold">${row.label}</td>
+          <td class="${aCls}">${va}</td>
+          <td class="${bCls}">${vb}</td>
+        </tr>`
+      }).join('')
+
+      const links = `<tr>
+        <td class="p-4 font-semibold">Official Site</td>
+        <td class="p-4"><a class="font-semibold text-primary hover:underline" href="${esc(a.productUrl)}" target="_blank" rel="noopener noreferrer">Visit site</a></td>
+        <td class="p-4"><a class="font-semibold text-primary hover:underline" href="${esc(b.productUrl)}" target="_blank" rel="noopener noreferrer">Visit site</a></td>
+      </tr>`
+
+      output!.innerHTML = `<table class="w-full bg-white text-sm">${head}<tbody class="divide-y divide-border-faint">${body}${links}</tbody></table>`
+    }
+
+    selectA.addEventListener('change', render)
+    selectB.addEventListener('change', render)
+    render()
+  }
+</script>

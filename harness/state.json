@@ -3,9 +3,9 @@
   "harness_version": "2.0",
   "model": "claude-opus-4-7",
   "current": {
-    "phase": "build",
-    "active_issue": 16,
-    "round": 1,
+    "phase": "idle",
+    "active_issue": null,
+    "round": 0,
     "max_rounds": 3
   },
   "grading_thresholds": {
@@ -44,7 +44,7 @@
       "18": { "blocked_by": [9], "blocks": [], "has_ui": true },
       "19": { "blocked_by": [9], "blocks": [], "has_ui": true }
     },
-    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11],
+    "completed": [1, 2, 8, 3, 6, 4, 5, 7, 9, 10, 11, 16],
     "failed": [],
     "blocked_on_external_credentials": {
       "12": "Google + Facebook OAuth app credentials",
@@ -432,6 +432,44 @@
       "round": 1,
       "timestamp": "2026-05-14T17:53:00Z",
       "note": "Issue #11 closed. Next buildable: #16 (Comparison Tool) — #13/#14 blocked behind #12 (Auth, needs OAuth creds)."
+    },
+    {
+      "issue": 16,
+      "event": "contract_written",
+      "round": 0,
+      "timestamp": "2026-05-14T17:55:00Z",
+      "note": "Orchestrator wrote harness/contracts/issue-16.md. Interactive comparison tool at /compare/tool (static route, no collision with /compare/[slug])."
+    },
+    {
+      "issue": 16,
+      "event": "design_complete",
+      "round": 0,
+      "timestamp": "2026-05-14T18:00:00Z",
+      "designs": ["comparison-tool.html", "comparison-tool.png"],
+      "note": "Downloaded 'Interactive Comparison Tool' screen (c17c7935...). Cost $0."
+    },
+    {
+      "issue": 16,
+      "event": "generator_complete",
+      "round": 1,
+      "timestamp": "2026-05-14T18:12:00Z",
+      "note": "/compare/tool.astro — build-time pricing-data JSON island + client-side two-product picker + side-by-side spec table. getAllPricingData() added to payload.ts. /compare index links to it. Self-test: build clean, no route collision.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 16,
+      "event": "evaluation_pass",
+      "round": 1,
+      "timestamp": "2026-05-14T18:15:00Z",
+      "note": "Round 1 PASS. Functionality 10, Design Fidelity 9, Data Integrity 9, Code Quality 9. Playwright-verified: two-product pick renders side-by-side table, cheaper price highlighted, same-product guard, zero console errors. Report: harness/evaluations/issue-16-round-1.md.",
+      "testing_mode": "playwright"
+    },
+    {
+      "issue": 16,
+      "event": "completed",
+      "round": 1,
+      "timestamp": "2026-05-14T18:15:00Z",
+      "note": "Issue #16 closed. LAST issue buildable without external credentials. 12/19 complete. Remaining 7 (#12,#13,#14,#15,#17,#18,#19) all blocked on OAuth creds / Resend / social API keys / AdSense approval — see blocked_on_external_credentials + blocked_on_issue_12."
     }
   ],
   "history_schema": {

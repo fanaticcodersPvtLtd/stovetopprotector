@@ -27,6 +27,14 @@ export type PricingData = {
   }
 }
 
+/** All pricing-data entries — used by the interactive comparison tool. */
+export async function getAllPricingData(): Promise<PricingData[]> {
+  const data = await fetchJson<PaginatedResponse<PricingData>>(
+    '/pricing-data?limit=500&sort=brand',
+  )
+  return data.docs
+}
+
 export type ComparisonRow = {
   label: string
   valueA: string
